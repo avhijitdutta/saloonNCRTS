@@ -1,0 +1,68 @@
+<!--<div class="bar bar-header beauty-header">
+    <button class="button button-icon icon ion-ios-arrow-back"></button>
+    <img src="images/icon-logo.png" class="small-icon" ui-sref="tab.home">
+    <div class="title"> <h3>My Account</h3></div>
+</div>-->
+<ng-include src="'templates/header.html'"></ng-include>
+<ion-view>
+    <ion-content class="account view-background has-header has-footer">
+
+        <div class="profile-header">
+            <img src="images/profile-pic.png">
+            <h4 class="fullname">
+                Avhijit Dutta
+            </h4>
+            <form>
+                <div class="list card">
+                    <label class="item item-input">
+                        <input type="text" placeholder="Full Name" name="name">
+                    </label>
+                    <label class="item item-input">
+                        <input type="email" placeholder="Email Id">
+                    </label>
+                    <label class="item item-input">
+                        <input type="tel" placeholder="Phone">
+                    </label>
+                </div>
+            </form>
+            <h4 class="heading">Change Password</h4>
+            <form>
+                <div class="list card">
+                    <label class="item item-input">
+                        <input type="password" placeholder="Enter Old Password" name="oldpassword">
+                    </label>
+
+                    <label class="item item-input">
+                        <input type="password" placeholder="Enter New Password" name="password">
+                    </label>
+                    <label class="item item-input">
+                        <input type="password" placeholder="Confirm Password" name="confirmPass">
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <div class="loyality-point">
+            <h4 class="heading">Loyalty Point</h4>
+            <ion-list>
+                <div class="row">
+                    <div class="col align-left">Yoon Hair Salon </div>
+                    <div class="col align-right price">10 points</div>
+                </div>
+                <div class="row">
+                    <div class="col align-left">Yoon Hair Salon </div>
+                    <div class="col align-right price">10 points</div>
+                </div>
+                <div class="row">
+                    <div class="col align-left">Yoon Hair Salon </div>
+                    <div class="col align-right price">10 points</div>
+                </div>
+
+            </ion-list>
+        </div>
+
+    </ion-content>
+    <div class="bar bar-footer beauty-footer dark">
+        <div class="title" ui-sref="tab.home"> Save</div>
+    </div>
+</ion-view>

@@ -1,0 +1,13 @@
+@media only screen and (max-width: 350px) {
+    /*Login Page*/
+    .login{
+        text-align: center;
+        margin: 20px 6px;
+        color: #706667;
+    }
+
+    /*Todays Deal*/
+    .todays-deal .item{
+        height: 160px;
+    }
+}

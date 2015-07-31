@@ -1,0 +1,37 @@
+<!--<div class="bar bar-header beauty-header">
+    <button class="button button-icon icon ion-ios-arrow-back"></button>
+    <img src="images/icon-logo.png" class="small-icon" ui-sref="tab.home">
+    <div class="title"> <h3>Submit a Saloon or Spa</h3></div>
+</div>-->
+<ng-include src="'templates/header.html'"></ng-include>
+<ion-view class="view-background checkin">
+    <ion-content class="has-header has-footer padding">
+        <div class="form-content padding">
+            <form>
+                <div class="list card">
+                    <label class="item item-input">
+                        <input type="text" placeholder="Saloon Name" name="Saloon/Spa name">
+                    </label>
+
+                    <label class="item item-input">
+                        <input type="email" placeholder="Address">
+                    </label>
+                    <label class="item item-input">
+                        <input type="email" placeholder="City">
+                    </label>
+                    <label class="item item-input">
+                        <input type="email" placeholder="Pin Code">
+                    </label>
+                </div>
+
+                <a class="button checkin-button"> <img src="images/icon-camera.png">Take a Photo</a>
+                <img src="images/uploaded-photo.png" class="capture">
+            </form>
+        </div>
+
+    </ion-content>
+
+</ion-view>
+<div class="bar bar-footer beauty-footer dark">
+    <div class="title" ui-sref="confirm"> Submit</div>
+</div>

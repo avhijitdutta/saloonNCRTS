@@ -1,0 +1,28 @@
+<!--<div class="bar bar-header beauty-header">
+    <button class="button button-icon icon ion-ios-arrow-back"></button>
+    <img src="images/icon-logo.png" class="small-icon" ui-sref="tab.home">
+    <div class="title"> <h3>CHECK IN</h3></div>
+</div>-->
+<ng-include src="'templates/header.html'"></ng-include>
+<ion-view class="view-background ">
+    <ion-content class="has-header padding">
+        <div class="form-content padding">
+            <form>
+                <div class="list card">
+                    <label class="item item-input">
+                        <input type="text" placeholder="Saloon Name" name="name">
+                    </label>
+
+                    <label class="item item-input">
+                        <input type="email" placeholder="Address">
+                    </label>
+                </div>
+
+                <a class="button checkin-button"> <img src="images/icon-camera.png">Add Picture</a>
+                <a class="button promo-button active-button button-full">Post</a>
+            </form>
+        </div>
+
+    </ion-content>
+
+</ion-view>

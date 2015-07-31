@@ -1,0 +1,94 @@
+<ion-side-menus>
+
+    <ion-side-menu-content>
+        <div class="bar bar-header beauty-header">
+            <button class="button button-icon icon ion-navicon" ng-click="toggleMenuleft()"></button>
+            <div class="title"> <img src="images/logo-inner.png"> </div>
+            <!--<img src="images/icon-filter.png" class="flter-right">-->
+        </div>
+        <img src="images/ico-filter.png" class="map-icon" ng-click="showFiler()">
+
+        <img ng-if="map" src="images/ico-listing.png" class="filter-icon"  ui-sref="sidelist.saloonList({id: 2})">
+        <img ng-if="!map" src="images/ico-map.png" class="filter-icon"  ui-sref="sidelist.saloonListMap({id: 2})">
+       <!-- <div class="bar bar-footer nocolor-footer">
+            <div class="title"> <img src="images/icon-mappin.png"> Map View</div>
+
+        </div>
+-->
+        <ion-nav-view name="side-list-view" animation="slide-left-right">
+        </ion-nav-view>
+
+    </ion-side-menu-content>
+
+    <ion-side-menu side="left">
+        <ion-content class="sidemenu-background">
+            <ul class="list">
+                <a nav-clear ui-sref="tab.home" class="item" ng-click="toggleMenuleft()">  <i class="icon ion-ios-home-outline"> </i>Home</a>
+                <a nav-clear ui-sref="myaccount" class="item" ng-click="toggleMenuleft()"> <i class="icon ion-ios-person-outline"> </i>Account</a>
+                <a nav-clear class="item" ui-sref="appointmentHistory" ng-click="toggleMenuleft()">                     <i class="icon ion-ios-calendar-outline"> </i>Appointment History</a>
+                <a nav-clear ui-sref="submit" class="item" ng-click="toggleMenuleft()">    <i class="icon ion-ios-chatboxes-outline"> </i> Suggest Saloon/SPA </a>
+                <a nav-clear ui-sref="lottery" class="item" ng-click="toggleMenuleft()">   <i class="icon ion-trophy"></i> Lottery Winner </a>
+                <a nav-clear ui-sref="favSaloonList" class="item" ng-click="toggleMenuleft()">   <i class="icon ion-ios-heart-outline"> </i> Favourite Saloon/SPA</a>
+                <a nav-clear ui-sref="favStylistList" class="item" ng-click="toggleMenuleft()">   <i class="icon ion-ios-heart-outline"> </i> Favourite Stylist</a>
+                <a nav-clear ui-sref="faq" class="item" ng-click="toggleMenuleft()">       <i class="icon ion-ios-help-outline"> </i>FAQ</a>
+                <a nav-clear ui-sref="about" class="item" ng-click="toggleMenuleft()">   <i class="icon ion-ios-information-outline"> </i>About</a>
+                <a nav-clear ui-sref="promotion" class="item" ng-click="toggleMenuleft()">   <i class="icon ion-log-out"> </i> Logout</a>
+            </ul>
+        </ion-content>
+    </ion-side-menu>
+
+    <ion-side-menu side="right">
+        <ion-content class="sidemenu-background right-filer">
+            <ul class="list">
+                <a nav-clear class="item">
+                    <div>Sort By</div>
+                    <div class="button-bar">
+                        <button class="button icon {{button.class}}" ng-class="{'selected':isActiveType(button.id)}" ng-repeat="button in filterByType" ng-click="typeTabChange(button.id)"></button>
+                    </div>
+                </a>
+                <a nav-clear class="item">
+                    <div>Filter By Date</div>
+                    <div class="button-bar">
+                        <button class="button icon" ng-click="dateTabChange(date.id)" ng-class="{'selected':isActiveDate(date.id)}" ng-repeat="date in filterByDate">{{date.text}}</button>
+                    </div>
+                </a>
+
+                <a nav-clear class="item">
+                    <div>Filter By Time</div>
+                    <div class="button-bar">
+                        <div class="select-container">
+                            <select ng-options="obj.label for obj in timeFilterArray track by obj.value" ng-model="start_time">
+                            </select>
+                        </div>
+
+                        <div class="select-container">
+                            <select ng-options="obj.label for obj in timeFilterArray track by obj.value" ng-model="end_time">
+                            </select>
+                        </div>
+                    </div>
+                </a>
+
+                <a nav-clear class="item">
+                    <div>Filter By Price</div>
+                    <div class="button-bar">
+                        <div class="select-container">
+                            <select ng-options="obj.label for obj in priceFilterArray track by obj.value" ng-model="start_price">
+                            </select>
+                        </div>
+                        <div class="select-container">
+                            <select ng-options="obj.label for obj in priceFilterArray track by obj.value" ng-model="end_price">
+                            </select>
+                        </div>
+                    </div>
+                </a>
+            </ul>
+
+        </ion-content>
+        <ion-footer-bar>
+            <div class="footer-bar" ng-click="filterList()">
+                <i class="icon ion-funnel"> </i> <span> Filter</span>
+            </div>
+        </ion-footer-bar>
+    </ion-side-menu>
+
+</ion-side-menus>

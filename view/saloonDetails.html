@@ -1,0 +1,148 @@
+<div class="bar bar-header beauty-header" ng-controller="headerCtrl">
+    <button class="button button-icon icon ion-ios-arrow-back" ng-click="myGoBack()"></button>
+    <div class="title"> <img src="images/logo-inner.png"></div>
+</div>
+
+<ion-view>
+    <ion-content class="has-header saloon-detail has-footer">
+        <img src="images/salon-detail-image.png" width="100%">
+        <div class="saloon-info padding">
+            <h4>{{saloonDetails.title}}</h4>
+            <p class="address">
+               {{saloonDetails.address}}
+            </p>
+
+            <p>
+                {{saloonDetails.about}}
+                <div class="icon-container">
+                    <img src="images/ico-phone.png">Phone No.- {{saloonDetails.phone_no}}
+                </div>
+
+                <div class="icon-container">
+                    <img src="images/ico-web.png"> Website - {{saloonDetails.website}}
+                </div>
+            </p>
+
+            <img class="fav" src="images/icon-unfavourite.png" ng-if="!saloonDetails.is_fev" ng-click="$event.stopPropagation();toggleFev(saloonDetails.is_fev)">
+            <img class="fav" src="images/icon-favourite.png" ng-if="saloonDetails.is_fev" ng-click="$event.stopPropagation();toggleFev(saloonDetails.is_fev)">
+
+            <img src="images/btn-checkin.png" class="checkin" ui-sref="checkin">
+            <img src="images/icon-mappin-black.png" class="map" ng-click="toggleMap()">
+
+        </div>
+        <div class="map-container" ng-show="showMap">
+            <div id="map" ng-show="showMap"></div>
+            <div class="map-mask" ng-show="showMap"> </div>
+        </div>
+
+        <div class="stylest-list">
+            <h3> Stylist</h3>
+            <div class="images-list padding">
+
+                <div class="image-item" ui-sref="stylest({id: 1})">
+                    <img src="images/profile-pic.png">
+                    <span>Sayantan</span>
+                    <div class="border-container"> </div>
+                </div>
+
+                <div class="image-item" ui-sref="stylest({id: 1})">
+                    <img src="images/profile-pic.png">
+                    <span>Sayantan</span>
+                    <div class="border-container"> </div>
+                </div>
+             <!--   <div class="image-item">
+                    <img src="images/profile-pic.png">
+                    <span> Sayantan</span>
+                    <div class="border-container"> </div>
+                </div>-->
+
+            </div>
+        </div>
+        <div class="hours-timeing">
+            <h3>Hours</h3>
+            <div class="hours-container padding">
+                <div class="row-hours">
+                    <div class="date dark">Monday</div>
+                    <div class="line"> <div> &nbsp;</div></div>
+                    <div class="timeing">Closed</div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row-hours">
+                    <div class="date">Tuesday</div>
+                    <div class="line"> <div> &nbsp;</div></div>
+                    <div class="timeing">11:30am to 03.30pm</div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row-hours">
+                    <div class="date">Wednesday</div>
+                    <div class="line"> <div> &nbsp;</div></div>
+                    <div class="timeing">11:30am to 03.30pm</div>
+                </div>
+                <div class="row-hours">
+                    <div class="date">Thursday</div>
+                    <div class="line"> <div> &nbsp;</div></div>
+                    <div class="timeing">11:30am to 03.30pm</div>
+                </div>
+                <div class="row-hours">
+                    <div class="date">Friday</div>
+                    <div class="line"> <div> &nbsp;</div></div>
+                    <div class="timeing">11:30am to 03.30pm</div>
+                </div>
+                <div class="row-hours">
+                    <div class="date">Saturday</div>
+                    <div class="line"> <div> &nbsp;</div></div>
+                    <div class="timeing">11:30am to 03.30pm</div>
+                </div>
+                <div class="row-hours">
+                    <div class="date">Sunday</div>
+                    <div class="line"> <div> &nbsp;</div></div>
+                    <div class="timeing">Closed</div>
+                </div>
+            </div>
+        </div>
+        <h3>Services</h3>
+        <ion-list>
+            <div ng-repeat="category in saloonDetails.services">
+                <ion-item class="parent-item" ng-click="openTab(category.id)">
+                    <button class="button button-icon icon" ng-class="{'ion-chevron-down':isOpenTab(category.id),'ion-chevron-right':!isOpenTab(category.id)}"></button>
+                    <span>{{category.name}}</span>
+                    <img src="images/{{category.icon}}">
+                </ion-item>
+
+                <ion-item class="child-items" ng-show="isOpenTab(category.id)">
+                    <div class="row" ng-repeat="item in category.items">
+                        <div class="col col-10 align-right">
+                            <label class="checkbox checkbox-assertive">
+                                <input type="checkbox">
+                            </label>
+                        </div>
+                        <div class="col col-70 padding">{{item.name}} </div>
+                        <div class="col col-20 padding price lite-dark">Rs {{item.price}}</div>
+                    </div>
+                </ion-item>
+
+                <!--<ion-item class="parent-item">
+                    <button class="button button-icon icon ion-chevron-right"></button>
+                    <span>Cuts & styling</span>
+                    <img src="images/icon-styling.png">
+                </ion-item>
+
+                <ion-item class="parent-item">
+                    <button class="button button-icon icon ion-chevron-right"></button>
+                    <span>Cuts & styling</span>
+                    <img src="images/icon-styling.png">
+                </ion-item>
+
+                <ion-item class="parent-item">
+                    <button class="button button-icon icon ion-chevron-right"></button>
+                    <span>Cuts & styling</span>
+                    <img src="images/icon-styling.png">
+                </ion-item>-->
+
+            </div>
+        </ion-list>
+    </ion-content>
+    <div class="bar bar-footer dark">
+        <div class="title" ui-sref="appointment({id: 1})"> Book</div>
+    </div>
+</ion-view>

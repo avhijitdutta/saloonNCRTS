@@ -1,0 +1,42 @@
+<ion-view>
+    <ion-content class="view-background home-tab">
+        <div class="img-slider-content">
+            <ion-slide-box on-slide-changed="slideHasChanged($index)">
+                <ion-slide>
+                    <img src="images/category-banner.png" width="100%">
+                </ion-slide>
+
+                <ion-slide>
+                    <img src="images/category-banner.png" width="100%">
+                </ion-slide>
+
+                <ion-slide>
+                    <img src="images/category-banner.png" width="100%">
+                </ion-slide>
+
+                <ion-slide>
+                    <img src="images/category-banner.png" width="100%">
+                </ion-slide>
+
+                <ion-slide>
+                    <img src="images/category-banner.png" width="100%">
+                </ion-slide>
+
+            </ion-slide-box>
+        </div>
+        <div class="bottom-container">
+            <div class="bottom-heading">
+                Category
+            </div>
+            <div class="category">
+                <ion-list>
+                    <ion-item ng-repeat="item in cateList" ui-sref="sidelist.saloonList({id: item.id})">
+                        <i class="icon ion-chevron-right"></i>
+                        {{item.name}}
+                        <img src="images/{{item.icon}}">
+                    </ion-item>
+                </ion-list>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

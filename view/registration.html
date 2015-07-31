@@ -1,0 +1,46 @@
+<ion-view>
+
+    <ion-content class="padding login-container">
+        <div class="login">
+            <img src="images/logo-inner.png" class="logo">
+            <div>GET YOUR DREAM LOOK </div>
+            <div class="form-content">
+                <form novalidate name="userForm" ng-submit="submitForm(userForm)">
+                    <label class="item-input input-container">
+                        <input type="text" name="user_name" placeholder="Full Name" ng-model="user.user_name" required>
+                    </label>
+
+                    <label class="item-input input-container">
+                        <input type="email" name="email" placeholder="Email Address" ng-model="user.email" required>
+                    </label>
+                    <label class="item-input input-container">
+                        <input  type="password" name="password" placeholder="Password" ng-model="user.password" required>
+                    </label>
+
+                    <label class="item-input input-container">
+                        <input type="password" name="repassword" placeholder="Retype Password" ng-model="user.repassword" required>
+                    </label>
+
+                    <label class="item-input input-container">
+                        <select name="city" ng-options="obj.city_name for obj in cityList track by obj.id" ng-model="user.city" ng-change="changeCity(user.city)" required>
+                        </select>
+                    </label>
+
+                    <label class="item-input input-container">
+                        <select name="locality" ng-options="obj.locality for obj in locality track by obj.id" ng-model="user.locality" required>
+                        </select>
+                    </label>
+
+                    <label class="item-input input-container">
+                        <input type="tel" name="phone_number" placeholder="Phone Number" ng-model="user.phone_number" required>
+                    </label>
+
+                    <div class="button-container">
+                        <button type="submit" class="button promo-button active-button button-full">Registration</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ion-content>
+
+</ion-view>

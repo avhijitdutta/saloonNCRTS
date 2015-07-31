@@ -1,0 +1,52 @@
+<!--<div class="bar bar-header beauty-header" ng-controller="headerCtrl">
+    <button class="button button-icon icon ion-ios-arrow-back" ng-click="myGoBack()"></button>
+    <div class="title">
+        <img src="images/icon-logo.png" class="small-icon" ng-click="goHome()">
+        <h3>Appointment Details</h3>
+    </div>
+</div>-->
+<ng-include src="'templates/header.html'"></ng-include>
+<ion-view>
+    <ion-content class="has-header appointment-detail">
+        <div class="list card">
+            <div class="item item-body">
+                <img class="full-image" src="images/img-salon.png">
+                <h2>Yoon Hair Salon</h2>
+                <p>
+
+                    <strong> Date:</strong>  2015/07/24 &nbsp;&nbsp;&nbsp;&nbsp;
+                    <strong>Time:</strong> 11:00AM - 12:00PM <br>
+                    <strong> Amount </strong> Rs2000.00 &nbsp;&nbsp;
+                    <strong> Payment Mode </strong> Cash <br>
+                    <i class="icon ion-android-call"> </i>+(91)-33-33022321
+                </p>
+                <div class="item item-divider">
+                   Services on this appointment
+                </div>
+                <div class="services">
+                    <div class="row">
+                        <div class="col col-75">Shampoo, cut, blow-dry (Ladies)</div>
+                        <div class="col price">Rs 100.00</div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-75">Shampoo, cut, blow-dry (Ladies)</div>
+                        <div class="col price">Rs 100.00</div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-75">Shampoo, cut, blow-dry (Ladies)</div>
+                        <div class="col price">Rs 100.00</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="item tabs tabs-secondary tabs-icon-left">
+                <a class="tab-item .price-button">
+                    <i class="icon ion-android-cancel price"></i>
+                     <strong>Cancel Appointment</strong>
+                </a>
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>

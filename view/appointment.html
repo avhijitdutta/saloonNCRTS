@@ -1,0 +1,97 @@
+<!--<div class="bar bar-header beauty-header">
+    <button class="button button-icon icon ion-ios-arrow-back"></button>
+    <img src="images/icon-logo.png" class="small-icon">
+    <div class="title"> <h3>Appointment Confirmation</h3></div>
+</div>-->
+<ng-include src="'templates/header.html'"></ng-include>
+<ion-view>
+    <ion-content class="has-header has-footer appointment view-background saloon-list">
+        <div class="image-container">
+            <img src="images/step1.png">
+            <div class="select-time active">Select Time</div>
+            <div class="payment-type">Payment type</div>
+        </div>
+        <ion-item class="padding">
+            <div class="img-container">
+                <img src="images/img-salon.png">
+            </div>
+            <div class="list-content">
+                <h2>Pretty Hate Machine Pretty Hate Machine Pretty Hate Machine</h2>
+                <div>Nine Inch Nails</div>
+                <div>Nine Inch Nails</div>
+                <div>Nine Inch Nails</div>
+            </div>
+        </ion-item>
+
+        <h4>Select Day</h4>
+        <div class="button-container padding">
+            <button class="button appointment-button select">
+               Today
+            </button>
+            <button class="button appointment-button">
+               Tomorrow
+            </button>
+        </div>
+        <h4>Select Time</h4>
+        <div class="button-container padding">
+            <button class="button appointment-button time-button select">
+               10.30am
+            </button>
+            <button class="button appointment-button time-button select">
+              11.30am
+            </button>
+            <button class="button appointment-button time-button">
+              12:30am
+            </button>
+        </div>
+        <div class="selected-services">
+            <h4>Selected Services</h4>
+            <div class="row-container">
+                <div class="row">
+                    <div class="col-10"><img src="images/tick.png"></div>
+                    <div class="col col-70">Shampoo, cut, blow-dry(Ladies)</div>
+                    <div class="col-20"><span class="price">Rs 100.00</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-10"><img src="images/tick.png"></div>
+                    <div class="col col-70">Shampoo, cut, blow-dry(Ladies)</div>
+                    <div class="col-20"><span class="price">Rs 100.00</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-10"><img src="images/tick.png"></div>
+                    <div class="col col-70">Shampoo, cut, blow-dry(Ladies)</div>
+                    <div class="col-20"><span class="price">Rs 100.00</span></div>
+                </div>
+                <div class="row">
+                    <div class="col-10"><img src="images/tick.png"></div>
+                    <div class="col col-70">Shampoo, cut, blow-dry(Ladies)</div>
+                    <div class="col-20"><span class="price">Rs 100.00</span></div>
+                 </div>
+            </div>
+            <div class="sub-total">
+                <div class="row">
+                    <div class="col col-50"></div>
+                    <div class="col col-25">Sub Total</div>
+                    <div class="col col-25">Rs 1690.00</div>
+                </div>
+
+                <div class="row service-tax">
+                    <div class="col col-50"></div>
+                    <div class="col col-25">Service Tax</div>
+                    <div class="col col-25">Rs 90.00</div>
+                </div>
+            </div>
+
+            <div class="total padding">
+                <div class="row">
+                    <div class="col col-50"></div>
+                    <div class="col col-25">Total</div>
+                    <div class="col col-25">Rs 6000.00</div>
+                </div>
+            </div>
+         </div>
+    </ion-content>
+    <div class="bar bar-footer beauty-footer dark">
+        <div class="title" ui-sref="confirm"> Continue</div>
+    </div>
+</ion-view>

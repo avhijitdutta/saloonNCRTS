@@ -1,0 +1,30 @@
+<ion-view>
+<ion-content class="has-header view-background saloon-list padding">
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()"
+
+    >
+    </ion-refresher>
+
+    <ion-list>
+        <ion-item class="padding" ui-sref="detailSaloon({id: saloon.id})" ng-repeat="saloon in saloonList">
+            <div class="img-container">
+                <img ng-src="{{saloon.images}}">
+            </div>
+            <div class="list-content">
+                <h2>{{saloon.title}}</h2>
+                <p class="ellipsis">
+                    {{saloon.address | characters:30}}
+                </p>
+            </div>
+
+            <img class="fev" src="images/icon-unfavourite.png" ng-if="!saloon.is_fev" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.id)">
+            <img class="fev" src="images/icon-favourite.png" ng-if="saloon.is_fev" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.id)">
+
+        </ion-item>
+    </ion-list>
+
+</ion-content>
+
+</ion-view>

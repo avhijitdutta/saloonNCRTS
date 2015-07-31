@@ -1,0 +1,114 @@
+@media only screen and (max-width: 479px) {
+
+    /*login*/
+    .login-container{
+        padding: 60px 40px;
+    }
+
+    /*today Deal*/
+    .todays-deal .item{
+        height: 160px;
+    }
+
+    .home-tab .slider-pager{
+        bottom: 185px;
+    }
+
+    .home-tab .img-slider-content{
+        height: 149px;
+    }
+    /*saloon List*/
+    .saloon-list .item .list-content img{
+        width: 25px;
+    }
+    .saloon-list .item .fev{
+        right: 10px;
+        bottom: 7px;
+    }
+    .saloon-list .item .list-content{
+        left: 150px;
+    }
+
+    .saloon-list .item p{
+        white-space: normal;
+        width: 170px;
+        font-size: 12px;
+    }
+
+    .saloon-list .item .img-container{
+        width: 130px;
+    }
+    /*Saloon Details*/
+    .saloon-detail .hours-timeing .hours-container .row-hours .date{
+        width: 25%;
+    }
+    .saloon-detail .hours-timeing .hours-container .row-hours .line{
+        width: 33%;
+    }
+    .saloon-detail .hours-timeing .hours-container .row-hours .timeing{
+        width: 41%;
+    }
+
+    .saloon-detail .child-items .row{
+        padding: 0 5px 0 0;
+        font-size: 14px;
+    }
+
+    .saloon-detail .child-items{
+        padding: 5px;
+    }
+
+    .saloon-detail .stylest-list .images-list .image-item {
+        height: 150px;
+        width: 150px;
+        margin-right: 8px;
+    }
+
+    .saloon-detail .stylest-list .images-list .image-item img {
+        max-width: 150px;
+        max-height: 150px;
+    }
+
+    .saloon-detail .stylest-list .images-list .image-item .border-container {
+        width: 157px;
+        height: 157px;
+        top: -4px;
+        left: -3px;
+    }
+
+    .saloon-detail .saloon-info .address{
+        width: 250px;
+    }
+
+    .saloon-detail .saloon-info h4{
+        width: 250px;
+    }
+
+    /* stylist detail page*/
+
+    .stylest-detail .image-container .saloon{
+        height: 150px;
+    }
+
+    .stylest-detail .crown{
+        position: absolute;
+        width: 40px;
+        top: 10px;
+        left: 45%;
+    }
+
+    .stylest-detail .top-content.lottery {
+        padding-top: 52px;
+        padding-bottom: 10px;
+    }
+
+    .stylest-detail .address {
+        margin: 0;
+    }
+
+    /*deal detail*/
+    .dealDetail .deal-content .dealimg {
+        bottom: -3px;
+        background: #ffffff;
+    }
+}
