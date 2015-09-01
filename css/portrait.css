@@ -21,33 +21,14 @@
     .saloon-list .item .list-content img{
         width: 25px;
     }
-    .saloon-list .item .fev{
-        right: 10px;
-        bottom: 7px;
-    }
-    .saloon-list .item .list-content{
-        left: 150px;
-    }
 
     .saloon-list .item p{
         white-space: normal;
-        width: 170px;
         font-size: 12px;
     }
 
-    .saloon-list .item .img-container{
-        width: 130px;
-    }
     /*Saloon Details*/
-    .saloon-detail .hours-timeing .hours-container .row-hours .date{
-        width: 25%;
-    }
-    .saloon-detail .hours-timeing .hours-container .row-hours .line{
-        width: 33%;
-    }
-    .saloon-detail .hours-timeing .hours-container .row-hours .timeing{
-        width: 41%;
-    }
+
 
     .saloon-detail .child-items .row{
         padding: 0 5px 0 0;
@@ -56,17 +37,6 @@
 
     .saloon-detail .child-items{
         padding: 5px;
-    }
-
-    .saloon-detail .stylest-list .images-list .image-item {
-        height: 150px;
-        width: 150px;
-        margin-right: 8px;
-    }
-
-    .saloon-detail .stylest-list .images-list .image-item img {
-        max-width: 150px;
-        max-height: 150px;
     }
 
     .saloon-detail .stylest-list .images-list .image-item .border-container {
@@ -87,7 +57,7 @@
     /* stylist detail page*/
 
     .stylest-detail .image-container .saloon{
-        height: 150px;
+        height: 132px;
     }
 
     .stylest-detail .crown{
@@ -107,8 +77,20 @@
     }
 
     /*deal detail*/
-    .dealDetail .deal-content .dealimg {
-        bottom: -3px;
-        background: #ffffff;
+
+    /*Account Details*/
+
+    .account .profile-header .fullname {
+        position: absolute;
+        top: 15px;
+        left: 95px;
     }
+
+    .account .profile-header img{
+        max-width: 73px;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
+        vertical-align: -71px;
+    }
+
 }

@@ -230,7 +230,7 @@ angular.module('commonFactory',[])
 
 .factory("webservice", function() {
     var e = {};
-    var t = " http://ncrts.com/sringar/index.php/webservice/";
+    var t = "http://ncrts.com/sringar/index.php/webservice/";
     e.getService = function(e) {
         return t + e
     };

@@ -1,8 +1,8 @@
-app.controller('loginCtrl',['$scope','localFactory','$state','userService','$ionicLoading',function($scope,localFactory,$state,userService,$ionicLoading){
+app.controller('loginCtrl',['$scope','localFactory','$state','userService','$ionicLoading','$ionicHistory','$rootScope',function($scope,localFactory,$state,userService,$ionicLoading,$ionicHistory,$rootScope){
      $scope.user={};
      $scope.user.email = (localFactory.getLocalItem("email") =="" || localFactory.getLocalItem("email") ==null ) ? "" : localFactory.getLocalItem("email");
      $scope.user.password = (localFactory.getLocalItem("password") =="" || localFactory.getLocalItem("password") ==null ) ? "" : localFactory.getLocalItem("password");
-
+     $scope.user.remember=true;
     if(localFactory.getLocalItem("password") != undefined ||  localFactory.getLocalItem("password") != "" || localFactory.getLocalItem("password") != null){
 
         $scope.checked = true;
@@ -35,15 +35,19 @@ app.controller('loginCtrl',['$scope','localFactory','$state','userService','$ion
         },"example@example.com","Confirm");
     };
 
-    $scope.loginApp = function() {
+    $scope.submitForm = function(userForm) {
 
-        if($scope.user.email == '' || $scope.user.password == '' || $scope.user.email == null || $scope.user.password == null){
-            localFactory.alert("Please enter username & password");
+        if($scope.user.email == '' && $scope.user.password == ''){
+            localFactory.alert("Please enter email ID.");
             return false;
         }
 
+        if($scope.user.email == null || $scope.user.password == null){
+            localFactory.alert("Please enter password.");
+            return false;
+        }
 
-        if($scope.checked ==true ){
+        if($scope.user.remember ==true ){
 
             localFactory.setLocalItem("email", $scope.user.email,false);
             localFactory.setLocalItem("password", $scope.user.password,false);
@@ -109,17 +113,23 @@ app.controller('loginCtrl',['$scope','localFactory','$state','userService','$ion
     $scope.loginFb=function(credential)
     {
         //localFactory.load();
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
+        $ionicLoading.show();
 
         var requestLogin = localFactory.post('login', credential);
         requestLogin.success(function (data) {
 
             if(data.result)
             {
-                userService.setData(data);
-                $state.go('tab.home');
+                userService.setData(data,'loginData');
+                $rootScope.showFilter=true;
+                if($rootScope.previousState=='promotion' || $rootScope.previousState=='signup')
+                {
+                    $state.go('tab.todaysdeals');
+
+                }else{
+                    $ionicHistory.goBack();
+                }
+
             }else
             {
                 localFactory.alert(data.msg,function()

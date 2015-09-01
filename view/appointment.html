@@ -1,97 +1,86 @@
-<!--<div class="bar bar-header beauty-header">
-    <button class="button button-icon icon ion-ios-arrow-back"></button>
-    <img src="images/icon-logo.png" class="small-icon">
-    <div class="title"> <h3>Appointment Confirmation</h3></div>
-</div>-->
 <ng-include src="'templates/header.html'"></ng-include>
 <ion-view>
     <ion-content class="has-header has-footer appointment view-background saloon-list">
         <div class="image-container">
             <img src="images/step1.png">
-            <div class="select-time active">Select Time</div>
-            <div class="payment-type">Payment type</div>
         </div>
-        <ion-item class="padding">
+
+        <ion-item>
             <div class="img-container">
-                <img src="images/img-salon.png">
+                <img ng-src="{{appointmentData.saloon.saloon_details.saloon_image}}">
+                <div class="list-content">
+                    <h2>{{appointmentData.saloon.saloon_details.saloon_name}}</h2>
+                    <p class="ellipsis">
+                        <i class="iocn ion-location"> </i>{{appointmentData.saloon.saloon_details.locality}},&nbsp;{{appointmentData.saloon.saloon_details.city_name}} <span class="distance">( 2000 Km )</span>
+                    </p>
+                </div>
             </div>
-            <div class="list-content">
-                <h2>Pretty Hate Machine Pretty Hate Machine Pretty Hate Machine</h2>
-                <div>Nine Inch Nails</div>
-                <div>Nine Inch Nails</div>
-                <div>Nine Inch Nails</div>
+
+            <div class="rating">
+                {{appointmentData.saloon.saloon_details.rating |number:1}}
             </div>
         </ion-item>
 
         <h4>Select Day</h4>
-        <div class="button-container padding">
-            <button class="button appointment-button select">
-               Today
-            </button>
-            <button class="button appointment-button">
-               Tomorrow
-            </button>
+        <div class="button-container">
+            <div  ng-repeat="day in days" class="coll">
+                <div>{{day.day}}</div>
+                <div class="appointment-button" ng-click="daySelected(day)"  ng-class="{'select':day.selected}">{{day.name}}</div>
+            </div>
         </div>
+
         <h4>Select Time</h4>
         <div class="button-container padding">
-            <button class="button appointment-button time-button select">
-               10.30am
-            </button>
-            <button class="button appointment-button time-button select">
-              11.30am
-            </button>
-            <button class="button appointment-button time-button">
-              12:30am
-            </button>
+            <div class="appointment-button time-button" ng-class="{'select':current.selected}" ng-repeat="current in currentSelected.hours" ng-click="hoursSelected(current)">
+                {{current.start_time}}
+            </div>
+
+            <div class="no-time-date" ng-if="currentSelected.hours.length<1">
+                No time is available on this date.
+            </div>
         </div>
+
         <div class="selected-services">
             <h4>Selected Services</h4>
             <div class="row-container">
-                <div class="row">
-                    <div class="col-10"><img src="images/tick.png"></div>
-                    <div class="col col-70">Shampoo, cut, blow-dry(Ladies)</div>
-                    <div class="col-20"><span class="price">Rs 100.00</span></div>
+                <div class="row" ng-repeat="row in appointmentData.services">
+                    <div class="col-10 align-left"><img src="images/tick.png"></div>
+                    <div class="col-50">{{row.facility_name}}</div>
+                    <div class="col-20"><input class="qty" value='1' type="tel"/></div>
+                    <div class="col-20"><span class="price"><span class="rupyaINR">Rs</span>{{row.price | currency:""}}</span></div>
                 </div>
-                <div class="row">
-                    <div class="col-10"><img src="images/tick.png"></div>
-                    <div class="col col-70">Shampoo, cut, blow-dry(Ladies)</div>
-                    <div class="col-20"><span class="price">Rs 100.00</span></div>
-                </div>
-                <div class="row">
-                    <div class="col-10"><img src="images/tick.png"></div>
-                    <div class="col col-70">Shampoo, cut, blow-dry(Ladies)</div>
-                    <div class="col-20"><span class="price">Rs 100.00</span></div>
-                </div>
-                <div class="row">
-                    <div class="col-10"><img src="images/tick.png"></div>
-                    <div class="col col-70">Shampoo, cut, blow-dry(Ladies)</div>
-                    <div class="col-20"><span class="price">Rs 100.00</span></div>
-                 </div>
             </div>
             <div class="sub-total">
                 <div class="row">
                     <div class="col col-50"></div>
                     <div class="col col-25">Sub Total</div>
-                    <div class="col col-25">Rs 1690.00</div>
+                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{subTotal | currency:""}}</div>
+                </div>
+
+                <div class="row service-tax">
+                    <div class="col col-50"></div>
+                    <div class="col col-25">Discount</div>
+                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{discountAmount | currency:""}}</div>
                 </div>
 
                 <div class="row service-tax">
                     <div class="col col-50"></div>
                     <div class="col col-25">Service Tax</div>
-                    <div class="col col-25">Rs 90.00</div>
+                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{taxAmount | currency:""}}</div>
                 </div>
+
             </div>
 
             <div class="total padding">
                 <div class="row">
                     <div class="col col-50"></div>
                     <div class="col col-25">Total</div>
-                    <div class="col col-25">Rs 6000.00</div>
+                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{netAmount | currency:""}}</div>
                 </div>
             </div>
          </div>
     </ion-content>
     <div class="bar bar-footer beauty-footer dark">
-        <div class="title" ui-sref="confirm"> Continue</div>
+        <div class="title" ng-click="confirm()"> Continue</div>
     </div>
 </ion-view>

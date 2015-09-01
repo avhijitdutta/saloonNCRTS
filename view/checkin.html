@@ -18,11 +18,21 @@
                     </label>
                 </div>
 
-                <a class="button checkin-button"> <img src="images/icon-camera.png">Add Picture</a>
-                <a class="button promo-button active-button button-full">Post</a>
+                <button class="button button-full check-in" ng-click="uploadImage()">
+                    <i class="ion-ios-camera"> </i>Add Picture
+                </button>
+                <div class="text-center">
+                    <img ng-if="imageURI==''" src="images/noimagesaloon.png" class="capture">
+                    <img ng-if="imageURI!=''" src="{{imageURI}}" class="capture">
+                </div>
             </form>
         </div>
 
     </ion-content>
 
+    <div class="bar bar-footer beauty-footer dark">
+        <div class="title">
+            Post
+        </div>
+    </div>
 </ion-view>

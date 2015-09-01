@@ -5,65 +5,43 @@
 </div>-->
 <ng-include src="'templates/header.html'"></ng-include>
 <ion-view>
-    <ion-content class="has-header">
+    <ion-content class="has-header history view-background">
+
         <div class="list">
-            <a class="item item-thumbnail-left" ui-sref="appointmentDetails({id: 1})">
-                <img src="images/img-salon.png">
-                <h2>Yoon Hair Salon</h2>
-                <p>
-                    <i class="icon ion-android-call"> </i>+(91)-33-33022321<br>
-                    <strong> Date:</strong>  2015/07/24 <br>
-                    <strong>Time:</strong> 11:00AM - 12:00PM
-                </p>
-            </a>
 
-            <a class="item item-thumbnail-left" ui-sref="appointmentDetails({id: 1})">
-                <img src="images/img-salon.png">
-                <h2>Yoon Hair Salon</h2>
-                <p>
-                    <i class="icon ion-android-call"> </i>+(91)-33-33022321<br>
-                    <strong> Date:</strong>  2015/07/24 <br>
-                    <strong>Time:</strong> 11:00AM - 12:00PM
-                </p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="appointmentDetails({id: 1})">
-                <img src="images/img-salon.png">
-                <h2>Yoon Hair Salon</h2>
-                <p>
-                    <i class="icon ion-android-call"> </i>+(91)-33-33022321<br>
-                    <strong> Date:</strong>  2015/07/24 <br>
-                    <strong>Time:</strong> 11:00AM - 12:00PM
-                </p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="appointmentDetails({id: 1})">
-                <img src="images/img-salon.png">
-                <h2>Yoon Hair Salon</h2>
-                <p>
-                    <i class="icon ion-android-call"> </i>+(91)-33-33022321<br>
-                    <strong> Date:</strong>  2015/07/24 <br>
-                    <strong>Time:</strong> 11:00AM - 12:00PM
-                </p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="appointmentDetails({id: 1})">
-                <img src="images/img-salon.png">
-                <h2>Yoon Hair Salon</h2>
-                <p>
-                    <i class="icon ion-android-call"> </i>+(91)-33-33022321<br>
-                    <strong> Date:</strong>  2015/07/24 <br>
-                    <strong>Time:</strong> 11:00AM - 12:00PM
-                </p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="appointmentDetails({id: 1})">
-                <img src="images/img-salon.png">
-                <h2>Yoon Hair Salon</h2>
-                <p>
-                    <i class="icon ion-android-call"> </i>+(91)-33-33022321<br>
-                    <strong> Date:</strong>  2015/07/24 <br>
-                    <strong>Time:</strong> 11:00AM - 12:00PM
-                </p>
-            </a>
+            <a class="item" ui-sref="appointmentDetails({id: history.id})" ng-repeat="history in histories">
+                <img ng-src="{{history.saloon_image}}">
+                <div class="upcoming" ng-if="history.upcoming_appointment==1">
+                    Upcoming
+                </div>
+                <div class="container">
+                    <h3>{{history.saloon_name}}</h3>
+                    <p>
+                        <i class="ion-ios-calendar-outline"></i>  {{ history.date | date }}
+                    </p>
 
+                    <p>
+                        <i class="ion-ios-clock-outline"></i></strong> {{history.start_time}} - {{history.end_time}}
+                    </p>
+
+                    <p>
+                        <i class="icon ion-android-call"> </i>{{history.phone}}
+                    </p>
+                </div>
+                <div class="amount">
+                    <span class="rupyaINR">Rs</span>200
+                </div>
+            </a>
 
         </div>
+
+        <div class="no-data" ng-if="histories.length<1">
+            <i class="iocn ion-social-instagram"></i>
+            <h4>It is lonely here</h4>
+            <p>
+                All your booking history will appear here.
+            </p>
+        </div>
+
     </ion-content>
 </ion-view>

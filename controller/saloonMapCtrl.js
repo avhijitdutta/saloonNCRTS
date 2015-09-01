@@ -1,35 +1,70 @@
-app.controller('saloonMapCtrl',['$scope','$compile','$rootScope','listPostData',function($scope,$compile,$rootScope,listPostData){
-    console.log(listPostData.saloonListData);
+app.controller('saloonMapCtrl',['$scope','$compile','$rootScope','listPostData','$ionicLoading','location','$stateParams','uiGmapGoogleMapApi',function($scope,$compile,$rootScope,listPostData,$ionicLoading,location,$stateParams,uiGmapGoogleMapApi){
+    console.log($rootScope.saloonList);
+    console.log(location);
+    $scope.category_id=$stateParams.id;
     $rootScope.map=true;
-    var locations = [
-        ['Bondi Beach', -33.890542, 151.274856, 4],
-        ['Coogee Beach', -33.923036, 151.259052, 5],
-        ['Cronulla Beach', -34.028249, 151.157507, 3],
-        ['Manly Beach', -33.80010128657071, 151.28747820854187, 2],
-        ['Maroubra Beach', -33.950198, 151.259302, 1]
-    ];
+    $scope.saloon={};
+    $scope.hideSaloon=function(){
+        $scope.showItem=false;
+    }
 
-    var map = new google.maps.Map(document.getElementById('mapList'), {
-        zoom: 10,
-        center: new google.maps.LatLng(-33.92, 151.25),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+    $scope.$on("$ionicView.beforeEnter", function( scopes, states ) {
+       $ionicLoading.show();
     });
 
-    var infowindow = new google.maps.InfoWindow();
+    $scope.$on("$ionicView.afterEnter", function( scopes, states ) {
+        $ionicLoading.hide();
+    });
 
-    var marker, i;
-
-    for (i = 0; i < locations.length; i++) {
-        marker = new google.maps.Marker({
-            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-            map: map
-        });
-
-        google.maps.event.addListener(marker, 'click', (function(marker, i) {
-            return function() {
-                infowindow.setContent(locations[i][0]);
-                infowindow.open(map, marker);
-            }
-        })(marker, i));
+    $scope.addMarkers=function()
+    {
+        var markers=[];
+        for(var i=0;i<$rootScope.saloonList.length;i++)
+        {
+            var tempData={};
+            tempData['latitude']=$rootScope.saloonList[i]['latitude'];
+            tempData['longitude']=$rootScope.saloonList[i]['longitude'];
+            tempData['title']=i+"M";
+            tempData['data']=$rootScope.saloonList[i];
+            tempData.onClick = function(obj) {
+                console.log(obj.model);
+                $scope.showItem=true;
+                $scope.saloon=obj.model.data;
+                $scope.$apply()
+            };
+            tempData['id']=i;
+            markers.push(tempData);
+        }
+        /*end of map*/
+        $scope.randomMarkers = markers;
+        console.log($scope.randomMarkers);
     }
+
+    $scope.showItem=false;
+
+    $scope.randomMarkers=[];
+    uiGmapGoogleMapApi.then(function(maps) {
+        console.log(maps);
+        $scope.map = {
+            center: {
+                latitude:location.coords.latitude,
+                longitude:location.coords.longitude
+            },
+            zoom: 11,
+            bounds: {},
+            events: {
+                tilesloaded: function (maps, eventName, args) {
+                    $ionicLoading.hide();
+                }
+            }
+        };
+
+        $scope.options = {
+            scrollwheel: true
+        };
+    });
+
+
+    $scope.addMarkers();
+    $ionicLoading.hide();
 }])

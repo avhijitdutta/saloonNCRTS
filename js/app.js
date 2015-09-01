@@ -10,23 +10,104 @@ function loadScript() {
         '&signed_in=false&callback=initialize';
     document.body.appendChild(script);
 }
-
-var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFactory'])
-.run(function($ionicPlatform) {
+var defaultPath = "";
+var loginBackCount=0;
+var homepath="";
+var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFactory','ngCordova','appCommon','uiGmapgoogle-maps'])
+.run(function($ionicPlatform,localFactory,$ionicHistory,$document,$rootScope,$ionicLoading,$location,userService,$state,$ionicPopup) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+
+      if(window.Connection) {
+          if(navigator.connection.type == Connection.NONE) {
+              $ionicPopup.confirm({
+                  title: "Internet Disconnected",
+                  content: "The internet is disconnected on your device."
+              })
+              .then(function(result) {
+
+                  if(!result) {
+                      ionic.Platform.exitApp();
+                  }
+              });
+          }
+      }
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+
+    $rootScope.logout=function(){
+        $ionicLoading.show();
+        var logout = localFactory.post('logout', {});
+        logout.success(function (data) {
+            $ionicLoading.hide();
+            userService.resetData('loginData');
+            $state.go('promotion');
+            $rootScope.showFilter=false;
+        });
+
+        logout.error(function (data, status, headers, config) {
+            $ionicLoading.hide();
+        });
+    }
+
+    document.removeEventListener("backbutton", function(){}, false);
+    $rootScope.userAppointment=0;
+    $rootScope.showFilter=true;
+
+    $rootScope.previousState;
+    $rootScope.currentState;
+    $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
+          $rootScope.previousState = from.name;
+          $rootScope.currentState = to.name;
+          console.log('Previous state:'+$rootScope.previousState)
+          console.log('Current state:'+$rootScope.currentState)
+    });
+
   });
 
-})
+    $ionicPlatform.onHardwareBackButton(function () {
+        if ($location.path() === "/tab/todaysdeals" || $location.path() === "/promotion") {
 
-.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+            if (loginBackCount > 0) {
+                navigator.app.exitApp();
+            }
+
+            if (loginBackCount < 1) {
+                loginBackCount++;
+                setTimeout(function () {
+                    loginBackCount = 0;
+                }, 2000);
+                var tostText = "Press back button again to quit";
+                localFactory.toast(tostText, 'short', 'bottom');
+            }
+
+        }else {
+
+            $ionicHistory.goBack();
+        }
+    })
+
+
+    })
+
+.config(['$stateProvider', '$urlRouterProvider','uiGmapGoogleMapApiProvider', function($stateProvider, $urlRouterProvider,uiGmapGoogleMapApiProvider) {
+
+        uiGmapGoogleMapApiProvider.configure({
+            key: 'AIzaSyDnvDa3XWYgZ6Y8Vg-dwX88jh3rhnT2Xpg',
+            v: '3.17',
+            libraries: 'weather,geometry,visualization,places'
+        });
+
+        if (window.localStorage.getItem('SingerloginData') && window.localStorage.getItem('SingerloginData')!='null') {
+            defaultPath ="/tab/todaysdeals";
+        }else{
+            defaultPath ="/promotion";
+        }
 
         $stateProvider
             .state('promotion', {
@@ -48,9 +129,8 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 cache: false,
                 resolve:{
                     settingData:function($q,localFactory,$ionicLoading){
-                        $ionicLoading.show({
-                            template: 'Loading...'
-                        });
+                        localFactory.checkInternet();
+                        $ionicLoading.show();
                         var defer = $q.defer();
                         var settingData = localFactory.post('settings', {});
                         settingData.success(function (data) {
@@ -70,7 +150,24 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 url : '/tab',
                 templateUrl : 'view/sidemenu.html',
                 abstract : true,
-                controller : 'sideCtrl'
+                controller : 'sideCtrl',
+                resolve:{
+                    settingData:function($q,localFactory,$ionicLoading){
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('settings', {});
+                        settingData.success(function (data) {
+
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
             })
             .state('sidelist', {
                 url : '/side',
@@ -81,11 +178,19 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
             .state('sidelist.saloonList', {
                 url: '/saloonList/:id',
                 resolve: {
-                    saloons:function(localFactory,$q,listPostData,$stateParams){
+                    saloons:function(localFactory,$q,listPostData,$stateParams,userService,$ionicLoading,$filter){
+                        $ionicLoading.show();
+
                         var defer = $q.defer();
                         var postData={
                             category_id:$stateParams.id
                         };
+
+                        if(userService.getData('loginData')!=null){
+                            postData['user_id']=userService.getData('loginData').user_details.user_no;
+                            postData['current_time']=$filter('date')(new Date(), 'HH:mm:ss'),
+                            postData['current_date']=$filter('date')(new Date(), 'yyyy-MM-dd')
+                    }
                         listPostData.setData(postData);
                         console.log(listPostData.getData());
                         var shopList=listPostData.post();
@@ -110,25 +215,106 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                         controller: 'saloonMapCtrl'
                     }
                 },
-                cache: false
+                resolve: {
+                    location:function(localFactory,$q,listPostData,$stateParams,userService,$ionicLoading,$cordovaGeolocation){
+
+                        var defer = $q.defer();
+                        var posOptions = {timeout: 10000, enableHighAccuracy: true};
+                        $cordovaGeolocation
+                            .getCurrentPosition(posOptions)
+                            .then(function (position) {
+                                defer.resolve(position);
+                            }, function (err) {
+                                localFactory.alert("Please turn on GPS on your mobile.");
+                                defer.reject(err)
+                            });
+                        return defer.promise;
+                    }
+                },
+                cache: true
             })
             .state('detailSaloon',{
                 url:'/detailSaloon/:id',
                 templateUrl:'view/saloonDetails.html',
                 controller:'saloonDetails',
-                cache: false
+                cache: false,
+                resolve: {
+
+                    saloon:function(localFactory,$q,$stateParams,userService,$ionicLoading){
+                       
+                        $ionicLoading.show();
+
+                        var postData={
+                            saloon_id:$stateParams.id
+                        };
+
+                        if(userService.getData('loginData') && userService.getData('loginData')!=null){
+                            postData['user_id']=userService.getData('loginData').user_details.user_no;
+                        }
+
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('saloon_details', postData);
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
             })
             .state('stylest',{
                 url:'/stylest/:id',
                 templateUrl:'view/stylest.html',
                 controller:'stylestCtrl',
-                cache: false
+                cache: false,
+                resolve:{
+                    stylest:function($q,localFactory,$ionicLoading,$stateParams,userService){
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('stylist_details', {user_no:userService.getData('loginData').user_details.user_no,stylist_no:$stateParams.id});
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
             })
             .state('appointment',{
                 url:'/appointment/:id',
                 templateUrl:'view/appointment.html',
                 controller:'appointmentCtrl',
-                cache: false
+                cache: false,
+                resolve:{
+                    appointment:function($q,localFactory,$ionicLoading,$stateParams,userService,$filter){
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var obj={saloon_id:$stateParams.id,current_time:$filter('date')(new Date(), 'HH:mm:ss'),current_date:$filter('date')(new Date(), 'yyyy-MM-dd')};
+
+                        var settingData = localFactory.post('available_slot', obj);
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
+
             })
             .state('confirm',{
                 url:'/confirm/:id',
@@ -152,15 +338,50 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 url:'/mycount',
                 templateUrl:'view/myaccount.html',
                 controller:'myaccountCtrl',
-                cache: false
+                cache: false,
+                resolve:{
+                    myAccount:function($q,localFactory,$ionicLoading,userService){
+                        $ionicLoading.show();
+                        var obj={user_no:userService.getData('loginData').user_details.user_no};
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('account_details', obj);
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
             })
             .state('lottery',{
                 url:'/lottery',
                 templateUrl:'view/lottery.html',
                 controller:'lotterytCtrl',
-                cache: false
-            })
+                cache: false,
+                resolve:{
+                    lottery:function($q,localFactory,$ionicLoading,userService){
+                        $ionicLoading.show();
 
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('todays_winner', {});
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
+            })
             .state('tab.home', {
                 url: '/home',
                 views: {
@@ -179,6 +400,28 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                         controller: 'todaysCtrl'
                     }
                 },
+                resolve:{
+                    todaysDeal:function($q,localFactory,$ionicLoading,userService,$filter){
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var postData={};
+                        if(userService.getData('loginData') && userService.getData('loginData')!=null){
+                            postData['user_no']=userService.getData('loginData').user_details.user_no;
+                            postData['current_time']=$filter('date')(new Date(),'HH:mm:ss'),
+                            postData['current_date']=$filter('date')(new Date(),'yyyy-MM-dd')
+                        }
+                        var settingData = localFactory.post('todays_deal', postData);
+                        settingData.success(function (data) {
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                },
                 cache: false
             })
             .state('dealDetail',{
@@ -191,25 +434,98 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 url:'/favSaloonList',
                 templateUrl:'view/saloonFav.html',
                 controller:'saloonFavCtrl',
-                cache: false
+                cache: false,
+                resolve: {
+                    saloons:function(localFactory,$q,listPostData,$stateParams,userService,$ionicLoading){
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var postData={
+                            category_id:$stateParams.id
+                        };
+
+                        if(userService.getData('loginData') && userService.getData('loginData')!=null){
+                            postData['user_id']=userService.getData('loginData').user_details.user_no;
+                        }
+                        listPostData.setData(postData);
+                        console.log(listPostData.getData());
+                        var shopList=listPostData.post();
+                        console.log(shopList);
+                        defer.resolve(shopList);
+                        return defer.promise;
+                    }
+                }
             })
             .state('favStylistList',{
                 url:'/favStylistList',
                 templateUrl:'view/stylistFav.html',
                 controller:'StylistFavCtrl',
-                cache: false
+                cache: false,
+                resolve:{
+                    stylistList:function($q,localFactory,$ionicLoading,userService){
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('get_favorite_stylist', {user_no:userService.getData('loginData').user_details.user_no});
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
             })
             .state('appointmentHistory',{
                 url:'/appointmentHistory',
                 templateUrl:'view/appointmentHistory.html',
                 controller:'appointmentHistory',
-                cache: false
+                cache: false,
+                resolve:{
+                    history:function($q,localFactory,$ionicLoading,userService,$filter){
+                        $ionicLoading.show();
+                        var postData={user_no:userService.getData('loginData').user_details.user_no}
+                        postData['current_time']=$filter('date')(new Date(), 'HH:mm:ss');
+                        postData['current_date']=$filter('date')(new Date(), 'yyyy-MM-dd');
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('appointment_history', postData);
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
             })
             .state('appointmentDetails',{
                 url:'/appointmentDetails/:id',
                 templateUrl:'view/appointmentDetails.html',
                 controller:'appointmentDetails',
-                cache: false
+                cache: false,
+                resolve: {
+                    historyDetail: function ($q, localFactory, $ionicLoading, userService, $stateParams) {
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('appointment_history_details', {appointment_id: $stateParams.id});
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
             })
             .state('faq',{
                 url:'/faq',
@@ -223,7 +539,33 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 controller:'aboutCtrl',
                 cache: false
             })
-            $urlRouterProvider.otherwise('/promotion');
+            .state('noconnection',{
+                url:'/noconnection',
+                templateUrl:'view/noconnection.html',
+                controller:'aboutCtrl',
+                cache: false
+            })
+            .state('saloonSide', {
+                url : '/saloon',
+                templateUrl : 'view/saloonSide.html',
+                abstract : true,
+                controller : 'saloonSideCtrl'
+            })
+            .state('saloonSide.home', {
+                url: '/saloonhome',
+                views: {
+                    'saloon-home': {
+                        templateUrl: 'view/todays.html',
+                        controller: 'saloonHomeCtrl'
+                    }
+                },
+                cache: false
+            })
+
+        $urlRouterProvider.otherwise(function ($injector, $location) {
+            return defaultPath
+        });
+
     }])
 
     app.controller('headerCtrl',['$scope','$location','$rootScope','$ionicHistory','$state',function($scope,$location,$rootScope,$ionicHistory,$state){
@@ -232,6 +574,17 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
         };
 
         $scope.goHome = function(){
-            $state.go('tab.home');
+            $state.go('tab.todaysdeals');
         }
+
+        $scope.search=false;
+        $scope.toggleSearch=function(){
+
+            if($scope.search){
+                $scope.search=false;
+            }else{
+                $scope.search=true;
+            }
+        }
+
     }])

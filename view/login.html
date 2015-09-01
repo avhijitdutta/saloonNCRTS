@@ -4,7 +4,7 @@
             <img src="images/logo-inner.png" class="logo">
             <div>GET YOUR DREAM LOOK </div>
             <div class="form-content">
-                <form novalidate>
+                <form novalidate name="userForm" ng-submit="submitForm(userForm)">
 
                     <label class="item-input input-container">
                         <input type="email" placeholder="Email id" ng-model="user.email" name="email"/>
@@ -13,12 +13,12 @@
                     <label class="item-input input-container">
                         <input type="password" placeholder="Password" ng-model="user.password" name="password">
                     </label>
-                </form>
+
 
                     <div class="remember-me">
                         <span>Remember me</span>
                         <label class="toggle right toggle-energized toggle-dark float-right">
-                            <input type="checkbox" ng-model="checked">
+                            <input type="checkbox" ng-model="user.remember">
                             <div class="track">
                                 <div class="handle"></div>
                             </div>
@@ -28,7 +28,7 @@
 
                 <div class="button-container">
                     <div class="clr"></div>
-                    <a class=" button promo-button active-button button-full" ng-click="loginApp()">Login</a>
+                    <button class="button promo-button active-button button-full">Login</button>
 
                     <div ng-click="forgotPass()">
                         FORGOT PASSWORD?
@@ -38,6 +38,7 @@
                         <a ui-sref="registration"> NOT A MEMBER YET? REGISTER NOW</a>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </ion-content>

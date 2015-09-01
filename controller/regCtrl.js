@@ -1,4 +1,4 @@
-app.controller('regCtrl',['$scope','localFactory','settingData',function($scope,localFactory,settingData){
+app.controller('regCtrl',['$scope','localFactory','settingData','$ionicLoading','$state',function($scope,localFactory,settingData,$ionicLoading,$state){
 
     $scope.cityList=settingData.cities;
     /* add a extra value*/
@@ -7,20 +7,15 @@ app.controller('regCtrl',['$scope','localFactory','settingData',function($scope,
     ];
 
     /*Push a extra value of citylist */
-
     $scope.cityList.push({city_name:"Select your city",id:"0"});
     $scope.cityList.moveArrayPos($scope.cityList.length-1,0);
-
-    console.log(settingData);
 
     $scope.user={};
     $scope.user.city=$scope.cityList[0];
     if($scope.user.city['id']>0)
     {
         $scope.locality=settingData.localities[$scope.user.city['id']];
-
     }else{
-
         $scope.locality=settingData.localities[0];
     }
 
@@ -78,28 +73,19 @@ app.controller('regCtrl',['$scope','localFactory','settingData',function($scope,
         // check to make sure the form is completely valid
         if (userForm.$valid) {
 
-            localFactory.load();
+            $ionicLoading.show();
             var signup = localFactory.post('signup',$scope.user);
             signup.success(function (data) {
-                localFactory.unload();
+                $ionicLoading.hide();
+                localFactory.toast(data.msg);
                 if(data.result)
                 {
-                    localFactory.alert(data.msg,function()
-                    {
-
-                    },"Alert","OK");
-                    window.history.back();
-                }else{
-                    localFactory.alert(data.msg,function()
-                    {
-
-                    },"Alert","OK");
+                    $state.go('login')
                 }
-
             });
 
             signup.error(function (data, status, headers, config) {
-                localFactory.unload();
+                $ionicLoading.hide();
                 localFactory.alert("Please check your internet connection",function()
                 {
 

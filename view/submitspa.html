@@ -1,37 +1,49 @@
-<!--<div class="bar bar-header beauty-header">
-    <button class="button button-icon icon ion-ios-arrow-back"></button>
-    <img src="images/icon-logo.png" class="small-icon" ui-sref="tab.home">
-    <div class="title"> <h3>Submit a Saloon or Spa</h3></div>
-</div>-->
 <ng-include src="'templates/header.html'"></ng-include>
 <ion-view class="view-background checkin">
+    <form novalidate name="accountForm" ng-submit="saveUser(accountForm)">
     <ion-content class="has-header has-footer padding">
         <div class="form-content padding">
-            <form>
+
                 <div class="list card">
                     <label class="item item-input">
-                        <input type="text" placeholder="Saloon Name" name="Saloon/Spa name">
+                        <input type="text" placeholder="Saloon/Spa name" name="saloon_name" ng-model="user.saloon_name" required>
                     </label>
 
                     <label class="item item-input">
-                        <input type="email" placeholder="Address">
+                        <input type="text" placeholder="Address" name="address" ng-model="user.address" required>
+                    </label>
+                    <label class="item-input input-container">
+                        <select name="city" ng-options="obj.city_name for obj in cityList track by obj.id" ng-model="user.city" ng-change="changeCity(user.city)" required>
+                        </select>
+                    </label>
+                    <label class="item-input input-container">
+                        <select name="locality" ng-options="obj.locality for obj in locality track by obj.id" ng-model="user.locality" required>
+                        </select>
                     </label>
                     <label class="item item-input">
-                        <input type="email" placeholder="City">
-                    </label>
-                    <label class="item item-input">
-                        <input type="email" placeholder="Pin Code">
+                        <input type="tel" placeholder="Pin Code" name="pin_code" ng-model="user.pin_code" required>
                     </label>
                 </div>
 
-                <a class="button checkin-button"> <img src="images/icon-camera.png">Take a Photo</a>
-                <img src="images/uploaded-photo.png" class="capture">
-            </form>
+                <a class="button button-full check-in" ng-click="uploadImage()">
+                    <i class="ion-ios-camera"> </i>Take a Photo
+                </a>
+                <div class="text-center">
+                    <img ng-if="imageURI==''" src="images/noimagesaloon.png" class="capture">
+                    <img ng-if="imageURI!=''" src="{{imageURI}}" class="capture">
+                </div>
+
+
         </div>
 
     </ion-content>
-
+    <div class="bar bar-footer beauty-footer dark">
+        <div class="title">
+            <button class="button button-full">
+                Submit
+            </button>
+        </div>
+    </div>
+    </form>
 </ion-view>
-<div class="bar bar-footer beauty-footer dark">
-    <div class="title" ui-sref="confirm"> Submit</div>
-</div>
+

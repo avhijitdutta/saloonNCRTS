@@ -1,17 +1,36 @@
 <ion-view>
-    <ion-content class="todays-deal padding view-background">
-        <ion-item ui-sref="dealDetail({id: 1})">
-            <img src="images/deal1.png">
-        </ion-item>
+    <div class="filter-category" ng-click="openModal()">
+        <i class="ion-social-buffer"> </i>
+    </div>
 
-        <ion-item>
-            <img src="images/deal2.png">
+    <a class="filter-list-icon" ui-sref="sidelist.saloonList">
+        <i class="ion-grid"> </i>
+    </a>
+
+    <ion-content class="todays-deal view-background has-header">
+        <ion-item ng-click="dealDetail(deal)" ng-repeat="deal in todaysDeals">
+            <img ng-src="{{deal.deal_image}}">
+            <!--<img src="images/img-deal-detail.png">-->
+            <div class="mask">
+               <!-- <h2>{{deal.saloon_name}}</h2>-->
+                <span class="cat-icon">
+                    <img src="{{deal.category_image_url}}">
+                </span>
+
+                <div class="category">
+                    <h2> {{deal.about_deal}}</h2>
+                    <span>{{deal.saloon_name}}</span>
+                    <i class="icon ion-bookmark bookmark" > </i>
+                </div>
+            </div>
         </ion-item>
-        <ion-item>
-            <img src="images/deal3.png">
-        </ion-item>
-        <ion-item>
-            <img src="images/deal4.png">
-        </ion-item>
+        <div class="no-data" ng-if="todaysDeals.length<1">
+            <i class="iocn ion-social-instagram"></i>
+            <h4>It is lonely here</h4>
+            <p>
+                No deal found.
+            </p>
+        </div>
+
     </ion-content>
 </ion-view>

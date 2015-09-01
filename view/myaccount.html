@@ -1,68 +1,94 @@
-<!--<div class="bar bar-header beauty-header">
-    <button class="button button-icon icon ion-ios-arrow-back"></button>
-    <img src="images/icon-logo.png" class="small-icon" ui-sref="tab.home">
-    <div class="title"> <h3>My Account</h3></div>
-</div>-->
 <ng-include src="'templates/header.html'"></ng-include>
 <ion-view>
+    <form novalidate name="accountForm" ng-submit="saveUser(accountForm)">
     <ion-content class="account view-background has-header has-footer">
-
         <div class="profile-header">
-            <img src="images/profile-pic.png">
-            <h4 class="fullname">
-                Avhijit Dutta
-            </h4>
-            <form>
-                <div class="list card">
-                    <label class="item item-input">
-                        <input type="text" placeholder="Full Name" name="name">
-                    </label>
-                    <label class="item item-input">
-                        <input type="email" placeholder="Email Id">
-                    </label>
-                    <label class="item item-input">
-                        <input type="tel" placeholder="Phone">
-                    </label>
-                </div>
-            </form>
-            <h4 class="heading">Change Password</h4>
-            <form>
-                <div class="list card">
-                    <label class="item item-input">
-                        <input type="password" placeholder="Enter Old Password" name="oldpassword">
-                    </label>
 
-                    <label class="item item-input">
-                        <input type="password" placeholder="Enter New Password" name="password">
-                    </label>
-                    <label class="item item-input">
-                        <input type="password" placeholder="Confirm Password" name="confirmPass">
+            <img ng-if="imageURI!=''" src="{{imageURI}}" ng-click="uploadImage()">
+            <img ng-if="imageURI==''" src="images/nouser.png" ng-click="uploadImage()">
+
+            <div class="fullname">
+                <h4>
+                   {{user.user_name}}
+                </h4>
+                <div>
+                    Total Loyalty Points  <span>{{totalPoint}}</span>
+                </div>
+            </div>
+
+            <div class="list card">
+                <label class="item item-input">
+                    <input type="text" placeholder="Full Name" name="user_name" ng-model="user.user_name" required>
+                </label>
+                <label class="item item-input">
+                    <input type="email" placeholder="Email Id" name="email" ng-model="user.email" required>
+                </label>
+                <label class="item item-input">
+                    <input type="tel" placeholder="Phone" name="phone_number" ng-model="user.phone_number" required>
+                </label>
+
+                <label class="item-input input-container">
+                    <select name="city" ng-options="obj.city_name for obj in cityList track by obj.id" ng-model="user.city" ng-change="changeCity(user.city)" required>
+                    </select>
+                </label>
+
+                <label class="item-input input-container">
+                    <select name="locality" ng-options="obj.locality for obj in locality track by obj.id" ng-model="user.locality" required>
+                    </select>
+                </label>
+            </div>
+
+            <h4 class="heading">Change Password</h4>
+
+
+            <div class="list card">
+                <label class="item item-input">
+                    <input type="password" placeholder="Enter Old Password" name="current_password" ng-model="user.current_password">
+                </label>
+
+                <label class="item item-input">
+                    <input type="password" placeholder="Enter New Password" name="new_password" ng-model="user.new_password">
+                </label>
+                <label class="item item-input">
+                    <input type="password" placeholder="Confirm Password" name="confirm_password" ng-model="user.confirm_password">
+                </label>
+            </div>
+
+            <div class="loyality-point" ng-show="totalPoint>0">
+                <h4 class="heading">Loyalty Points by saloon</h4>
+
+                <div class="list card">
+
+                    <label class="item item-input" ng-repeat="user in userAccount.user_points">
+                        <div class="row">
+                            <div class="col-66 align-left">{{user.saloon_name}}</div>
+                            <div class="col-33 price">{{user.point}} <span ng-if="user.point>1">Points</span> <span ng-if="user.point==1">Points</span></div>
+                        </div>
                     </label>
                 </div>
-            </form>
+            </div>
         </div>
 
-        <div class="loyality-point">
-            <h4 class="heading">Loyalty Point</h4>
+<!--        <div class="loyality-point" ng-show="totalPoint>0">
+            <h4 class="heading">Loyalty Points by saloon</h4>
             <ion-list>
-                <div class="row">
-                    <div class="col align-left">Yoon Hair Salon </div>
-                    <div class="col align-right price">10 points</div>
-                </div>
-                <div class="row">
-                    <div class="col align-left">Yoon Hair Salon </div>
-                    <div class="col align-right price">10 points</div>
-                </div>
-                <div class="row">
-                    <div class="col align-left">Yoon Hair Salon </div>
-                    <div class="col align-right price">10 points</div>
+                <div class="row" ng-repeat="user in userAccount.user_points">
+                    <div class="col align-left">{{user.saloon_name}}</div>
+                    <div class="col align-right price">{{user.point}} <span ng-if="user.point>1">Points</span> <span ng-if="user.point==1">Points</span></div>
                 </div>
 
             </ion-list>
-        </div>
+        </div>-->
+
+
 
     </ion-content>
     <div class="bar bar-footer beauty-footer dark">
-        <div class="title" ui-sref="tab.home"> Save</div>
+        <div class="title">
+            <button class="button button-full">
+                Save
+            </button>
+        </div>
     </div>
+    </form>
 </ion-view>

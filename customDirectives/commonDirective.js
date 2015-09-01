@@ -50,6 +50,19 @@ angular.module('appCommon').filter('myCurrency', ['$filter', function ($filter) 
     };
 }]);
 
+angular.module('appCommon', [])
+    .directive('flexible', function() {
+        return{
+            restrict:"A",
+            link:function(scope, element, attr) {
+                alert(element);
+                 var width=$(element).parent().width();
+                 width=width+$(element).width()+20;
+                 $(element).parent().width(width);
+            }
+        }
+    });
+
 angular.module("appCommon", [])
     .directive("starRating", function () {
         return {
@@ -65,9 +78,12 @@ angular.module("appCommon", [])
                 var updateStars = function () {
                     scope.stars = [];
                     for (var i = 0; i < scope.max; i++) {
-                        scope.stars.push({
-                            filled: i < scope.ratingValue
-                        });
+                        var obj={filled:false};
+                        if(i < scope.ratingValue)
+                        {
+                            obj['filled']=true;
+                        }
+                        scope.stars.push(obj);
                     }
                 };
 
@@ -85,11 +101,8 @@ angular.module("appCommon", [])
                         rating: index + 1
                     });
                 };
-
                 scope.$watch("ratingValue", function (oldVal, newVal) {
-                    if (newVal) {
-                        updateStars();
-                    }
+                    updateStars();
                 });
             }
         };

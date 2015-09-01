@@ -1,148 +1,137 @@
-<div class="bar bar-header beauty-header" ng-controller="headerCtrl">
+<div class="bar bar-header beauty-header" ng-controller="headerCtrl" ng-if="scrollPos>1" ng-style="optaCity">
     <button class="button button-icon icon ion-ios-arrow-back" ng-click="myGoBack()"></button>
-    <div class="title"> <img src="images/logo-inner.png"></div>
+    <div class="title">
+     {{saloonDetails.saloon_details.saloon_name}}
+    </div>
+    <div class="rating">
+       {{saloonDetails.saloon_details.rating |number:1}}
+    </div>
+</div>
+
+<div class="bar bar-header beauty-header header-transparent" ng-controller="headerCtrl" ng-if="scrollPos<1">
+    <button class="button button-icon icon ion-ios-arrow-back" ng-click="myGoBack()"></button>
+    <div class="title"> <!--<img src="images/logo-inner.png">-->
+
+    </div>
+    <div class="rating">
+        {{saloonDetails.saloon_details.rating |number:1}}
+    </div>
 </div>
 
 <ion-view>
-    <ion-content class="has-header saloon-detail has-footer">
-        <img src="images/salon-detail-image.png" width="100%">
+    <ion-content class="saloon-detail has-footer" on-scroll="isScrolling()">
+        <div class="profile-container">
+            <img ng-src="{{saloonDetails.saloon_details.saloon_image}}">
+            <div class="mask" ng-click="$event.stopPropagation();showImages()">
+                <div>
+                    <h4>{{saloonDetails.saloon_details.saloon_name}}</h4>
+                    <p class="address">
+                        {{saloonDetails.saloon_details.city_name}} , {{saloonDetails.saloon_details.locality}}
+                    </p>
+                    <span class="fav">
+                        <img src="images/icon-unfavourite.png" ng-if="saloonDetails.saloon_details.is_fev==0" ng-click="$event.stopPropagation();toggleFev(saloonDetails.saloon_details.is_fev,saloonDetails.saloon_details.id)">
+                        <img src="images/icon-favourite.png" ng-if="saloonDetails.saloon_details.is_fev==1" ng-click="$event.stopPropagation();toggleFev(saloonDetails.saloon_details.is_fev,saloonDetails.saloon_details.id)">
+                    </span>
+                    <i class="ion-ios-location map" ng-click="$event.stopPropagation();toggleMap()"></i>
+
+                </div>
+            </div>
+        </div>
+
         <div class="saloon-info padding">
-            <h4>{{saloonDetails.title}}</h4>
+            <h4>Address</h4>
             <p class="address">
-               {{saloonDetails.address}}
+                {{saloonDetails.saloon_details.house}}
+                <br>
+                {{saloonDetails.saloon_details.city_name}} , {{saloonDetails.saloon_details.locality}}
             </p>
 
-            <p>
-                {{saloonDetails.about}}
-                <div class="icon-container">
-                    <img src="images/ico-phone.png">Phone No.- {{saloonDetails.phone_no}}
-                </div>
-
-                <div class="icon-container">
-                    <img src="images/ico-web.png"> Website - {{saloonDetails.website}}
-                </div>
+            <p class="descrp" ng-if="saloonDetails.saloon_details.sallon_description!=''">
+                {{saloonDetails.saloon_details.sallon_description}}
             </p>
 
-            <img class="fav" src="images/icon-unfavourite.png" ng-if="!saloonDetails.is_fev" ng-click="$event.stopPropagation();toggleFev(saloonDetails.is_fev)">
-            <img class="fav" src="images/icon-favourite.png" ng-if="saloonDetails.is_fev" ng-click="$event.stopPropagation();toggleFev(saloonDetails.is_fev)">
+            <div class="contact-details" ng-if="saloonDetails.saloon_details.phone!=''">
+                <div class="icon-container">
+                    <img src="images/ico-phone.png">Phone No: <a ng-click="callNumber()">{{saloonDetails.saloon_details.phone}}</a>
+                </div>
+
+                <div class="icon-container" ng-if="saloonDetails.saloon_details.website!=''">
+                    <img src="images/ico-web.png"> Website:  <a ng-click="webSite()">{{saloonDetails.saloon_details.website}}</a>
+                </div>
+            </div>
 
             <img src="images/btn-checkin.png" class="checkin" ui-sref="checkin">
-            <img src="images/icon-mappin-black.png" class="map" ng-click="toggleMap()">
 
-        </div>
-        <div class="map-container" ng-show="showMap">
-            <div id="map" ng-show="showMap"></div>
-            <div class="map-mask" ng-show="showMap"> </div>
-        </div>
+            <div class="rating-container">
+                <h6 ng-if="rating<1">Rate this saloon</h6>
 
-        <div class="stylest-list">
-            <h3> Stylist</h3>
-            <div class="images-list padding">
+                <h6 ng-if="rating>0">You have already rate this saloon you can change your rating.</h6>
 
-                <div class="image-item" ui-sref="stylest({id: 1})">
-                    <img src="images/profile-pic.png">
-                    <span>Sayantan</span>
-                    <div class="border-container"> </div>
+                <div class="star-rating" star-rating rating-value="rating" max="5" on-rating-selected="rateFunction(rating)">
+
                 </div>
-
-                <div class="image-item" ui-sref="stylest({id: 1})">
-                    <img src="images/profile-pic.png">
-                    <span>Sayantan</span>
-                    <div class="border-container"> </div>
-                </div>
-             <!--   <div class="image-item">
-                    <img src="images/profile-pic.png">
-                    <span> Sayantan</span>
-                    <div class="border-container"> </div>
-                </div>-->
 
             </div>
         </div>
-        <div class="hours-timeing">
+
+        <div class="map-container" ng-show="showMap">
+                <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="false" options="options">
+                    <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+                    </ui-gmap-marker>
+                </ui-gmap-google-map>
+            <div class="map-mask"> </div>
+        </div>
+
+        <div class="stylest-list" ng-if="saloonDetails.stylist.length>0">
+            <h3> Stylist</h3>
+            <ion-scroll direction="x">
+                <div class="images-list padding" ng-style="{width:contanerValue}">
+                    <div class="image-item" ui-sref="stylest({id: item.id})" ng-repeat="item in saloonDetails.stylist">
+                        <img ng-src="{{item.profile_image}}">
+                        <span>{{item.name}}</span>
+                      <!--  <div class="border-container"> </div>-->
+                    </div>
+                </div>
+            </ion-scroll>
+        </div>
+
+        <div class="hours-timeing" ng-if="saloonDetails.time_chart.length>0">
             <h3>Hours</h3>
             <div class="hours-container padding">
-                <div class="row-hours">
-                    <div class="date dark">Monday</div>
+                <div class="row-hours" ng-repeat="item in saloonDetails.time_chart">
+                    <div class="date" ng-class="{dark:item.isbloked==1}">{{item.opening_day}}</div>
                     <div class="line"> <div> &nbsp;</div></div>
-                    <div class="timeing">Closed</div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="row-hours">
-                    <div class="date">Tuesday</div>
-                    <div class="line"> <div> &nbsp;</div></div>
-                    <div class="timeing">11:30am to 03.30pm</div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="row-hours">
-                    <div class="date">Wednesday</div>
-                    <div class="line"> <div> &nbsp;</div></div>
-                    <div class="timeing">11:30am to 03.30pm</div>
-                </div>
-                <div class="row-hours">
-                    <div class="date">Thursday</div>
-                    <div class="line"> <div> &nbsp;</div></div>
-                    <div class="timeing">11:30am to 03.30pm</div>
-                </div>
-                <div class="row-hours">
-                    <div class="date">Friday</div>
-                    <div class="line"> <div> &nbsp;</div></div>
-                    <div class="timeing">11:30am to 03.30pm</div>
-                </div>
-                <div class="row-hours">
-                    <div class="date">Saturday</div>
-                    <div class="line"> <div> &nbsp;</div></div>
-                    <div class="timeing">11:30am to 03.30pm</div>
-                </div>
-                <div class="row-hours">
-                    <div class="date">Sunday</div>
-                    <div class="line"> <div> &nbsp;</div></div>
-                    <div class="timeing">Closed</div>
+                    <div class="timeing" ng-if="item.isbloked==0">{{item.opening_hour_from}} to {{item.opening_hour_to}} </div>
+                    <div class="timeing" ng-if="item.isbloked==1"> Close</div>
+                    <div class="clearfix"></div>
                 </div>
             </div>
+            <h3>Services</h3>
         </div>
-        <h3>Services</h3>
+
         <ion-list>
-            <div ng-repeat="category in saloonDetails.services">
+            <div ng-repeat="category in saloonServices">
                 <ion-item class="parent-item" ng-click="openTab(category.id)">
                     <button class="button button-icon icon" ng-class="{'ion-chevron-down':isOpenTab(category.id),'ion-chevron-right':!isOpenTab(category.id)}"></button>
-                    <span>{{category.name}}</span>
-                    <img src="images/{{category.icon}}">
+                    <span>{{category.category_name}}</span>
+                    <div class="cat-icon"><img ng-src="{{category.category_image_url}}"></div>
                 </ion-item>
 
                 <ion-item class="child-items" ng-show="isOpenTab(category.id)">
-                    <div class="row" ng-repeat="item in category.items">
+                    <div class="row" ng-repeat="item in category.items" ng-click="$event.stopPropagation();addItem(item,item.selected)">
                         <div class="col col-10 align-right">
                             <label class="checkbox checkbox-assertive">
-                                <input type="checkbox">
+                                <input type="checkbox" ng-model="item.selected" ng-click="$event.stopPropagation();">
                             </label>
                         </div>
-                        <div class="col col-70 padding">{{item.name}} </div>
-                        <div class="col col-20 padding price lite-dark">Rs {{item.price}}</div>
+                        <div class="col col-65 padding">{{item.facility_name}} </div>
+                        <div class="col col-25 padding price lite-dark">Rs {{item.price}}</div>
                     </div>
                 </ion-item>
-
-                <!--<ion-item class="parent-item">
-                    <button class="button button-icon icon ion-chevron-right"></button>
-                    <span>Cuts & styling</span>
-                    <img src="images/icon-styling.png">
-                </ion-item>
-
-                <ion-item class="parent-item">
-                    <button class="button button-icon icon ion-chevron-right"></button>
-                    <span>Cuts & styling</span>
-                    <img src="images/icon-styling.png">
-                </ion-item>
-
-                <ion-item class="parent-item">
-                    <button class="button button-icon icon ion-chevron-right"></button>
-                    <span>Cuts & styling</span>
-                    <img src="images/icon-styling.png">
-                </ion-item>-->
-
             </div>
         </ion-list>
     </ion-content>
     <div class="bar bar-footer dark">
-        <div class="title" ui-sref="appointment({id: 1})"> Book</div>
+        <div class="title" ng-click="appointment()"> Book</div>
     </div>
 </ion-view>

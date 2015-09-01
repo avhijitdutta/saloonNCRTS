@@ -1,32 +1,29 @@
 app.service('userService', function(localFactory){
     this.login={};
     this.preFix="Singer";
-    this.getData = function (value) {
-
-        return $.parseJSON(localFactory.getLocalItem(this.preFix+'loginData'));
+    this.getData = function(key) {
+        return $.parseJSON(localFactory.getLocalItem(this.preFix+key));
     }
 
-    this.setData = function (obj) {
-        localFactory.setLocalItem(this.preFix+'loginData', JSON.stringify(obj));
+    this.setData = function (obj,key) {
+        localFactory.setLocalItem(this.preFix+key, JSON.stringify(obj));
     }
 
-    this.resetData = function () {
-
-        localFactory.setLocalItem(this.preFix+'loginData', '');
+    this.resetData = function (key) {
+        localFactory.setLocalItem(this.preFix+key, null);
     }
 });
 
 
-app.service('listPostData', function(localFactory,$q,userService,$ionicLoading){
+app.service('listPostData', function(localFactory,$q,userService,$ionicLoading,$filter){
     var self=this;
-    this.saloonListData=[];
-    this.postData={
-        latitude:"22.4632068",
-        longitude:22.4632068,
-        category_id:2,
-        user_id:userService.getData().user_details.user_no,
+    this.defaultValue={
+        latitude:"",
+        longitude:"",
+        category_id:1,
+        user_id:"",
         sort_by:1,
-        filter_by_date:1,
+        filter_by_date:$filter('date')(new Date(), 'yyyy-MM-dd'),
         start_time:{
             label: "08:00 AM",
             value: "08:00"
@@ -35,11 +32,14 @@ app.service('listPostData', function(localFactory,$q,userService,$ionicLoading){
             label: "10:00 PM",
             value: "22:00"
         },
-        start_price:{label:100,value:100},
-        end_price:{label:2000,value:2000},
-        city_id:1,
-        locality_id:1
-    };
+        start_price:{label:'Select',value:0},
+        end_price:{label:'Select',value:0},
+        city_id:0,
+        locality_id:0
+    }
+
+
+    this.postData=this.defaultValue;
 
     this.getData=function()
     {
@@ -56,19 +56,16 @@ app.service('listPostData', function(localFactory,$q,userService,$ionicLoading){
     }
 
     this.post=function(){
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
+        $ionicLoading.show();
         var defer = $q.defer();
-
         var saloonList = localFactory.post('saloon_list', self.postData);
         saloonList.success(function (data) {
-            $ionicLoading.hide();
+            self.saloonListData=data.saloon_details;
             defer.resolve(data);
+            $ionicLoading.hide();
         });
 
         saloonList.error(function (data, status, headers, config) {
-            $ionicLoading.hide();
             defer.reject(data);
         });
         return defer.promise;
@@ -173,3 +170,22 @@ app.service("gpscheck",function(){
     }
 
 });
+
+app.service( 'HardwareBackButtonManager', function($ionicPlatform){
+    this.deregister = undefined;
+
+    this.disable = function(){
+        this.deregister = $ionicPlatform.registerBackButtonAction(function(e){
+            e.preventDefault();
+            return false;
+        }, 101);
+    }
+
+    this.enable = function(){
+        if( this.deregister !== undefined ){
+            this.deregister();
+            this.deregister = undefined;
+        }
+    }
+    return this;
+})

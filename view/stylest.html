@@ -1,39 +1,30 @@
-<!--<div class="bar bar-header beauty-header">
-    <button class="button button-icon icon ion-ios-arrow-back"></button>
-    <img src="images/icon-logo.png" class="small-icon" ui-sref="tab.home">
-    <div class="title"> <h3>Stylist Detail</h3></div>
-</div>-->
 <ng-include src="'templates/header.html'"></ng-include>
 <ion-view>
     <ion-content class="view-background has-header stylest-detail">
         <div class="top-content">
 
             <div class="image-item">
-                <img src="images/profile-pic.png">
+                <img ng-src="{{stylest.stylist_info.profile_image}}">
                 <div class="border-container"> </div>
             </div>
-            <h3>Sayantan</h3>
+            <div class="favourite">
+                <img src="images/icon-favourite.png" ng-if="stylest.is_fev==1" ng-click="favourite(stylest.is_fev)">
+                <img src="images/icon-unfavourite.png" ng-if="stylest.is_fev==0" ng-click="favourite(stylest.is_fev)">
+            </div>
             <div class="price">Pulse SPA</div>
             <p class="address">
-                1/1B Upper Wood Street Kolkata,
-                West Bengal
+                {{stylest.stylist_info.house}},
+                {{stylest.stylist_info.city}},{{stylest.stylist_info.locality}}
             </p>
         </div>
         <div class="bottom-container">
             <h4>Expertise</h4>
             <ion-list>
-                <div class="row">
+                <div class="row" ng-repeat="stylest in stylest.specialties">
                     <div class="col col-10 align-right"><i class="icon ion-checkmark-round"></i></div>
-                    <div class="col col-90">Clean Up, Cleansing, Skin Packs</div>
+                    <div class="col col-90">{{stylest.facility_name}}</div>
                 </div>
-                <div class="row">
-                    <div class="col col-10 align-right"><i class="icon ion-checkmark-round"></i></div>
-                    <div class="col col-90">Clean Up, Cleansing, Skin Packs</div>
-                </div>
-                <div class="row">
-                    <div class="col col-10 align-right"><i class="icon ion-checkmark-round"></i></div>
-                    <div class="col col-90">Clean Up, Cleansing, Skin Packs</div>
-                </div>
+
             </ion-list>
 
 

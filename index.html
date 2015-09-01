@@ -2,6 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
+<!--      <meta http-equiv="Content-Security-Policy"
+                   content="script-src * 'unsafe-eval';
+                      connect-src * 'unsafe-eval';
+                      object-src 'self';
+                      style-src * 'unsafe-inline';
+                      img-src *"
+          >-->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
 
@@ -10,6 +17,8 @@
     <link href="css/landscape.css" rel="stylesheet"> <link href="css/landscape.css" rel="stylesheet">
     <link href="css/portrait.css" rel="stylesheet">
     <link href="css/mob_sm.css" rel="stylesheet">
+
+    <link href="css/rupyaINR.min.css" rel="stylesheet">
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
@@ -19,15 +28,20 @@
     <!-- Jquery -->
     <script src="lib/jquery-2.1.1.min.js"> </script>
     <!-- google maps javascript -->
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&sensor=true"></script>
+    <!--<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&sensor=true"></script>-->
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
      <!--static Data -->
     <script src="demoData/salon.js"></script>
 
+      <!-- Google Map -->
+    <script type="text/javascript" src="lib/gmap/lodash.js"></script>
+    <script type="text/javascript" src="lib/gmap/angular-google-maps.js"></script>
+    <script type="text/javascript" src="lib/gmap/angular-sanitize.js"></script>
+
      <!-- common js function -->
     <script src="lib/sudu.js"> </script>
-
+    <script src="lib/ng-cordova.js"> </script>
     <!--Common filter -->
     <script src="filter/commonFilter.js"></script>
       <!--Common Factory -->

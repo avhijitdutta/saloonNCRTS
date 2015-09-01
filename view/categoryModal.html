@@ -1,0 +1,17 @@
+<div class="modal">
+
+    <div class="bar bar-header beauty-header">
+        <div class="title"> Category</div>
+        <div class="button button-clear" ng-click="modal.hide()"><span class="ion-ios-close-outline"></span></div>
+    </div>
+
+    <ion-content class="has-header padding category">
+
+        <div class="category-content">
+            <div class="category-item" ng-repeat="item in cateList" ng-click="showList(item.id)">
+                <img src="{{item.category_image_url}}">
+                <div>{{item.category_name}}</div>
+            </div>
+        </div>
+    </ion-content>
+</div>

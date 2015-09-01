@@ -1,48 +1,47 @@
-<!--<div class="bar bar-header beauty-header">
-    <button class="button button-icon icon ion-ios-arrow-back"></button>
-    <img src="images/icon-logo.png" class="small-icon" ui-sref="tab.home">
-    <div class="title"> <h3>Favourite Saloons/SPA</h3></div>
-</div>-->
 <ng-include src="'templates/header.html'"></ng-include>
 <ion-view>
-    <ion-content class="has-header view-background saloon-list padding">
+    <ion-content class="has-header view-background saloon-list">
         <ion-list>
-            <ion-item class="padding" ui-sref="detailSaloon({id: 1})">
+            <ion-item ui-sref="detailSaloon({id: saloon.saloon_id})" ng-repeat="saloon in saloonListFev">
                 <div class="img-container">
-                    <img src="images/img-salon.png">
+                    <img ng-src="{{saloon.upload_url}}">
+                    <div class="list-content">
+                        <h2>{{saloon.saloon_name}}</h2>
+                        <p class="ellipsis">
+                            <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( 2000 Km )</span>
+                        </p>
+                    </div>
                 </div>
-                <div class="list-content">
-                    <h2>Pretty Hate Machine Pretty Hate Machine Pretty Hate Machine</h2>
-                    <div>Nine Inch Nails</div>
-                    <div>Nine Inch Nails</div>
-                    <div>Nine Inch Nails</div>
+                <div class="rating">
+                    {{saloon.rating |number:1}}
                 </div>
-            </ion-item>
 
-            <ion-item class="padding" ui-sref="detailSaloon({id: 1})">
-                <div class="img-container">
-                    <img src="images/img-salon.png">
-                </div>
-                <div class="list-content">
-                    <h2>Pretty Hate Machine Pretty Hate Machine Pretty Hate Machine</h2>
-                    <div>Nine Inch Nails</div>
-                    <div>Nine Inch Nails</div>
-                    <div>Nine Inch Nails</div>
-                </div>
-            </ion-item>
-            <ion-item class="padding" ui-sref="detailSaloon({id: 1})">
-                <div class="img-container">
-                    <img src="images/img-salon.png">
-                </div>
-                <div class="list-content">
-                    <h2>Pretty Hate Machine Pretty Hate Machine Pretty Hate Machine</h2>
-                    <div>Nine Inch Nails</div>
-                    <div>Nine Inch Nails</div>
-                    <div>Nine Inch Nails</div>
-                </div>
+                <i class="icon ion-ios-heart fev" ng-if="saloon.is_fev==1" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.saloon_id)">
+
+                </i>
+
+                <i class="icon ion-ios-heart fev un-feb" ng-if="saloon.is_fev==0" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.saloon_id)">
+
+                </i>
+                <span class="offer">
+                    <i class="icon ion-coffee">
+
+                    </i>
+                    <strong> 10</strong>
+                </span>
             </ion-item>
         </ion-list>
 
+        <div class="no-data" ng-if="saloonListFev.length<1">
+
+            <i class="iocn ion-social-instagram"></i>
+
+            <h4>It is lonely here</h4>
+
+            <p>
+                All your shortlisted saloon will appear here.
+            </p>
+        </div>
     </ion-content>
 
 </ion-view>

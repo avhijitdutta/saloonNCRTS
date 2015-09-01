@@ -6,50 +6,22 @@
 <ng-include src="'templates/header.html'"></ng-include>
 <ion-view>
     <ion-content class="has-header stylist-list">
-        <div class="list">
-            <a class="item item-avatar" ui-sref="stylest({id: 1})">
-                <img src="images/profile-pic.png">
-                <h2>Venkman</h2>
-                <h3>Yoon Hair Salon </h3>
-                <p> <i class="icon ion-android-call"> </i>+(91)-33-33022321</p>
-            </a>
-            <a class="item item-avatar" ui-sref="stylest({id: 1})">
-                <img src="images/profile-pic.png">
-                <h2>Venkman</h2>
-                <h3>Yoon Hair Salon </h3>
-                <p> <i class="icon ion-android-call"> </i>+(91)-33-33022321</p>
-            </a>
-            <a class="item item-avatar" ui-sref="stylest({id: 1})">
-                <img src="images/profile-pic.png">
-                <h2>Venkman</h2>
-                <h3>Yoon Hair Salon </h3>
-                <p> <i class="icon ion-android-call"> </i>+(91)-33-33022321</p>
-            </a>
-            <a class="item item-avatar" ui-sref="stylest({id: 1})">
-                <img src="images/profile-pic.png">
-                <h2>Venkman</h2>
-                <h3>Yoon Hair Salon </h3>
-                <p> <i class="icon ion-android-call"> </i>+(91)-33-33022321</p>
-            </a>
-            <a class="item item-avatar" ui-sref="stylest({id: 1})">
-                <img src="images/profile-pic.png">
-                <h2>Venkman</h2>
-                <h3>Yoon Hair Salon </h3>
-                <p> <i class="icon ion-android-call"> </i>+(91)-33-33022321</p>
-            </a>
-            <a class="item item-avatar" ui-sref="stylest({id: 1})">
-                <img src="images/profile-pic.png">
-                <h2>Venkman</h2>
-                <h3>Yoon Hair Salon </h3>
-                <p> <i class="icon ion-android-call"> </i>+(91)-33-33022321</p>
-            </a>
-            <a class="item item-avatar" ui-sref="stylest({id: 1})">
-                <img src="images/profile-pic.png">
-                <h2>Venkman</h2>
-                <h3>Yoon Hair Salon </h3>
-                <p> <i class="icon ion-android-call"> </i>+(91)-33-33022321</p>
-            </a>
 
+        <div class="list">
+            <a class="item item-avatar" ui-sref="stylest({id: item.id})" ng-repeat=" item in stylistList">
+                <img ng-src="{{item.profile_image}}">
+                <h2>{{item.name}}</h2>
+                <h3>{{item.saloon_name}}</h3>
+                <p> <i class="icon ion-android-call"> </i>{{item.phone}}</p>
+            </a>
+        </div>
+
+        <div class="no-data" ng-if="stylistList.length<1">
+            <i class="iocn ion-social-instagram"></i>
+            <h4>It is lonely here</h4>
+            <p>
+                All your shortlisted stylist will appear here.
+            </p>
         </div>
     </ion-content>
 </ion-view>

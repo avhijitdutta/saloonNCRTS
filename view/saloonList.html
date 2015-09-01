@@ -1,30 +1,65 @@
 <ion-view>
-<ion-content class="has-header view-background saloon-list padding">
+
+<ion-content class="has-header view-background saloon-list" overflow-scroll=true>
     <ion-refresher
             pulling-text="Pull to refresh..."
             on-refresh="doRefresh()"
-
     >
     </ion-refresher>
 
     <ion-list>
-        <ion-item class="padding" ui-sref="detailSaloon({id: saloon.id})" ng-repeat="saloon in saloonList">
+        <ion-item collection-repeat="saloon in saloonList" ui-sref="detailSaloon({id: saloon.saloon_id})">
             <div class="img-container">
-                <img ng-src="{{saloon.images}}">
-            </div>
-            <div class="list-content">
-                <h2>{{saloon.title}}</h2>
-                <p class="ellipsis">
-                    {{saloon.address | characters:30}}
-                </p>
+                <img ng-src="{{saloon.upload_url}}">
+                <div class="list-content">
+                    <h2>{{saloon.saloon_name}}</h2>
+                    <p class="ellipsis">
+                        <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( 2000 Km )</span>
+                    </p>
+                </div>
             </div>
 
-            <img class="fev" src="images/icon-unfavourite.png" ng-if="!saloon.is_fev" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.id)">
-            <img class="fev" src="images/icon-favourite.png" ng-if="saloon.is_fev" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.id)">
+            <div class="rating">
+                {{saloon.rating |number:1}}
+            </div>
+
+            <i class="icon ion-ios-heart fev" ng-if="saloon.is_fev==1" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.saloon_id)">
+
+            </i>
+
+            <i class="icon ion-ios-heart fev un-feb" ng-if="saloon.is_fev==0" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.saloon_id)">
+
+            </i>
+            <span class="offer">
+                <i class="icon ion-coffee">
+
+                </i>
+                <strong> 10</strong>
+            </span>
 
         </ion-item>
+
     </ion-list>
 
+    <div class="no-data" ng-if="saloonList.length<1">
+        <i class="iocn ion-social-instagram"></i>
+        <h4>It is lonely here</h4>
+        <p>
+            No saloon found as per your filter.
+        </p>
+    </div>
 </ion-content>
 
+        <div class="filter-category">
+            <i class="ion-social-buffer"> </i>
+        </div>
+
+        <div class="filter-list-icon" ng-click="showFiler()">
+            <i class="ion-funnel"> </i>
+        </div>
+
+       <!--<img src="images/ico-filter.png" class="map-icon" ng-click="showFiler()">
+
+       <img ng-if="map" src="images/ico-listing.png" class="filter-icon"  ui-sref="sidelist.saloonList({id:category_id})">
+       <img ng-if="!map" src="images/ico-map.png" class="filter-icon"  ui-sref="sidelist.saloonListMap({id:category_id})">-->
 </ion-view>

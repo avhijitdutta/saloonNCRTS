@@ -1,5 +1,58 @@
-<ion-view>
-    <ion-content class="has-header view-background">
-        <div id="mapList"></div>
+<ion-view class="saloon-list">
+    <ion-content class="has-header view-background list-map" data-tap-disabled="true">
+        <div id="map_canvas">
+
+            <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options" bounds="map.bounds" events="map.events">
+
+                <ui-gmap-markers models="randomMarkers" coords="'self'" icon="'icon'" click="'onClick'" doRebuildAll="true">
+
+                </ui-gmap-markers>
+
+            </ui-gmap-google-map>
+
+        </div>
+
+        <div class="map-mask" ng-show="showItem" ng-click="hideSaloon()">
+
+        </div>
     </ion-content>
+    <ion-item ng-show="showItem" class="padding saloon-item list-map" ui-sref="detailSaloon({id: saloon.saloon_id})">
+
+
+        <div class="img-container">
+            <img ng-src="{{saloon.upload_url}}">
+            <div class="list-content">
+                <h2>{{saloon.saloon_name}}</h2>
+                <p class="ellipsis">
+                    <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( 2000 Km )</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="rating">
+            {{saloon.rating |number:1}}
+        </div>
+
+        <i class="icon ion-ios-heart fev" ng-if="saloon.is_fev==1" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.saloon_id)">
+
+        </i>
+
+        <i class="icon ion-ios-heart fev un-feb" ng-if="saloon.is_fev==0" ng-click="$event.stopPropagation();toggleFev(saloon.is_fev,saloon.saloon_id)">
+
+        </i>
+
+        <span class="offer">
+            <i class="icon ion-coffee">
+
+            </i>
+            <strong> 10</strong>
+        </span>
+
+    </ion-item>
+
+   <!-- <img src="images/ico-filter.png" class="map-icon" ng-click="showFiler()">-->
+
+    <img ng-if="map" src="images/ico-listing.png" class="filter-icon"  ui-sref="sidelist.saloonList({id:category_id})">
+    <img ng-if="!map" src="images/ico-map.png" class="filter-icon"  ui-sref="sidelist.saloonListMap({id: category_id})">
+
 </ion-view>

@@ -1,34 +1,29 @@
-<!--<div class="bar bar-header beauty-header">
-    <button class="button button-icon icon ion-ios-arrow-back"></button>
-    <img src="images/icon-logo.png" class="small-icon" ui-sref="tab.home">
-    <div class="title"> <h3> Yesterday's Lottery Winner</h3></div>
-</div>-->
 <ng-include src="'templates/header.html'"></ng-include>
 <ion-view>
     <ion-content class="view-background has-header stylest-detail">
         <div class="top-content lottery">
             <img class="crown" src="images/ico-crown.png">
             <div class="image-item lottery">
-                <img src="images/profile-pic.png">
+                <img ng-src="{{lottery.img_url}}">
                 <div class="border-container"> </div>
             </div>
 
-            <h4>Soumyajit Das </h4>
+            <h4>{{lottery.user_name}} </h4>
 
             <p class="address">
-                <img src="images/icon-mappin-black-small.png">1/1B Upper Wood Street Kolkata,
-                West Bengal
+                <img src="images/icon-mappin-black-small.png">
+               {{lottery.city_name}} ,{{lottery.locality}}
             </p>
-            <div class="price">22 July 2015</div>
+            <div class="price">{{lottery.win_date | date}}</div>
         </div>
         <div class="image-container">
 
             <div class="saloon">
-                <img src="images/img-salon.png">
+                <img ng-src="{{lottery.saloon_image}}">
             </div>
 
             <div>
-                <h4>Pulse SPA</h4>
+                <h4>{{lottery.saloon_name}} </h4>
                 <p class="address">
                     1/1B Upper Wood Street Kolkata,<br>
                     West Bengal
@@ -36,11 +31,11 @@
             </div>
 
             <div class="stylest">
-                <img src="images/profile-pic.png">
+                <img ng-src="{{lottery.profile_image}}">
                 <div class="border-container"> </div>
             </div>
-            <h4 class="stylestname"> Sayantan </h4>
-            <img src="images/img-paper-pattern.png" class="pattern">
+            <h4 class="stylestname"> {{lottery.name}} </h4>
+            <img src="images/img-paper-pattern-gray.png" class="pattern">
         </div>
     </ion-content>
 </ion-view>
