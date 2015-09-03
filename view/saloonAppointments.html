@@ -4,13 +4,13 @@
 
         <div class="list">
 
-            <a class="item" ui-sref="appointmentDetails({id: history.id})" ng-repeat="history in histories">
-                <div class="saloon-img"><img ng-src="{{history.saloon_image}}"></div>
+            <a class="item" ui-sref="appointmentSaloon({id: history.id})" ng-repeat="history in histories">
+                <div class="user-img"><img ng-src="{{history.img_url}}"></div>
                 <div class="upcoming" ng-if="history.upcoming_appointment==1">
                     Upcoming
                 </div>
                 <div class="container">
-                    <h3>{{history.saloon_name}}</h3>
+                    <h3>{{history.user_name}}</h3>
                     <p>
                         <i class="ion-ios-calendar-outline"></i>  {{ history.date | date }}
                     </p>
@@ -20,7 +20,7 @@
                     </p>
 
                     <p>
-                        <i class="icon ion-android-call"> </i>{{history.phone}}
+                        <i class="icon ion-android-call"> </i>{{history.phone_number}}
                     </p>
                 </div>
                 <div class="amount">

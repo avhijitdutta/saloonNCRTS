@@ -58,9 +58,10 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
     document.removeEventListener("backbutton", function(){}, false);
     $rootScope.userAppointment=0;
     $rootScope.showFilter=true;
-
+    $rootScope.loginType=0;
     $rootScope.previousState;
     $rootScope.currentState;
+    $rootScope.search=false;
     $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
           $rootScope.previousState = from.name;
           $rootScope.currentState = to.name;
@@ -176,26 +177,38 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 controller : 'sideListCtrl'
             })
             .state('sidelist.saloonList', {
-                url: '/saloonList/:id',
+                url: '/saloonList',
                 resolve: {
-                    saloons:function(localFactory,$q,listPostData,$stateParams,userService,$ionicLoading,$filter){
+                    saloons:function(localFactory,$q,listPostData,userService,$ionicLoading,$filter,$cordovaGeolocation){
                         $ionicLoading.show();
 
                         var defer = $q.defer();
                         var postData={
-                            category_id:$stateParams.id
+
                         };
 
                         if(userService.getData('loginData')!=null){
                             postData['user_id']=userService.getData('loginData').user_details.user_no;
-                            postData['current_time']=$filter('date')(new Date(), 'HH:mm:ss'),
-                            postData['current_date']=$filter('date')(new Date(), 'yyyy-MM-dd')
-                    }
-                        listPostData.setData(postData);
-                        console.log(listPostData.getData());
-                        var shopList=listPostData.post();
-                        console.log(shopList);
-                        defer.resolve(shopList);
+                        }
+
+                        postData['current_time']=$filter('date')(new Date(), 'HH:mm:ss');
+                        postData['current_date']=$filter('date')(new Date(), 'yyyy-MM-dd');
+
+                        var posOptions = {timeout: 10000, enableHighAccuracy: true};
+                        $cordovaGeolocation
+                            .getCurrentPosition(posOptions)
+                            .then(function (position) {
+                                postData['latitude']=position.coords.latitude;
+                                postData['longitude']=position.coords.longitude;
+                                listPostData.setData(postData);
+                                var shopList=listPostData.post();
+                                defer.resolve(shopList);
+                            }, function (err) {
+                                $ionicLoading.hide();
+                                localFactory.alert("Please turn on GPS on your mobile.");
+                            });
+
+
                         return defer.promise;
                     }
                 },
@@ -208,7 +221,7 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 cache: false
             })
             .state('sidelist.saloonListMap', {
-                url: '/saloonListMap/:id',
+                url: '/saloonListMap',
                 views: {
                     'side-list-view': {
                         templateUrl: 'view/mapView.html',
@@ -405,10 +418,10 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                         $ionicLoading.show();
                         var defer = $q.defer();
                         var postData={};
+                        postData['current_time']=$filter('date')(new Date(),'HH:mm:ss');
+                        postData['current_date']=$filter('date')(new Date(),'yyyy-MM-dd');
                         if(userService.getData('loginData') && userService.getData('loginData')!=null){
                             postData['user_no']=userService.getData('loginData').user_details.user_no;
-                            postData['current_time']=$filter('date')(new Date(),'HH:mm:ss'),
-                            postData['current_date']=$filter('date')(new Date(),'yyyy-MM-dd')
                         }
                         var settingData = localFactory.post('todays_deal', postData);
                         settingData.success(function (data) {
@@ -424,6 +437,35 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 },
                 cache: false
             })
+            .state('favDealList',{
+                url:'/favDealList',
+                templateUrl:'view/fevDealList.html',
+                controller:'fevDealListCtrl',
+                cache: false,
+                resolve: {
+                    todaysDeal:function($q,localFactory,$ionicLoading,userService,$filter){
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var postData={};
+                        postData['current_time']=$filter('date')(new Date(),'HH:mm:ss');
+                        postData['current_date']=$filter('date')(new Date(),'yyyy-MM-dd');
+                        if(userService.getData('loginData') && userService.getData('loginData')!=null){
+                            postData['user_no']=userService.getData('loginData').user_details.user_no;
+                            postData['only_favorite']=1;
+                        }
+                        var settingData = localFactory.post('todays_deal', postData);
+                        settingData.success(function (data) {
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
+            })
             .state('dealDetail',{
                 url:'/dealDetail/:id',
                 templateUrl:'view/dealDetail.html',
@@ -436,21 +478,36 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 controller:'saloonFavCtrl',
                 cache: false,
                 resolve: {
-                    saloons:function(localFactory,$q,listPostData,$stateParams,userService,$ionicLoading){
+                    saloons:function(localFactory,$q,listPostData,$stateParams,userService,$ionicLoading,$cordovaGeolocation,$filter){
                         $ionicLoading.show();
+
                         var defer = $q.defer();
                         var postData={
-                            category_id:$stateParams.id
+
                         };
 
-                        if(userService.getData('loginData') && userService.getData('loginData')!=null){
+                        if(userService.getData('loginData')!=null){
                             postData['user_id']=userService.getData('loginData').user_details.user_no;
                         }
-                        listPostData.setData(postData);
-                        console.log(listPostData.getData());
-                        var shopList=listPostData.post();
-                        console.log(shopList);
-                        defer.resolve(shopList);
+
+                        postData['current_time']=$filter('date')(new Date(), 'HH:mm:ss');
+                        postData['current_date']=$filter('date')(new Date(), 'yyyy-MM-dd');
+
+                        var posOptions = {timeout: 10000, enableHighAccuracy: true};
+                        $cordovaGeolocation
+                            .getCurrentPosition(posOptions)
+                            .then(function (position) {
+                                postData['latitude']=position.coords.latitude;
+                                postData['longitude']=position.coords.longitude;
+                                listPostData.setData(postData);
+                                var shopList=listPostData.post();
+                                defer.resolve(shopList);
+                            }, function (err) {
+                                $ionicLoading.hide();
+                                localFactory.alert("Please turn on GPS on your mobile.");
+                            });
+
+
                         return defer.promise;
                     }
                 }
@@ -555,36 +612,129 @@ var app=angular.module('beautySaloon', ['ionic','ui.router','truncate','commonFa
                 url: '/saloonhome',
                 views: {
                     'saloon-home': {
-                        templateUrl: 'view/todays.html',
+                        templateUrl: 'view/saloonAppointments.html',
                         controller: 'saloonHomeCtrl'
                     }
                 },
-                cache: false
-            })
+                cache: false,
+                resolve: {
+                    appointments: function ($q, localFactory, $ionicLoading, $filter,userService) {
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var postData={saloon_id:userService.getData('loginData')['user_details']['saloon_id']};
+                        postData['current_time']=$filter('date')(new Date(), 'HH:mm:ss');
+                        postData['current_date']=$filter('date')(new Date(), 'yyyy-MM-dd');
+                        var settingData = localFactory.post('appointment_history', postData);
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
 
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
+            })
+            .state('appointmentSaloon',{
+                url:'/appointmentSaloon/:id',
+                templateUrl:'view/appointmentSaloon.html',
+                controller:'appointmentSaloonCtrl',
+                cache: false,
+                resolve: {
+                    historyDetail: function ($q, localFactory, $ionicLoading, userService, $stateParams) {
+                        $ionicLoading.show();
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('appointment_history_details', {appointment_id: $stateParams.id});
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
+            })
+            .state('myservices',{
+                url:'/myservices',
+                templateUrl:'view/myservices.html',
+                controller:'myservices',
+                cache: false,
+                resolve: {
+                    saloon:function(localFactory,$q,$stateParams,userService,$ionicLoading){
+                        $ionicLoading.show();
+
+                        var postData={
+                            saloon_id:userService.getData('loginData')['user_details']['saloon_id']
+                        };
+
+                        var defer = $q.defer();
+                        var settingData = localFactory.post('saloon_details', postData);
+                        settingData.success(function (data) {
+                            $ionicLoading.hide();
+                            defer.resolve(data);
+                        });
+
+                        settingData.error(function (data, status, headers, config) {
+                            $ionicLoading.hide();
+                            defer.reject(data);
+                        });
+                        return defer.promise;
+                    }
+                }
+            })
         $urlRouterProvider.otherwise(function ($injector, $location) {
             return defaultPath
         });
 
     }])
 
-    app.controller('headerCtrl',['$scope','$location','$rootScope','$ionicHistory','$state',function($scope,$location,$rootScope,$ionicHistory,$state){
+    app.controller('headerCtrl',['$scope','$location','$rootScope','$ionicHistory','$state','localFactory','listPostData','$ionicLoading',function($scope,$location,$rootScope,$ionicHistory,$state,localFactory,listPostData,$ionicLoading){
         $scope.myGoBack = function() {
             $ionicHistory.goBack();
         };
 
         $scope.goHome = function(){
-            $state.go('tab.todaysdeals');
+            if($rootScope.loginType){
+                $ionicHistory.goBack();
+            }else{
+                $state.go('tab.todaysdeals');
+            }
+
         }
 
-        $scope.search=false;
-        $scope.toggleSearch=function(){
+        $scope.searchKey="";
+        $rootScope.search=false;
 
+        $scope.toggleSearch=function(){
             if($scope.search){
-                $scope.search=false;
+                $rootScope.search=false;
             }else{
-                $scope.search=true;
+                $rootScope.search=true;
             }
+        }
+
+        $scope.searchSaloon=function(){
+            var obj={saloon_name:$scope.searchKey};
+            listPostData.setData(obj);
+            $ionicLoading.show();
+            var saloonList = localFactory.post('saloon_list',listPostData.getData());
+            saloonList.success(function (data) {
+                $ionicLoading.hide();
+                $rootScope.saloonList=data.saloon_details;
+                $rootScope.$broadcast('scroll.refreshComplete');
+            });
+
+            saloonList.error(function (data, status, headers, config) {
+                $ionicLoading.hide();
+                localFactory.alert("Check your internet connection.");
+            });
         }
 
     }])

@@ -1,5 +1,5 @@
 app.controller('saloonFavCtrl',['$scope','$compile','saloons','userService','$state','localFactory','$ionicLoading',function($scope,$compile,saloons,userService,$state,localFactory,$ionicLoading){
-    $scope.headerName="Favourite Salones";
+    $scope.headerName="Favourite Salons";
     $scope.saloonList=saloons.saloon_details;
     $scope.saloonListFev=[];
     for(var i=0;i<$scope.saloonList.length;i++){

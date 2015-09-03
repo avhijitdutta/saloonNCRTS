@@ -20,7 +20,9 @@
                 <div class="category">
                     <h2> {{deal.about_deal}}</h2>
                     <span>{{deal.saloon_name}}</span>
-                    <i class="icon ion-bookmark bookmark" > </i>
+                    <i class="icon ion-bookmark bookmark" ng-if="deal.is_fev==1" ng-click="$event.stopPropagation();toggleFev(deal.is_fev,deal.id)"> </i>
+
+                    <i class="icon ion-bookmark bookmark unbookmark" ng-if="deal.is_fev==0" ng-click="$event.stopPropagation();toggleFev(deal.is_fev,deal.id)"> </i>
                 </div>
             </div>
         </ion-item>
@@ -28,7 +30,7 @@
             <i class="iocn ion-social-instagram"></i>
             <h4>It is lonely here</h4>
             <p>
-                No deal found.
+                No deal found as per your filter criteria.
             </p>
         </div>
 

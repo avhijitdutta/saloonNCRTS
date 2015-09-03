@@ -1,0 +1,26 @@
+<ng-include src="'templates/header.html'"></ng-include>
+<ion-view>
+    <ion-content class="saloon-detail has-footer has-header">
+        <ion-list>
+            <div ng-repeat="category in saloonServices">
+                <ion-item class="parent-item" ng-click="openTab(category.id)">
+                    <button class="button button-icon icon" ng-class="{'ion-chevron-down':isOpenTab(category.id),'ion-chevron-right':!isOpenTab(category.id)}"></button>
+                    <span>{{category.category_name}}</span>
+                    <div class="cat-icon"><img ng-src="{{category.category_image_url}}"></div>
+                </ion-item>
+
+                <ion-item class="child-items" ng-show="isOpenTab(category.id)">
+                    <div class="row" ng-repeat="item in category.items" ng-click="$event.stopPropagation();addItem(item,item.selected)">
+                        <div class="col col-10 align-right">
+                            <label class="checkbox checkbox-assertive">
+                                <input type="checkbox" checked ng-click="noClick($event)">
+                            </label>
+                        </div>
+                        <div class="col col-50 padding facility">{{item.facility_name}} </div>
+                        <div class="col col-50 padding col-price"><span class="rupyaINR">Rs</span> <input class="input-price" ng-model="item.price"/> <button ng-click="updatePrice(item)"><i class="icon ion-checkmark-round"></i> </button></div>
+                    </div>
+                </ion-item>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-view>

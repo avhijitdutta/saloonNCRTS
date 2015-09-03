@@ -46,27 +46,27 @@
                 <div class="row" ng-repeat="row in appointmentData.services">
                     <div class="col-10 align-left"><img src="images/tick.png"></div>
                     <div class="col-50">{{row.facility_name}}</div>
-                    <div class="col-20"><input class="qty" value='1' type="tel"/></div>
-                    <div class="col-20"><span class="price"><span class="rupyaINR">Rs</span>{{row.price | currency:""}}</span></div>
+                    <div class="col-20"><input ng-model="row.no_of_person" class="qty" value='1' type="tel"/></div>
+                    <div class="col-20"><span class="price"><span class="rupyaINR">Rs</span>{{row.no_of_person*row.price | noFractionCurrency:""}}</span></div>
                 </div>
             </div>
             <div class="sub-total">
                 <div class="row">
                     <div class="col col-50"></div>
                     <div class="col col-25">Sub Total</div>
-                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{subTotal | currency:""}}</div>
+                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{subTotal() | noFractionCurrency:""}}</div>
                 </div>
 
                 <div class="row service-tax">
                     <div class="col col-50"></div>
                     <div class="col col-25">Discount</div>
-                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{discountAmount | currency:""}}</div>
+                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{discountAmount() | noFractionCurrency:""}}</div>
                 </div>
 
                 <div class="row service-tax">
                     <div class="col col-50"></div>
                     <div class="col col-25">Service Tax</div>
-                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{taxAmount | currency:""}}</div>
+                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{taxAmount() | noFractionCurrency:""}}</div>
                 </div>
 
             </div>
@@ -75,7 +75,7 @@
                 <div class="row">
                     <div class="col col-50"></div>
                     <div class="col col-25">Total</div>
-                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{netAmount | currency:""}}</div>
+                    <div class="col col-25"><span class="rupyaINR">Rs</span>{{netAmount() | noFractionCurrency:""}}</div>
                 </div>
             </div>
          </div>

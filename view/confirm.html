@@ -20,25 +20,8 @@
             </div>
         </ion-item>
         <div class="amount">
-            Total Payable Amount <div> <span class="rupyaINR">Rs</span>{{appointmentData.confirm.amount | currency:""}}</div>
+            You agree to pay at the Beauty Salon / SPA an amount of <div> <span class="rupyaINR">Rs</span>{{appointmentData.confirm.amount | noFractionCurrency:""}}</div>
         </div>
-        <!--<h4>Select Payment Type</h4>
-        <div class="payment-type-container padding">
-
-            <div class="payment select">
-                <label class="checkbox checkbox-assertive">
-                    <input type="checkbox">
-                </label>
-                <img src="images/ico-credit-card.png">
-            </div>
-
-            <div class="payment">
-                <label class="checkbox checkbox-assertive">
-                    <input type="checkbox">
-                </label>
-                <img src="images/ico-cash.png">
-            </div>
-        </div>-->
     </ion-content>
     <div class="bar bar-footer beauty-footer dark">
         <div class="title" ng-click="submit()"> Submit</div>

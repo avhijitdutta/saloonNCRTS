@@ -20,7 +20,7 @@ app.service('listPostData', function(localFactory,$q,userService,$ionicLoading,$
     this.defaultValue={
         latitude:"",
         longitude:"",
-        category_id:1,
+        category_id:"",
         user_id:"",
         sort_by:1,
         filter_by_date:$filter('date')(new Date(), 'yyyy-MM-dd'),

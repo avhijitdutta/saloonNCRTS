@@ -225,9 +225,10 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 .sidemenu-background .user .info .user-name{
     color: #ffffff;
     font-weight: normal;
-    line-height: 12px;
+    line-height: 31px;
     white-space: nowrap;
     display: block;
+    font-size: 20px;
 }
 
 .sidemenu-background .user .info a{
@@ -294,6 +295,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     background: none;
     border: 0;
     height: 35px;
+    margin-left: -5px;
 }
 
 .login .logo{
@@ -314,6 +316,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     background: linear-gradient(to bottom,  #df6174 0%,#903450 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#df6174', endColorstr='#903450',GradientType=0 );
     color:#ffffff;
+    border: 0;
 }
 
 .beauty-header .button{
@@ -325,7 +328,6 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     position: absolute;
     padding: 10px;
     left: -10px;
-    right: 0;
     top: 22px;
     border-radius: 0;
     right: -10px;
@@ -471,15 +473,16 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 }
 
 .todays-deal .item .mask .category .bookmark{
-    color: #FF253f;
+    color: #5F8904;
     font-size: 35px;
     position: absolute;
     right: 20px;
     top: -3px;
+    padding: 5px 6px 5px 20px;
 }
 
-.todays-deal .item .mask .category .bookmark.activated{
-    color: #5F8904;
+.todays-deal .item .mask .category .unbookmark{
+    color: #FF253f;
 }
 
 .todays-deal .item .mask .category span{
@@ -949,6 +952,34 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     background: #343434;
     color: #ffffff;
 }
+
+.saloon-detail .child-items .facility{
+    white-space: normal;
+}
+
+.saloon-detail .child-items .col-price{
+    background: #4d4d4d;
+}
+
+.saloon-detail .child-items  .input-price{
+    border: 0;
+    padding: 5px;
+    width: 70px;
+    border-radius: 5px;
+    z-index: 9;
+    position: relative;
+    color: #8b8b8b;
+}
+.saloon-detail .child-items button{
+    background: #537703;
+    padding: 5px;
+    border-radius: 5px;
+    color: #ffffff;
+    border: 0;
+    width: 37px;
+    margin-left: -9px;
+}
+
 .saloon-detail .child-items .checkbox{
     padding: 5px;
 }
@@ -1085,7 +1116,9 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 .appointment .selected-services{
     background: #ffffff;
 }
-
+.appointment .selected-services .row + .row{
+    margin: 0;
+}
 .appointment .row img{
     width: 20px;
     margin-left: 3px;
@@ -1102,6 +1135,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     border-radius: 5px;
     width: 30px;
     text-align: center;
+    margin: auto;
 }
 .appointment .sub-total{
     border-bottom: 1px solid #d1d2d3;
@@ -1246,6 +1280,7 @@ form .card{
     text-align: center;
     padding: 20px;
     position: relative;
+    background: #f4e5e6;
 }
 
 .stylest-detail .top-content h3{
@@ -1344,6 +1379,7 @@ form .card{
     background: #e6e6e6;
     padding: 5px;
     max-height: 300px;
+    margin-top: 10px;
 }
 
 .stylest-detail .image-container .saloon{
@@ -1431,13 +1467,13 @@ form .card{
 .dealDetail .bg-price .dealprice{
     position: absolute;
     top: 30px;
-    right: 20px;
-    width: 62px;
+    right: 0;
     text-align: center;
     display: block;
     color: #ffffff;
-    font-size: 22px;
+    font-size: 21px;
     font-weight: normal;
+    left: 0;
 }
 
 .dealDetail .deal-bottom .pattern{
@@ -1463,11 +1499,12 @@ form .card{
     margin-top: 10px;
 }
 
-.dealDetail .address h4{
+.dealDetail .address .saloon-name{
     font-size: 20px;
     font-weight: normal;
     font-family: 'OpenSansLight';
-    line-height: 10px;
+    display: block;
+    padding-bottom: 8px;
 }
 
 /*Stylist List*/
@@ -1494,8 +1531,13 @@ form .card{
 .appointment-detail .row .col{
     font-size: 13px;
 }
-
-
+.appointment-detail .services .row .person{
+    font-style: italic;
+    color: #a3a3a3;
+}
+.appointment-detail .services .row .person span{
+    font-size: 10px;
+}
 .appointment-detail .list .item:nth-child(odd){
     background: #f4e5e6;
 }
@@ -1508,6 +1550,9 @@ form .card{
 .appointment-detail .list .item h3{
     font-size: 16px;
     font-weight: normal;
+    text-overflow: ellipsis;
+    width: 220px;
+    white-space: nowrap;
 }
 
 .appointment-detail .list .item p{
@@ -1532,9 +1577,24 @@ form .card{
     vertical-align: top;
 }
 .appointment-detail .list .item img{
-    width:100px;
-    margin-right: 10px;
+    width: 100%;
 }
+
+.appointment-detail .list .item .user-img{
+    width: 80px;
+    height:80px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+.appointment-detail .list .item .saloon-img{
+    width: 100px;
+   display: inline-block;
+    margin-right: 5px;
+}
+
 .appointment-detail .price-table{
     background: #f0dbdd;
 }
@@ -1575,6 +1635,65 @@ form .card{
 .appointment-detail .row-container .row  i{
     color: #537703;
     font-size: 22px;
+}
+
+.appointment-detail .confirmation{
+    background: #f4e5e6;
+    border-top: 1px solid #dbdbdb;
+}
+.appointment-detail .confirmation div{
+    width: 50%;
+    display: inline-block;
+    padding: 2%;
+    text-align: center;
+    color: #943551;
+}
+
+.appointment-detail .confirmation div .icn{
+    width: 45px;
+    height: 45px;
+    border-radius: 30px;
+    color: #ffffff;
+    font-size: 25px;
+    text-align: center;
+    background: #943551;
+    line-height: 37px;
+    margin: auto;
+    display: block;
+}
+
+.call{
+    background: #537703;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+    display: block;
+    width: 100%;
+    height: 47px;
+    margin-top: -10px;
+}
+
+.call div{
+    width: 30px;
+    height: 30px;
+    background: #ffffff;
+    display: inline-block;
+    color: #537703;
+    border-radius: 30px;
+    line-height: 29px;
+}
+
+.appointment-detail .confirmation .reject .icn{
+    background: #b7b3b4;
+}
+
+.appointment-detail .confirmation .reject{
+    color: #b7b3b4;
+}
+
+.appointment-detail .confirmation .confirm{
+    border-right: 1px solid #dbdbdb;
 }
 /* End of appointment details */
 
@@ -1631,7 +1750,6 @@ form .card{
 /*category content*/
 .modal .beauty-header span{
     font-size: 30px;
-    color: #000000;
 }
 
 .category .category-header{
@@ -1704,7 +1822,20 @@ form .card{
     vertical-align: top;
 }
 .history .list .item img{
-    width:100px;
+    width:100%;
+}
+.history .list .item .saloon-img{
+    width: 100px;
+    display: inline-block;
+    margin-right: 5px;
+}
+.history .list .item .user-img{
+    background: #ffffff;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 50px;
+    display: inline-block;
     margin-right: 10px;
 }
 
@@ -1760,9 +1891,11 @@ form .card{
 
 .stylest-detail .favourite{
     position: relative;
-    margin-top: -40px;
 }
 
+.stylest-detail .favourite img{
+    width: 30px;
+}
 /*Submit a saloon*/
 .checkin .input-container select {
     width: 110%;
@@ -1790,6 +1923,7 @@ form .card{
 
 .check-in i{
     font-size: 30px;
+    vertical-align: -5px;
 }
 .checkin .item-input{
     background: none;
@@ -1834,7 +1968,7 @@ form .card{
 
 .no-data {
     text-align: center;
-    margin-top: 33%;
+    padding-top: 33%;
 }
 .no-data i{
     font-size: 135px;

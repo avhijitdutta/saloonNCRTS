@@ -117,19 +117,23 @@ app.controller('loginCtrl',['$scope','localFactory','$state','userService','$ion
 
         var requestLogin = localFactory.post('login', credential);
         requestLogin.success(function (data) {
-
             if(data.result)
             {
                 userService.setData(data,'loginData');
-                $rootScope.showFilter=true;
-                if($rootScope.previousState=='promotion' || $rootScope.previousState=='signup')
-                {
-                    $state.go('tab.todaysdeals');
+                if(data.user_details.user_type==2){
+                    $rootScope.loginType=1;
+                    $state.go('saloonSide.home');
+                }else if(data.user_details.user_type==4){
+                    $rootScope.showFilter=true;
+                    $rootScope.loginType=0;
+                    if($rootScope.previousState=='promotion' || $rootScope.previousState=='signup')
+                    {
+                        $state.go('tab.todaysdeals');
 
-                }else{
-                    $ionicHistory.goBack();
+                    }else{
+                        $ionicHistory.goBack();
+                    }
                 }
-
             }else
             {
                 localFactory.alert(data.msg,function()

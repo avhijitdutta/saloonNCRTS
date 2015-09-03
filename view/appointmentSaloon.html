@@ -1,0 +1,95 @@
+<ng-include src="'templates/header.html'"></ng-include>
+<ion-view>
+    <ion-content class="has-header appointment-detail has-footer">
+
+        <div class="list">
+
+            <div class="item">
+                <div class="user-img">
+                    <img ng-src="{{historyDetail.appointment.img_url}}">
+                </div>
+                <div class="container">
+                    <h3>{{historyDetail.appointment.user_name}}</h3>
+                    <p>
+                        <i class="ion-ios-calendar-outline"></i>  {{historyDetail.appointment.date | date}}
+                    </p>
+
+                    <p>
+                        <i class="ion-ios-clock-outline"></i></strong> {{historyDetail.appointment.start_time}} - {{historyDetail.appointment.end_time}}
+                    </p>
+
+                    <p>
+                        <i class="icon ion-at"> </i>{{historyDetail.appointment.email}}
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="confirmation">
+                <div class="confirm">
+                    <div class="icn">
+                        <i class="ion-thumbsup"> </i>
+                    </div>
+                    Confirm
+                </div><div class="reject">
+                    <div class="icn">
+                        <i class="ion-android-close"> </i>
+                    </div>
+                    Reject
+                </div>
+            </div>
+
+        </div>
+        <div class="price-table">
+
+            <div class="row">
+                <div class="col-75">Price</div>
+                <div class="col-25"> <span class="rupyaINR">Rs</span>{{subTotal}}</div>
+            </div>
+            <div class="row">
+                <div class="col-75">Tax</div>
+                <div class="col-25"> <span class="rupyaINR">Rs</span>{{historyDetail.appointment.service_tax | currency:""}}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-75">Discount</div>
+                <div class="col-25"> <span class="rupyaINR">Rs</span>{{historyDetail.appointment.discount | currency:""}}</div>
+            </div>
+
+            <div class="row total">
+                <div class="col-75">Total Price</div>
+                <div class="col-25"> <span class="rupyaINR">Rs</span>{{historyDetail.appointment.amount | currency:""}}</div>
+            </div>
+        </div>
+
+        <div class="services">
+            <h4 class="heading">Services on this appointment</h4>
+
+            <div class="row-container">
+                <div class="row" ng-repeat="service in historyDetail.service_list">
+                    <div class="col-10"><i class="icon ion-checkmark-circled"> </i></div>
+                    <div class="col-66">{{service.facility_name}}</div>
+                    <div class="col-20 text-center person">{{service.no_of_person}} <span ng-if="service.no_of_person<2">Person</span> <span ng-if="service.no_of_person>1">Persons</span></div>
+                    <div class="col-20 align-right price"><span class="rupyaINR">Rs</span> {{service.price*service.no_of_person | currency:""}}</div>
+                    <!--<div class="col-20 align-right price" ng-if="service.is_deal==1"><span class="rupyaINR">Rs</span> {{service.deal_price | currency:""}}</div>-->
+                </div>
+            </div>
+
+           <!-- <div class="row">
+                <div class="col col-75">{{service.facility_name}}</div>
+                <div class="col price" ng-if="service.is_deal==0">Rs {{service.price | currency:""}}</div>
+                <div class="col price" ng-if="service.is_deal==1">Rs {{service.deal_price | currency:""}}</div>
+            </div>-->
+
+        </div>
+
+    </ion-content>
+
+    <div class="bar bar-footer">
+        <a class="call">
+            {{historyDetail.appointment.phone_number}} <div><i class="icon ion-android-call"> </i></div>
+        </a>
+    </div>
+
+</ion-view>
+

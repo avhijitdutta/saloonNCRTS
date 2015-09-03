@@ -8,7 +8,7 @@
                     <div class="list-content">
                         <h2>{{saloon.saloon_name}}</h2>
                         <p class="ellipsis">
-                            <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( 2000 Km )</span>
+                            <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( {{saloon.distance |number:0}} <span ng-if="saloon.distance<2">Mile</span> <span ng-if="saloon.distance>1">Miles</span> )</span>
                         </p>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     <i class="icon ion-coffee">
 
                     </i>
-                    <strong> 10</strong>
+                   <strong> {{saloon.deal_counter}}</strong>
                 </span>
             </ion-item>
         </ion-list>

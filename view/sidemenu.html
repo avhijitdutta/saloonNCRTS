@@ -16,13 +16,14 @@
         <ion-content class="sidemenu-background">
             <div class="user">
                 <div class="image-container">
-                    <img src="images/no-pic.png">
+                    <img ng-show="showFilter" ng-src="{{userDetail.img_url}}">
+                    <img ng-show="!showFilter" src="images/no-pic.png">
                 </div>
                 <div class="info">
-                    <a ng-show="showFilter" class="user-name" ui-sref="myaccount">Avhijit Dutta</a>
-                    <a ng-show="!showFilter" class="user-name" ui-sref="myaccount">Already Registered</a>
-                    <a ng-show="showFilter" ng-click="toggleMenuleft('logout')"> Logout </a>
-                    <a ng-show="!showFilter" ui-sref="login"> Login </a>
+                    <a ng-show="showFilter"  ng-click="toggleMenuleft()"  class="user-name" ui-sref="myaccount">{{userDetail.user_name}}</a>
+                    <a ng-show="!showFilter" ng-click="toggleMenuleft()" class="user-name" ui-sref="myaccount">Already Registered</a>
+                    <a ng-show="showFilter"  ng-click="toggleMenuleft();toggleMenuleft('logout')"> Logout </a>
+                    <a ng-show="!showFilter" ng-click="toggleMenuleft()" ui-sref="login"> Login </a>
                 </div>
             </div>
             <ul class="list">
@@ -69,12 +70,12 @@
                     </div>
                 </a>
 
-                <a ng-show="showFilter" nav-clear ui-sref="favSaloonList" class="item" ng-click="toggleMenuleft()">
+                <a ng-show="showFilter" nav-clear ui-sref="favDealList" class="item" ng-click="toggleMenuleft()">
                     <div class="row">
                         <div class="col col-20">
                             <i class="icon ion-bookmark"> </i>
                         </div>
-                        <div class="col col-80">Bookmarked Offer</div>
+                        <div class="col col-80">Bookmarked Offers</div>
                     </div>
                 </a>
 

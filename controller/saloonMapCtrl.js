@@ -3,6 +3,7 @@ app.controller('saloonMapCtrl',['$scope','$compile','$rootScope','listPostData',
     console.log(location);
     $scope.category_id=$stateParams.id;
     $rootScope.map=true;
+    $rootScope.search=false;
     $scope.saloon={};
     $scope.hideSaloon=function(){
         $scope.showItem=false;

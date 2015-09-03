@@ -8,7 +8,8 @@ app.controller('sideListCtrl',['$scope','$ionicSideMenuDelegate','$rootScope','l
         }
         $ionicSideMenuDelegate.toggleLeft();
     };
-
+    $scope.userDetail=userService.getData('loginData')['user_details'];
+    console.log($scope.userDetail);
     $scope.postData={
         sort_by:listPostData.getData().sort_by,
         filter_by_date:listPostData.getData().filter_by_date,
@@ -71,48 +72,41 @@ app.controller('sideListCtrl',['$scope','$ionicSideMenuDelegate','$rootScope','l
     $scope.filterList=function(){
         $scope.postData.city_id=$scope.postData.city.id;
         $scope.postData.locality_id=$scope.postData.locality.id;
+        if($scope.postData.start_price.value>$scope.postData.end_price.value)
+        {
+            localFactory.toast("Start price can't be greater than end price");
+            return
+        }
+
+        if(parseInt($scope.postData.start_time.value.substr(0,2))>parseInt($scope.postData.end_time.value.substr(0,2)))
+        {
+            localFactory.toast("Start time can't be greater than end time");
+            return
+        }
 
         $ionicLoading.show();
 
         var posOptions = {timeout: 10000, enableHighAccuracy: true};
-        if($scope.postData.sort_by==3){
-
-            $cordovaGeolocation
-                .getCurrentPosition(posOptions)
-                .then(function (position) {
-                    $scope.postData['latitude']=position.coords.latitude;
-                    $scope.postData['longitude']=position.coords.longitude;
-                    listPostData.setData($scope.postData);
-                    var saloonList = localFactory.post('saloon_list',listPostData.getData());
-                    saloonList.success(function (data) {
-                        $rootScope.saloonList=data.saloon_details;
-                        $ionicLoading.hide();
-                    });
-
-                    saloonList.error(function (data, status, headers, config) {
-                        localFactory.alert("Check your internet connection.")
-                    });
-
-                }, function (err) {
+        $cordovaGeolocation
+            .getCurrentPosition(posOptions)
+            .then(function (position) {
+                $scope.postData['latitude']=position.coords.latitude;
+                $scope.postData['longitude']=position.coords.longitude;
+                listPostData.setData($scope.postData);
+                var saloonList = localFactory.post('saloon_list',listPostData.getData());
+                saloonList.success(function (data) {
+                    $rootScope.saloonList=data.saloon_details;
                     $ionicLoading.hide();
-                    localFactory.alert("Please turn on GPS on your mobile.");
                 });
 
-        }else{
-            listPostData.setData($scope.postData);
-            var saloonList = localFactory.post('saloon_list',listPostData.getData());
-            saloonList.success(function (data) {
-                $rootScope.saloonList=data.saloon_details;
+                saloonList.error(function (data, status, headers, config) {
+                    localFactory.alert("Check your internet connection.")
+                });
+
+            }, function (err) {
                 $ionicLoading.hide();
+                localFactory.alert("Please turn on GPS on your mobile.");
             });
-
-            saloonList.error(function (data, status, headers, config) {
-                localFactory.alert("Check your internet connection.")
-                $ionicLoading.hide();
-            });
-        }
-
-
         $ionicSideMenuDelegate.toggleRight();
     }
 }])

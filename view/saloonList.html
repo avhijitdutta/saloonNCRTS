@@ -1,10 +1,10 @@
 <ion-view>
 
 <ion-content class="has-header view-background saloon-list" overflow-scroll=true>
-    <ion-refresher
+   <!-- <ion-refresher
             pulling-text="Pull to refresh..."
             on-refresh="doRefresh()"
-    >
+    >-->
     </ion-refresher>
 
     <ion-list>
@@ -14,7 +14,7 @@
                 <div class="list-content">
                     <h2>{{saloon.saloon_name}}</h2>
                     <p class="ellipsis">
-                        <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( 2000 Km )</span>
+                        <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( {{saloon.distance |number:0}} <span ng-if="saloon.distance<2">Mile</span> <span ng-if="saloon.distance>1">Miles</span> )</span>
                     </p>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                 <i class="icon ion-coffee">
 
                 </i>
-                <strong> 10</strong>
+                <strong> {{saloon.deal_counter}}</strong>
             </span>
 
         </ion-item>
@@ -45,12 +45,12 @@
         <i class="iocn ion-social-instagram"></i>
         <h4>It is lonely here</h4>
         <p>
-            No saloon found as per your filter.
+            No Salon found as per your search criteria.
         </p>
     </div>
 </ion-content>
 
-        <div class="filter-category">
+        <div class="filter-category" ng-click="openModal()">
             <i class="ion-social-buffer"> </i>
         </div>
 

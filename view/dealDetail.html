@@ -27,9 +27,9 @@
 
         <div class="address padding">
             <img src="images/icon-mappin-black-small.png">
-            <h4>{{dealDetail.saloon_name}}</h4>
+            <a ui-sref="detailSaloon({id:dealDetail.saloon_id})" class="saloon-name" >{{dealDetail.saloon_name}}</a>
             <div> {{dealDetail.house}},{{dealDetail.locality}} {{dealDetail.city_name}}</div>
-            <a class=" button promo-button active-button button-full" ng-click="shopNow()">Shop Now</a>
+            <a class=" button promo-button active-button button-full" ng-click="shopNow()">Reserve offer</a>
         </div>
 
 

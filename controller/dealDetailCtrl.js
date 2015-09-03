@@ -2,7 +2,9 @@ app.controller('dealDetailCtrl',['$scope','userService','$state',function($scope
     $scope.hideHome=true;
     $scope.dealDetail=userService.getData('deal');
     console.log($scope.dealDetail)
-    $scope.headerName=$scope.dealDetail.facility_name;
+    //$scope.headerName=$scope.dealDetail.facility_name;
+    $scope.headerName='Special offer details';
+
     $scope.shopNow=function(){
         var data={services:[$scope.dealDetail]};
         userService.setData(data,'currentSeleted');

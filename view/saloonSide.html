@@ -3,7 +3,7 @@
     <ion-side-menu-content>
         <div class="bar bar-header beauty-header">
             <button class="button button-icon icon ion-navicon" ng-click="toggleMenuleft()"></button>
-            <div class="title">Special Offers</div>
+            <div class="title">Appointments</div>
         </div>
 
         <ion-nav-view name="saloon-home">
@@ -16,79 +16,32 @@
         <ion-content class="sidemenu-background">
             <div class="user">
                 <div class="image-container">
-                    <img src="images/no-pic.png">
+                    <img ng-src="{{userDetail.img_url}}">
                 </div>
                 <div class="info">
-                    <a ng-show="showFilter" class="user-name" ui-sref="myaccount">Avhijit Dutta</a>
-                    <a ng-show="!showFilter" class="user-name" ui-sref="myaccount">Already Registered</a>
-                    <a ng-show="showFilter" ng-click="toggleMenuleft('logout')"> Logout </a>
-                    <a ng-show="!showFilter" ui-sref="login"> Login </a>
+                    <a ng-click="toggleMenuleft()"  class="user-name" ui-sref="myaccount">{{userDetail.user_name}}</a>
+                    <a ng-click="toggleMenuleft('logout')"> Logout </a>
                 </div>
             </div>
+
             <ul class="list">
-                <!-- <a ng-show="showFilter" nav-clear ui-sref="myaccount" class="item" ng-click="toggleMenuleft()">
-                     <div class="row">
-                         <div class="col col-20">
-                             <i class="icon ion-ios-person-outline"> </i>
-                         </div>
-                         <div class="col col-80">Account</div>
-                     </div>
-                 </a>-->
-
-                <a ng-show="showFilter" nav-clear class="item" ui-sref="appointmentHistory" ng-click="toggleMenuleft()">
+                <a  nav-clear class="item" ui-sref="myservices" ng-click="toggleMenuleft()">
                     <div class="row">
                         <div class="col col-20">
-                            <i class="icon ion-ios-calendar-outline"> </i>
+                            <i class="icon ion-grid"> </i>
                         </div>
-                        <div class="col col-80">Appointment History <div class="badge"> {{userAppointment}}</div> </div>
+                        <div class="col col-80">My Services </div>
                     </div>
                 </a>
 
-                <a nav-clear ui-sref="submit" class="item" ng-click="toggleMenuleft()">
+                <a nav-clear class="item" ui-sref="detailSaloon({id: userDetail.saloon_id})" ng-click="toggleMenuleft()">
                     <div class="row">
                         <div class="col col-20">
-                            <i class="icon ion-ios-chatboxes-outline"> </i>
+                            <i class="icon ion-scissors"> </i>
                         </div>
-                        <div class="col col-80">Suggest Saloon/SPA</div>
+                        <div class="col col-80">My Salon </div>
                     </div>
                 </a>
-                <a nav-clear ui-sref="lottery" class="item" ng-click="toggleMenuleft()">
-                    <div class="row">
-                        <div class="col col-20">
-                            <i class="icon ion-trophy"></i>
-                        </div>
-                        <div class="col col-80">Lottery Winner</div>
-                    </div>
-                </a>
-                <a ng-show="showFilter" nav-clear ui-sref="favSaloonList" class="item" ng-click="toggleMenuleft()">
-                    <div class="row">
-                        <div class="col col-20">
-                            <i class="icon ion-ios-heart-outline"> </i>
-                        </div>
-                        <div class="col col-80">Favourite Saloon/SPA</div>
-                    </div>
-                </a>
-
-                <a ng-show="showFilter" nav-clear ui-sref="favSaloonList" class="item" ng-click="toggleMenuleft()">
-                    <div class="row">
-                        <div class="col col-20">
-                            <i class="icon ion-bookmark"> </i>
-                        </div>
-                        <div class="col col-80">Bookmarked Offer</div>
-                    </div>
-                </a>
-
-                <a ng-show="showFilter" nav-clear ui-sref="favStylistList" class="item" ng-click="toggleMenuleft()">
-                    <div class="row">
-                        <div class="col col-20">
-                            <i class="icon ion-ios-heart-outline"> </i>
-                        </div>
-                        <div class="col col-80">Favourite Stylist</div>
-                    </div>
-                </a>
-
-
-
                 <a nav-clear ui-sref="faq" class="item" ng-click="toggleMenuleft()">
                     <div class="row">
                         <div class="col col-20">
@@ -106,24 +59,6 @@
                         <div class="col col-80">About</div>
                     </div>
                 </a>
-
-                <!--<a ng-show="!showFilter" nav-clear ui-sref="login" class="item" ng-click="toggleMenuleft()">
-                    <div class="row">
-                        <div class="col col-20">
-                            <i class="icon ion-log-in"> </i>
-                        </div>
-                        <div class="col col-80">Login</div>
-                    </div>
-                </a>
-
-                <a ng-show="showFilter" nav-clear class="item" ng-click="toggleMenuleft('logout')">
-                    <div class="row">
-                        <div class="col col-20">
-                            <i class="icon ion-log-out"> </i>
-                        </div>
-                        <div class="col col-80">Logout</div>
-                    </div>
-                </a>-->
             </ul>
         </ion-content>
     </ion-side-menu>
