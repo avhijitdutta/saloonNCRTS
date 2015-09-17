@@ -17,14 +17,12 @@
         </div>
     </ion-content>
     <ion-item ng-show="showItem" class="padding saloon-item list-map" ui-sref="detailSaloon({id: saloon.saloon_id})">
-
-
         <div class="img-container">
             <img ng-src="{{saloon.upload_url}}">
             <div class="list-content">
                 <h2>{{saloon.saloon_name}}</h2>
                 <p class="ellipsis">
-                    <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( 2000 Km )</span>
+                    <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( {{saloon.distance |number:0}} <span ng-if="saloon.distance>0 && saloon.distance <2">Mile</span> <span ng-if="saloon.distance>=2">Miles</span> )</span>
                 </p>
             </div>
         </div>

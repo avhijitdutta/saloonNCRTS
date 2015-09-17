@@ -1,3 +1,3 @@
-app.controller('promotionCtrl', [ '$scope','$rootScope', function($scope,$rootScope) {
+app.controller('noInternet', [ '$scope','$rootScope', function($scope,$rootScope) {
 
 }])

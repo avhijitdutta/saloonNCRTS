@@ -20,13 +20,13 @@ app.controller('saloonMapCtrl',['$scope','$compile','$rootScope','listPostData',
     $scope.addMarkers=function()
     {
         var markers=[];
-        for(var i=0;i<$rootScope.saloonList.length;i++)
+        for(var i=0;i<$rootScope.saloonList.saloon_details.length;i++)
         {
             var tempData={};
-            tempData['latitude']=$rootScope.saloonList[i]['latitude'];
-            tempData['longitude']=$rootScope.saloonList[i]['longitude'];
+            tempData['latitude']=$rootScope.saloonList.saloon_details[i]['latitude'];
+            tempData['longitude']=$rootScope.saloonList.saloon_details[i]['longitude'];
             tempData['title']=i+"M";
-            tempData['data']=$rootScope.saloonList[i];
+            tempData['data']=$rootScope.saloonList.saloon_details[i];
             tempData.onClick = function(obj) {
                 console.log(obj.model);
                 $scope.showItem=true;

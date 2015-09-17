@@ -7,8 +7,12 @@ app.controller('confirmCtrl',['$scope','userService','$stateParams','localFactor
         $ionicLoading.show();
         var settingData = localFactory.post('book_appointment', obj);
         settingData.success(function (data) {
-            localFactory.toast("You have successfully submitted your appointment request. You can view the appointment in the section for 'Appointment history'");
-            $state.go('tab.todaysdeals');
+            if(data.result){
+                localFactory.toast("You have successfully submitted your appointment request. You can view the appointment in the section for 'Appointment history'");
+                $state.go('tab.todaysdeals');
+            }else{
+                localFactory.toast(data.msg);
+            }
             $ionicLoading.hide();
         });
 

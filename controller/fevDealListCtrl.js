@@ -1,7 +1,7 @@
 app.controller('fevDealListCtrl',['$scope','todaysDeal','userService','$state','$rootScope','$ionicLoading','localFactory',function($scope,todaysDeal,userService,$state,$rootScope,$ionicLoading,localFactory){
     $scope.dealDetail=function(value){
         userService.setData(value,'deal');
-        $state.go('dealDetail',{id:value.id});
+        $state.go('dealDetail',{id:value.id,type:1});
     }
 
     $scope.todaysDeals=todaysDeal.deal_data;

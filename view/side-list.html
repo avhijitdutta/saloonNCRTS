@@ -38,15 +38,15 @@
         <ion-content class="sidemenu-background">
             <div class="user">
                 <div class="image-container">
-                    <img ng-show="showFilter" ng-src="{{userDetail.img_url}}">
-                    <img ng-show="!showFilter" src="images/no-pic.png">
+                    <img ng-if="showFilter && userProfilePic!=''" ng-src="{{userProfilePic}}">
+                    <img ng-if="!showFilter || userProfilePic==''" src="images/no-pic.png">
                 </div>
                 <div class="info">
                     <a ng-show="showFilter"  ng-click="toggleMenuleft()"  class="user-name" ui-sref="myaccount">{{userDetail.user_name}}</a>
                     <a ng-show="!showFilter" ng-click="toggleMenuleft()" class="user-name" ui-sref="myaccount">Already Registered</a>
-                    <a ng-show="showFilter"  ng-click="toggleMenuleft();toggleMenuleft('logout')"> Logout </a>
-                    <a ng-show="!showFilter" ng-click="toggleMenuleft()" ui-sref="login"> Login </a>
-                </div>
+                    <!-- <a ng-show="showFilter"  ng-click="toggleMenuleft();toggleMenuleft('logout')"> Logout </a>
+                     <a ng-show="!showFilter" ng-click="toggleMenuleft()" ui-sref="login"> Login </a>
+ -->            </div>
             </div>
             <ul class="list">
 
@@ -73,7 +73,7 @@
                         <div class="col col-20">
                             <i class="icon ion-ios-chatboxes-outline"> </i>
                         </div>
-                        <div class="col col-80">Suggest Saloon/SPA</div>
+                        <div class="col col-80">Suggest Salon/SPA</div>
                     </div>
 
                 </a>
@@ -93,7 +93,7 @@
                         <div class="col col-20">
                             <i class="icon ion-ios-heart-outline"> </i>
                         </div>
-                        <div class="col col-80">Favourite Saloon/SPA</div>
+                        <div class="col col-80">Favourite Salon/SPA</div>
                     </div>
                 </a>
 
@@ -122,6 +122,41 @@
                         </div>
                         <div class="col col-80">FAQ</div>
                     </div>
+
+                </a>
+
+                <a nav-clear ng-show="showFilter" class="item" ng-click="toggleMenuleft('logout')">
+
+                    <div class="row">
+                        <div class="col col-20">
+                            <i class="icon ion-log-out"> </i>
+                        </div>
+                        <div class="col col-80">Logout</div>
+                    </div>
+
+
+                </a>
+
+                <a nav-clear class="item" ng-show="!showFilter" ng-click="toggleMenuleft()" ui-sref="login">
+
+                    <div class="row">
+                        <div class="col col-20">
+                            <i class="icon ion-log-in"> </i>
+                        </div>
+                        <div class="col col-80">Login</div>
+                    </div>
+
+                </a>
+
+                <a nav-clear class="item" ng-click="shareApp()">
+
+                    <div class="row">
+                        <div class="col col-20">
+                            <i class="icon ion-android-share-alt"> </i>
+                        </div>
+                        <div class="col col-80">Share Sringar</div>
+                    </div>
+
 
                 </a>
             </ul>
@@ -174,7 +209,7 @@
                     </div>
                 </a>
                 <a nav-clear class="item">
-                    <div>Filter By City</div>
+                    <div>Filter By City & Locality</div>
                     <div class="button-bar">
                         <div class="select-container">
                             <select name="city" ng-options="obj.city_name for obj in cityList track by obj.id" ng-model="postData.city" ng-change="changeCity(postData.city)">

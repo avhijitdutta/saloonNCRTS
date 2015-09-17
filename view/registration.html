@@ -7,11 +7,11 @@
             <div class="form-content">
                 <form novalidate name="userForm" ng-submit="submitForm(userForm)">
                     <label class="item-input input-container">
-                        <input type="text" name="user_name" placeholder="Full Name" ng-model="user.user_name" required>
+                        <input type="text" class="initial" name="user_name" placeholder="Full Name" ng-model="user.user_name" required>
                     </label>
 
                     <label class="item-input input-container">
-                        <input type="email" name="email" placeholder="Email Address" ng-model="user.email" required>
+                        <input type="email" ng-pattern="word" name="email" placeholder="Email Address" ng-model="user.email" required >
                     </label>
                     <label class="item-input input-container">
                         <input  type="password" name="password" placeholder="Password" ng-model="user.password" required>

@@ -29,9 +29,8 @@
             <img src="images/icon-mappin-black-small.png">
             <a ui-sref="detailSaloon({id:dealDetail.saloon_id})" class="saloon-name" >{{dealDetail.saloon_name}}</a>
             <div> {{dealDetail.house}},{{dealDetail.locality}} {{dealDetail.city_name}}</div>
-            <a class=" button promo-button active-button button-full" ng-click="shopNow()">Reserve offer</a>
+            <a class=" button promo-button active-button button-full" ng-if="dealType==1" ng-click="shopNow()">Reserve offer</a>
+            <a class=" button promo-button active-button button-full" ng-if="dealType==2" ng-click="updateOffer()">Update Offer</a>
         </div>
-
-
     </ion-content>
 </ion-view>

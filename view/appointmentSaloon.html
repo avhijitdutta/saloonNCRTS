@@ -25,13 +25,13 @@
 
             </div>
 
-            <div class="confirmation">
-                <div class="confirm">
+            <div class="confirmation" ng-if="historyDetail.appointment.appointment_status==2">
+                <div class="confirm" ng-click="confirm(1)">
                     <div class="icn">
                         <i class="ion-thumbsup"> </i>
                     </div>
                     Confirm
-                </div><div class="reject">
+                </div><div class="reject" ng-click="confirm(3)">
                     <div class="icn">
                         <i class="ion-android-close"> </i>
                     </div>
@@ -42,23 +42,24 @@
         </div>
         <div class="price-table">
 
-            <div class="row">
-                <div class="col-75">Price</div>
-                <div class="col-25"> <span class="rupyaINR">Rs</span>{{subTotal}}</div>
-            </div>
-            <div class="row">
-                <div class="col-75">Tax</div>
-                <div class="col-25"> <span class="rupyaINR">Rs</span>{{historyDetail.appointment.service_tax | currency:""}}</div>
+            <div class="row-colum">
+                <div class="colum width-72">Price</div>
+                <div class="colum width-25"> <span class="rupyaINR">Rs</span>{{subTotal() | noFractionCurrency:""}}</div>
             </div>
 
-            <div class="row">
-                <div class="col-75">Discount</div>
-                <div class="col-25"> <span class="rupyaINR">Rs</span>{{historyDetail.appointment.discount | currency:""}}</div>
+            <div class="row-colum">
+                <div class="colum width-72">Discount</div>
+                <div class="colum width-25"> <span class="rupyaINR">Rs</span>{{historyDetail.appointment.discount | noFractionCurrency:""}}</div>
             </div>
 
-            <div class="row total">
-                <div class="col-75">Total Price</div>
-                <div class="col-25"> <span class="rupyaINR">Rs</span>{{historyDetail.appointment.amount | currency:""}}</div>
+            <div class="row-colum">
+                <div class="colum width-72">Service Tax</div>
+                <div class="colum width-25"> <span class="rupyaINR">Rs</span>{{historyDetail.appointment.service_tax | noFractionCurrency:""}}</div>
+            </div>
+
+            <div class="row-colum total">
+                <div class="colum width-72">Total Price</div>
+                <div class="colum width-25"> <span class="rupyaINR">Rs</span>{{historyDetail.appointment.amount | noFractionCurrency:""}}</div>
             </div>
         </div>
 
@@ -66,12 +67,12 @@
             <h4 class="heading">Services on this appointment</h4>
 
             <div class="row-container">
-                <div class="row" ng-repeat="service in historyDetail.service_list">
-                    <div class="col-10"><i class="icon ion-checkmark-circled"> </i></div>
-                    <div class="col-66">{{service.facility_name}}</div>
-                    <div class="col-20 text-center person">{{service.no_of_person}} <span ng-if="service.no_of_person<2">Person</span> <span ng-if="service.no_of_person>1">Persons</span></div>
-                    <div class="col-20 align-right price"><span class="rupyaINR">Rs</span> {{service.price*service.no_of_person | currency:""}}</div>
-                    <!--<div class="col-20 align-right price" ng-if="service.is_deal==1"><span class="rupyaINR">Rs</span> {{service.deal_price | currency:""}}</div>-->
+                <div class="row-colum" ng-repeat="service in historyDetail.service_list">
+                    <div class="colum width-10"><i class="icon ion-checkmark-circled"> </i></div>
+                    <div class="colum width-45">{{service.facility_name}}</div>
+                    <div class="colum width-20 text-center person">{{service.no_of_person}} <span ng-if="service.no_of_person<2">Person</span> <span ng-if="service.no_of_person>1">Persons</span></div>
+                    <div class="colum width-20 align-right price"><span class="rupyaINR">Rs</span> {{service.price*service.no_of_person | noFractionCurrency:""}}</div>
+                    <!--<div class="col-20 align-right price" ng-if="service.is_deal==1"><span class="rupyaINR">Rs</span> {{service.deal_price | noFractionCurrency:""}}</div>-->
                 </div>
             </div>
 
@@ -86,7 +87,7 @@
     </ion-content>
 
     <div class="bar bar-footer">
-        <a class="call">
+        <a class="call" ng-click="callNumber(historyDetail.appointment.phone_number)">
             {{historyDetail.appointment.phone_number}} <div><i class="icon ion-android-call"> </i></div>
         </a>
     </div>

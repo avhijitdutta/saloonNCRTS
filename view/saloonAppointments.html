@@ -6,17 +6,31 @@
 
             <a class="item" ui-sref="appointmentSaloon({id: history.id})" ng-repeat="history in histories">
                 <div class="user-img"><img ng-src="{{history.img_url}}"></div>
-                <div class="upcoming" ng-if="history.upcoming_appointment==1">
+
+                <div class="upcoming panding" ng-if="history.upcoming_appointment==1 && history.appointment_status==2">
+                    Pending
+                </div>
+
+                <div class="upcoming" ng-if="history.upcoming_appointment==1 && history.appointment_status==1">
                     Upcoming
                 </div>
+
+                <div class="upcoming cancel-user" ng-if="history.appointment_status==4">
+                    Canceled
+                </div>
+
+                <div class="upcoming cancel-user" ng-if="history.appointment_status==3">
+                    Rejected
+                </div>
+
                 <div class="container">
                     <h3>{{history.user_name}}</h3>
                     <p>
-                        <i class="ion-ios-calendar-outline"></i>  {{ history.date | date }}
+                        <i class="ion-ios-calendar-outline"></i> <strong> {{ history.date | date }}</strong>
                     </p>
 
                     <p>
-                        <i class="ion-ios-clock-outline"></i></strong> {{history.start_time}} - {{history.end_time}}
+                        <i class="ion-ios-clock-outline"></i> <strong>{{history.start_time}} - {{history.end_time}}</strong>
                     </p>
 
                     <p>

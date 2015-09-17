@@ -6,23 +6,38 @@
 
             <a class="item" ui-sref="appointmentDetails({id: history.id})" ng-repeat="history in histories">
                 <div class="saloon-img"><img ng-src="{{history.saloon_image}}"></div>
-                <div class="upcoming" ng-if="history.upcoming_appointment==1">
+                <div class="upcoming" ng-if="history.upcoming_appointment==1 && history.appointment_status==2">
+                    Requested
+                </div>
+
+                <div class="upcoming" ng-if="history.upcoming_appointment==1 && history.appointment_status==1">
                     Upcoming
                 </div>
+
+                <div class="upcoming" ng-if="history.appointment_status==3">
+                    Rejected
+                </div>
+
+                <div class="upcoming" ng-if="history.appointment_status==4">
+                    Canceled
+                </div>
+
                 <div class="container">
                     <h3>{{history.saloon_name}}</h3>
+
                     <p>
-                        <i class="ion-ios-calendar-outline"></i>  {{ history.date | date }}
+                        <i class="ion-ios-calendar-outline"></i> <strong>{{ history.date | date }}</strong>
                     </p>
 
                     <p>
-                        <i class="ion-ios-clock-outline"></i></strong> {{history.start_time}} - {{history.end_time}}
+                        <i class="ion-ios-clock-outline"></i><strong> {{history.start_time}} - {{history.end_time}}</strong>
                     </p>
 
                     <p>
                         <i class="icon ion-android-call"> </i>{{history.phone}}
                     </p>
                 </div>
+
                 <div class="amount">
                     <span class="rupyaINR">Rs</span>{{history.amount | noFractionCurrency:""}}
                 </div>

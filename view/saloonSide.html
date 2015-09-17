@@ -16,11 +16,11 @@
         <ion-content class="sidemenu-background">
             <div class="user">
                 <div class="image-container">
-                    <img ng-src="{{userDetail.img_url}}">
+                    <img ng-if="userProfilePic!=''" ng-src="{{userProfilePic}}">
+                    <img ng-if="userProfilePic==''" src="images/no-pic.png">
                 </div>
                 <div class="info">
                     <a ng-click="toggleMenuleft()"  class="user-name" ui-sref="myaccount">{{userDetail.user_name}}</a>
-                    <a ng-click="toggleMenuleft('logout')"> Logout </a>
                 </div>
             </div>
 
@@ -28,7 +28,7 @@
                 <a  nav-clear class="item" ui-sref="myservices" ng-click="toggleMenuleft()">
                     <div class="row">
                         <div class="col col-20">
-                            <i class="icon ion-grid"> </i>
+                            <img src="images/ico-service.png" class="width25">
                         </div>
                         <div class="col col-80">My Services </div>
                     </div>
@@ -42,6 +42,16 @@
                         <div class="col col-80">My Salon </div>
                     </div>
                 </a>
+
+                <a nav-clear class="item" ui-sref="salonOffer" ng-click="toggleMenuleft()">
+                    <div class="row">
+                        <div class="col col-20">
+                            <i class="icon ion-coffee"> </i>
+                        </div>
+                        <div class="col col-80">My Offers </div>
+                    </div>
+                </a>
+
                 <a nav-clear ui-sref="faq" class="item" ng-click="toggleMenuleft()">
                     <div class="row">
                         <div class="col col-20">
@@ -59,6 +69,27 @@
                         <div class="col col-80">About</div>
                     </div>
                 </a>
+
+                <a nav-clear class="item" ng-click="toggleMenuleft('logout')">
+
+                    <div class="row">
+                        <div class="col col-20">
+                            <i class="icon ion-log-out"> </i>
+                        </div>
+                        <div class="col col-80">Logout</div>
+                    </div>
+                </a>
+
+                <a nav-clear class="item" ng-click="shareApp()">
+
+                    <div class="row">
+                        <div class="col col-20">
+                            <i class="icon ion-android-share-alt"> </i>
+                        </div>
+                        <div class="col col-80">Share Sringar</div>
+                    </div>
+                </a>
+
             </ul>
         </ion-content>
     </ion-side-menu>

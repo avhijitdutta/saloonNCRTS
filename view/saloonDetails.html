@@ -9,8 +9,10 @@
 </div>
 
 <div class="bar bar-header beauty-header header-transparent" ng-controller="headerCtrl" ng-if="scrollPos<1">
+
     <button class="button button-icon icon ion-ios-arrow-back" ng-click="myGoBack()"></button>
-    <div class="title"> <!--<img src="images/logo-inner.png">-->
+
+    <div class="title">
 
     </div>
     <div class="rating">
@@ -19,7 +21,15 @@
 </div>
 
 <ion-view>
-    <ion-content class="saloon-detail has-footer" on-scroll="isScrolling()">
+    <div class="filter-category buttom-15" ng-click="openOffer()" ng-hide="loginType==1 || saloonDetails.saloon_details.deal_counter==0">
+        <i class="icon ion-coffee"> {{saloonDetails.saloon_details.deal_counter}}</i>
+    </div>
+
+    <a class="filter-list-icon buttom-15" ng-click="goToservice()" ng-hide="loginType==1 || saloonServices.length<1">
+       <img src="images/ico-service.png">
+    </a>
+
+    <ion-content class="saloon-detail" ng-class="{'has-footer':loginType==0 && saloonServices.length>0}" on-scroll="isScrolling()" delegate-handle="mainScroll">
         <div class="profile-container">
             <img ng-src="{{saloonDetails.saloon_details.saloon_image}}">
             <div class="mask" ng-click="$event.stopPropagation();showImages()">
@@ -28,11 +38,11 @@
                     <p class="address">
                         {{saloonDetails.saloon_details.city_name}} , {{saloonDetails.saloon_details.locality}}
                     </p>
-                    <span class="fav">
+                    <span class="fav" ng-hide="loginType==1">
                         <img src="images/icon-unfavourite.png" ng-if="saloonDetails.saloon_details.is_fev==0" ng-click="$event.stopPropagation();toggleFev(saloonDetails.saloon_details.is_fev,saloonDetails.saloon_details.id)">
                         <img src="images/icon-favourite.png" ng-if="saloonDetails.saloon_details.is_fev==1" ng-click="$event.stopPropagation();toggleFev(saloonDetails.saloon_details.is_fev,saloonDetails.saloon_details.id)">
                     </span>
-                    <i class="ion-ios-location map" ng-click="$event.stopPropagation();toggleMap()"></i>
+                    <i class="ion-ios-location map" ng-hide="loginType==1" ng-click="$event.stopPropagation();toggleMap()"></i>
 
                 </div>
             </div>
@@ -52,17 +62,17 @@
 
             <div class="contact-details" ng-if="saloonDetails.saloon_details.phone!=''">
                 <div class="icon-container">
-                    <img src="images/ico-phone.png">Phone No: <a ng-click="callNumber()">{{saloonDetails.saloon_details.phone}}</a>
+                    <img src="images/ico-phone.png">Phone No: <a ng-click="callNumber(saloonDetails.saloon_details.phone)">{{saloonDetails.saloon_details.phone}}</a>
                 </div>
 
                 <div class="icon-container" ng-if="saloonDetails.saloon_details.website!=''">
-                    <img src="images/ico-web.png"> Website:  <a ng-click="webSite()">{{saloonDetails.saloon_details.website}}</a>
+                    <img src="images/ico-web.png"> Website:  <a ng-click="webSite(saloonDetails.saloon_details.website)">{{saloonDetails.saloon_details.website}}</a>
                 </div>
             </div>
 
-            <img src="images/btn-checkin.png" class="checkin" ui-sref="checkin">
+            <img src="images/btn-checkin.png" class="checkin" ui-sref="checkin" ng-hide="loginType==1">
 
-            <div class="rating-container">
+            <div class="rating-container" ng-hide="loginType==1">
                 <h6 ng-if="rating<1">Rate this saloon</h6>
 
                 <h6 ng-if="rating>0">You have already rate this saloon you can change your rating.</h6>
@@ -84,7 +94,7 @@
 
         <div class="stylest-list" ng-if="saloonDetails.stylist.length>0">
             <h3> Stylist</h3>
-            <ion-scroll direction="x">
+            <ion-scroll direction="x" zooming="false" delegate-handle="horizontal" horizontal-scroll-fix="mainScroll">
                 <div class="images-list padding" ng-style="{width:contanerValue}">
                     <div class="image-item" ui-sref="stylest({id: item.id})" ng-repeat="item in saloonDetails.stylist">
                         <img ng-src="{{item.profile_image}}">
@@ -106,12 +116,12 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
-            <h3>Services</h3>
-        </div>
 
-        <ion-list>
+        </div>
+        <h3 ng-if="saloonServices.length>0 && loginType==0" >Services</h3>
+        <ion-list ng-if="saloonServices.length>0 && loginType==0">
             <div ng-repeat="category in saloonServices">
-                <ion-item class="parent-item" ng-click="openTab(category.id)">
+                <ion-item class="parent-item" ng-click="openTab(category.id,$event)">
                     <button class="button button-icon icon" ng-class="{'ion-chevron-down':isOpenTab(category.id),'ion-chevron-right':!isOpenTab(category.id)}"></button>
                     <span>{{category.category_name}}</span>
                     <div class="cat-icon"><img ng-src="{{category.category_image_url}}"></div>
@@ -125,13 +135,18 @@
                             </label>
                         </div>
                         <div class="col col-65 padding">{{item.facility_name}} </div>
-                        <div class="col col-25 padding price lite-dark">Rs {{item.price}}</div>
+                        <div class="col col-25 padding price lite-dark"><span class="rupyaINR">Rs</span>{{item.price | noFractionCurrency:""}}</div>
                     </div>
                 </ion-item>
             </div>
         </ion-list>
     </ion-content>
-    <div class="bar bar-footer dark">
-        <div class="title" ng-click="appointment()"> Book</div>
+    <div class="bar bar-footer dark" ng-if="loginType==0 && saloonServices.length>0">
+        <div class="title" ng-click="appointment()">  Book Appointment</div>
     </div>
+    <!--<div class="bar bar-footer dark" ng-if="saloonServices.length==0  && loginType==0">
+        <div class="title">
+            <img src="images/ico-phone.png">Phone No: <a ng-click="callNumber(saloonDetails.saloon_details.phone)">{{saloonDetails.saloon_details.phone}}</a>
+        </div>
+    </div>-->
 </ion-view>

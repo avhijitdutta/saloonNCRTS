@@ -36,10 +36,10 @@ app.controller('myservices', ['$scope','$rootScope','saloon','$ionicScrollDelega
 
     $scope.updatePrice=function(item){
         $ionicLoading.show();
-        var postData={saloon_id:saloon.saloon_details.saloon_id,category_id:item.category_id,facility_id:item.facility_id,price:item.price};
+        var postData={saloon_id:saloon.saloon_details.saloon_id,category_id:item.category_id,facility_id:item.facility_id,price:item.price,percent_discount:item.percent_discount,deal_price:item.price-(item.price*item.percent_discount/100)};
         var updatePrice = localFactory.post('saloon_price_edit', postData);
         updatePrice.success(function (data) {
-            localFactory.toast("Price Update successfully")
+            localFactory.toast("Price Update successfully.")
             $ionicLoading.hide();
         });
 

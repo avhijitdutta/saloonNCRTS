@@ -1,15 +1,57 @@
-app.controller('saloonDetails',['$scope','$compile','$stateParams','$ionicScrollDelegate','userService','$ionicModal','saloon','$state','localFactory','$ionicLoading',function($scope,$compile,$stateParams,$ionicScrollDelegate,userService,$ionicModal,saloon,$state,localFactory,$ionicLoading){
+app.controller('saloonDetails',['$scope','$compile','$stateParams','$ionicScrollDelegate','userService','$ionicModal','saloon','$state','localFactory','$ionicLoading','$timeout','$rootScope',function($scope,$compile,$stateParams,$ionicScrollDelegate,userService,$ionicModal,saloon,$state,localFactory,$ionicLoading,$timeout,$rootScope){
     $scope.showMap=false;
     $scope.scrollPos=0;
     $scope.saloonDetails=saloon;
 
     $scope.showMap=false;
+    $timeout(function(){
+        return false; // <--- comment this to "fix" the problem
+        var sv = $ionicScrollDelegate.$getByHandle('horizontal').getScrollView();
+
+        var container = sv.__container;
+
+        var originaltouchStart = sv.touchStart;
+        var originalmouseDown = sv.mouseDown;
+        var originaltouchMove = sv.touchMove;
+        var originalmouseMove = sv.mouseMove;
+
+        container.removeEventListener('touchstart', sv.touchStart);
+        container.removeEventListener('mousedown', sv.mouseDown);
+        document.removeEventListener('touchmove', sv.touchMove);
+        document.removeEventListener('mousemove', sv.mousemove);
+
+
+        sv.touchStart = function(e) {
+            e.preventDefault = function(){}
+            originaltouchStart.apply(sv, [e]);
+        }
+
+        sv.touchMove = function(e) {
+            e.preventDefault = function(){}
+            originaltouchMove.apply(sv, [e]);
+        }
+
+        sv.mouseDown = function(e) {
+            e.preventDefault = function(){}
+            originalmouseDown.apply(sv, [e]);
+        }
+
+        sv.mouseMove = function(e) {
+            e.preventDefault = function(){}
+            originalmouseMove.apply(sv, [e]);
+        }
+
+        container.addEventListener("touchstart", sv.touchStart, false);
+        container.addEventListener("mousedown", sv.mouseDown, false);
+        document.addEventListener("touchmove", sv.touchMove, false);
+        document.addEventListener("mousemove", sv.mouseMove, false);
+    });
 
     $scope.toggleMap=function(){
         if(!$scope.showMap){
             $scope.showMap=true;
             $scope.map = {center: {latitude:$scope.saloonDetails.saloon_details.latitude, longitude: $scope.saloonDetails.saloon_details.longitude }, zoom: 11};
-            $scope.options = {scrollwheel: false,draggable: false,zoom:7};
+            $scope.options = {scrollwheel: false,draggable: false,zoom:7, disableDefaultUI: true};
             $scope.marker = {
                 id: 0,
                 coords: {
@@ -22,12 +64,12 @@ app.controller('saloonDetails',['$scope','$compile','$stateParams','$ionicScroll
     }
 
     console.log(saloon);
-    $scope.callNumber=function(){
-        window.open('tel:12345678', '_system')
+    $scope.callNumber=function(value){
+        window.open('tel:'+value, '_system')
     }
 
-    $scope.webSite=function(){
-        window.open('http://www.ncrts.com', '_blank', 'location=no');
+    $scope.webSite=function(value){
+        window.open(value, '_blank', 'location=no');
     }
     //initiate an array to hold all active tabs
     $scope.activeTabs = [];
@@ -45,16 +87,21 @@ app.controller('saloonDetails',['$scope','$compile','$stateParams','$ionicScroll
     }
 
     //function to 'open' a tab
-    $scope.openTab = function (tab) {
+    $scope.openTab = function (tab,$event) {
         //check if tab is already open
         if ($scope.isOpenTab(tab)) {
             //if it is, remove it from the activeTabs array
             $scope.activeTabs.splice($scope.activeTabs.indexOf(tab), 1);
+            $ionicScrollDelegate.resize();
         } else {
             //if it's not, add it!
             $scope.activeTabs.push(tab);
+            //$($event.target).parent().find('.child-items').find('.row').length
+            var scrollTo=45+$ionicScrollDelegate.getScrollPosition().top;
+            $ionicScrollDelegate.scrollTo(0, scrollTo, true);
+            $ionicScrollDelegate.resize();
         }
-        $ionicScrollDelegate.resize();
+
     }
 
     $scope.toggleFev=function(isFev,id){
@@ -70,9 +117,17 @@ app.controller('saloonDetails',['$scope','$compile','$stateParams','$ionicScroll
                 $scope.saloonDetails.saloon_details.is_fev=1;
             }
             $ionicLoading.show();
-            var obj={saloon_id:$stateParams.id,user_no:userService.getData('loginData').user_details.user_no,is_fev:$scope.saloonDetails.saloon_details.is_fev}
+            var obj={saloon_id:$stateParams.id,user_id:userService.getData('loginData').user_details.user_no,is_fev:$scope.saloonDetails.saloon_details.is_fev};
             var settingData = localFactory.post('set_fev_saloon', obj);
             settingData.success(function (data) {
+
+                for(var i=0;i<$rootScope.saloonList['saloon_details'].length;i++){
+                    if($rootScope.saloonList['saloon_details'][i]['saloon_id']==$stateParams.id)
+                    {
+                        $rootScope.saloonList['saloon_details'][i]['is_fev']=$scope.saloonDetails.saloon_details.is_fev;
+                    }
+                }
+
                 $ionicLoading.hide();
             });
 
@@ -102,9 +157,9 @@ app.controller('saloonDetails',['$scope','$compile','$stateParams','$ionicScroll
         }else{
             $state.go('login');
         }
-     };
+    };
 
-    $scope.optaCity={opacity: 0.4};
+    $scope.optaCity={opacity: 0.3};
     $scope.isScrolling=function(){
         $scope.scrollPos=$ionicScrollDelegate.getScrollPosition().top;
         if($scope.scrollPos>0){
@@ -140,10 +195,14 @@ app.controller('saloonDetails',['$scope','$compile','$stateParams','$ionicScroll
         }
         $scope.$apply();
     }
-
-    $scope.allImages = $scope.saloonDetails.upload_images;
+    $scope.uploadImages=$scope.saloonDetails.upload_images;
+    console.log($scope.uploadImages);
+    $scope.allImages =[];
     $scope.allImages.push({upload_url:$scope.saloonDetails.saloon_details.saloon_image});
-    $scope.allImages.moveArrayPos($scope.allImages.length-1,0);
+    if($scope.uploadImages.length>0)
+    {
+       $scope.allImages=$.merge($scope.allImages,$scope.uploadImages);
+    }
     console.log($scope.allImages);
     $scope.showImages = function(index) {
         $scope.showModal('templates/imgSlider.html');
@@ -166,7 +225,14 @@ app.controller('saloonDetails',['$scope','$compile','$stateParams','$ionicScroll
     };
 
 
-    $scope.contanerValue=(170*$scope.saloonDetails.stylist)+"px";
+    if($scope.saloonDetails.stylist.length>1){
+
+        $scope.contanerValue=(170*$scope.saloonDetails.stylist.length)+"px";
+
+    }else if($scope.saloonDetails.stylist.length==1){
+
+        $scope.contanerValue='100%';
+    }
 
     $scope.saloonServices=$scope.saloonDetails.service;
     for(var i=0;i< $scope.saloonServices.length;i++){
@@ -208,6 +274,13 @@ app.controller('saloonDetails',['$scope','$compile','$stateParams','$ionicScroll
 
             localFactory.alert("You have not select any item.");
         }
+    }
 
+    $scope.openOffer=function(){
+        $state.go("tab.todaysdeals", {id:$scope.saloonDetails.saloon_details.saloon_id });
+    }
+
+    $scope.goToservice=function(){
+        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
     }
 }])

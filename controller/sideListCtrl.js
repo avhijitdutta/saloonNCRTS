@@ -1,14 +1,10 @@
 app.controller('sideListCtrl',['$scope','$ionicSideMenuDelegate','$rootScope','listPostData',"userService",'$filter','localFactory','$ionicLoading','$cordovaGeolocation',function($scope,$ionicSideMenuDelegate,$rootScope,listPostData,userService,$filter,localFactory,$ionicLoading,$cordovaGeolocation){
     $rootScope.map=true;
 
-    $scope.toggleMenuleft = function(value) {
-        if(value && value=='logout'){
-
-            $rootScope.logout();
-        }
-        $ionicSideMenuDelegate.toggleLeft();
-    };
-    $scope.userDetail=userService.getData('loginData')['user_details'];
+    if(userService.getData('loginData')!=null){
+        $scope.userDetail=userService.getData('loginData')['user_details'];
+        $rootScope.userProfilePic=$scope.userDetail.img_url;
+    }
     console.log($scope.userDetail);
     $scope.postData={
         sort_by:listPostData.getData().sort_by,
@@ -19,10 +15,19 @@ app.controller('sideListCtrl',['$scope','$ionicSideMenuDelegate','$rootScope','l
         end_price:listPostData.getData().end_price
     }
 
+
+    $scope.toggleSearch=function(){
+        if($scope.search){
+            $rootScope.search=false;
+        }else{
+            $rootScope.search=true;
+        }
+    }
+
     $scope.filterByType=[
-        {id:1,class:"ion-ios-star-outline"},
+        {id:3,class:"ion-ios-star-outline"},
         {id:2,class:"ion-social-usd-outline"},
-        {id:3,class:"ion-ios-location-outline"}
+        {id:1,class:"ion-ios-location-outline"}
     ];
 
     $scope.filterByDate=[{id:1,text:"Today",date:$filter('date')(new Date(), 'yyyy-MM-dd')},{id:2,text:"Tomorrow",date:$filter('date')(new Date().setDate(new Date().getDate()+1), 'yyyy-MM-dd')}];
@@ -92,10 +97,12 @@ app.controller('sideListCtrl',['$scope','$ionicSideMenuDelegate','$rootScope','l
             .then(function (position) {
                 $scope.postData['latitude']=position.coords.latitude;
                 $scope.postData['longitude']=position.coords.longitude;
+                $scope.postData['page_number']=0;
                 listPostData.setData($scope.postData);
                 var saloonList = localFactory.post('saloon_list',listPostData.getData());
                 saloonList.success(function (data) {
-                    $rootScope.saloonList=data.saloon_details;
+                    $rootScope.saloonList.saloon_details=data.saloon_details;
+                    $rootScope.saloonList.page_number=data.page_number;
                     $ionicLoading.hide();
                 });
 

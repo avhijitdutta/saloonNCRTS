@@ -2,11 +2,13 @@
 <ion-view class="view-background checkin">
     <form novalidate name="accountForm" ng-submit="saveUser(accountForm)">
     <ion-content class="has-header has-footer padding">
+
         <div class="form-content padding">
+
 
                 <div class="list card">
                     <label class="item item-input">
-                        <input type="text" placeholder="Saloon/Spa name" name="saloon_name" ng-model="user.saloon_name" required>
+                        <input type="text" placeholder="Salon/Spa name" name="saloon_name" ng-model="user.saloon_name" required>
                     </label>
 
                     <label class="item item-input">
@@ -31,6 +33,9 @@
                 <div class="text-center">
                     <img ng-if="imageURI==''" src="images/noimagesaloon.png" class="capture">
                     <img ng-if="imageURI!=''" src="{{imageURI}}" class="capture">
+                    <h5>
+                        Submit your Salon / SPA and earn bonus
+                    </h5>
                 </div>
 
 

@@ -1,20 +1,21 @@
-<ion-view>
+<ion-view >
+    <div class="filter-category" ng-click="openModal()">
+        <i class="ion-social-buffer"> </i>
+    </div>
 
-<ion-content class="has-header view-background saloon-list" overflow-scroll=true>
-   <!-- <ion-refresher
-            pulling-text="Pull to refresh..."
-            on-refresh="doRefresh()"
-    >-->
-    </ion-refresher>
-
+    <div class="filter-list-icon" ng-click="showFiler()">
+        <i class="ion-funnel"></i>
+    </div>
+<ion-content class="has-header view-background saloon-list">
+    <ion-spinner icon="android" ng-show="loading"></ion-spinner>
     <ion-list>
-        <ion-item collection-repeat="saloon in saloonList" ui-sref="detailSaloon({id: saloon.saloon_id})">
+        <ion-item ng-repeat="saloon in saloonList.saloon_details" ui-sref="detailSaloon({id: saloon.saloon_id})">
             <div class="img-container">
-                <img ng-src="{{saloon.upload_url}}">
+                <img image-source="{{saloon.upload_url}}" image-placeholder="images/placeholder-03.png" alt="" imageonload>
                 <div class="list-content">
                     <h2>{{saloon.saloon_name}}</h2>
                     <p class="ellipsis">
-                        <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( {{saloon.distance |number:0}} <span ng-if="saloon.distance<2">Mile</span> <span ng-if="saloon.distance>1">Miles</span> )</span>
+                        <i class="iocn ion-location"> </i>{{saloon.locality}},&nbsp;{{saloon.city_name}} <span class="distance">( {{saloon.distance |number:0}} <span ng-if="saloon.distance>0 && saloon.distance <2">Mile</span> <span ng-if="saloon.distance>=2">Miles</span> )</span>
                     </p>
                 </div>
             </div>
@@ -41,7 +42,14 @@
 
     </ion-list>
 
-    <div class="no-data" ng-if="saloonList.length<1">
+    <ion-infinite-scroll
+            on-infinite="loadMore(saloonList.page_number)"
+            distance="1%"
+            ng-if="saloonList.page_number"
+            >
+    </ion-infinite-scroll>
+
+    <div class="no-data" ng-if="saloonList.saloon_details.length<1">
         <i class="iocn ion-social-instagram"></i>
         <h4>It is lonely here</h4>
         <p>
@@ -49,17 +57,4 @@
         </p>
     </div>
 </ion-content>
-
-        <div class="filter-category" ng-click="openModal()">
-            <i class="ion-social-buffer"> </i>
-        </div>
-
-        <div class="filter-list-icon" ng-click="showFiler()">
-            <i class="ion-funnel"> </i>
-        </div>
-
-       <!--<img src="images/ico-filter.png" class="map-icon" ng-click="showFiler()">
-
-       <img ng-if="map" src="images/ico-listing.png" class="filter-icon"  ui-sref="sidelist.saloonList({id:category_id})">
-       <img ng-if="!map" src="images/ico-map.png" class="filter-icon"  ui-sref="sidelist.saloonListMap({id:category_id})">-->
 </ion-view>

@@ -26,13 +26,14 @@ app.controller('regCtrl',['$scope','localFactory','settingData','$ionicLoading',
         $scope.user.locality=$scope.locality[0];
     }
 
+    $scope.word = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
     // function to submit the form after all validation has occurred
     $scope.submitForm = function(userForm) {
         //console.log(userForm);
         var errorMsg="";
         if(userForm.user_name.$invalid)
         {
-            errorMsg+="User name is required."+"\n";
+            errorMsg+="Full name is required."+"\n";
         }
 
         if(userForm.email.$invalid)
@@ -49,16 +50,16 @@ app.controller('regCtrl',['$scope','localFactory','settingData','$ionicLoading',
         {
             errorMsg+="Retype your password."+"\n";
         }
+        else if($scope.user.password!= $scope.user.repassword)
+        {
+            errorMsg+="Your password & retype password do not match."+"\n";
+        }
 
         if(userForm.phone_number.$invalid)
         {
             errorMsg+="Phone number is required."+"\n";
         }
 
-        if($scope.user.password!= $scope.user.repassword)
-        {
-            errorMsg+="Your password do not match."+"\n";
-        }
 
         if($scope.user.city.id==0)
         {

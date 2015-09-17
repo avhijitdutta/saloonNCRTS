@@ -1,5 +1,35 @@
-app.controller('todaysCtrl',['$scope','todaysDeal','userService','$state','$rootScope','HardwareBackButtonManager','$ionicLoading','$ionicModal','localFactory','$filter',function($scope,todaysDeal,userService,$state,$rootScope,HardwareBackButtonManager,$ionicLoading,$ionicModal,localFactory,$filter){
+app.controller('todaysCtrl',['$scope','userService','$state','$rootScope','HardwareBackButtonManager','$ionicLoading','$ionicModal','localFactory','$filter','listPostData','$stateParams',function($scope,userService,$state,$rootScope,HardwareBackButtonManager,$ionicLoading,$ionicModal,localFactory,$filter,listPostData,$stateParams){
     HardwareBackButtonManager.disable();
+    $scope.todaysDeals=[];
+    $scope.loading=true;
+    $scope.category_id="";
+    $scope.page_number="";
+    $scope.$on("$ionicView.beforeEnter", function( scopes, states ) {
+        console.log($rootScope.previousState);
+        if($rootScope.previousState!='dealDetail'){
+            $scope.loading=true;
+            $scope.todaysDeals=[];
+            $ionicLoading.show();
+            var settingData = localFactory.post('settings', {});
+            settingData.success(function (data) {
+                userService.setData(data,'settingData');
+                console.log(userService.getData('settingData').service);
+                $scope.cateList=userService.getData('settingData')['service'];
+                $scope.showList();
+                $ionicLoading.hide();
+
+            });
+            settingData.error(function (data, status, headers, config) {
+                $ionicLoading.hide();
+            });
+
+        }
+
+    });
+
+    $scope.$on("$ionicView.afterEnter", function( scopes, states ) {
+        $ionicLoading.hide();
+    });
 
     if(userService.getData('loginData')!=null){
         $rootScope.showFilter=true;
@@ -7,7 +37,7 @@ app.controller('todaysCtrl',['$scope','todaysDeal','userService','$state','$root
         $rootScope.showFilter=false;
     }
 
-    $scope.todaysDeals=todaysDeal.deal_data;
+    /*$scope.todaysDeals=todaysDeal.deal_data;*/
     if(userService.getData('loginData') && userService.getData('loginData').user_details.user_no)
     {
         $rootScope.showFilter=true;
@@ -15,7 +45,7 @@ app.controller('todaysCtrl',['$scope','todaysDeal','userService','$state','$root
 
     $scope.dealDetail=function(value){
         userService.setData(value,'deal');
-        $state.go('dealDetail',{id:value.id});
+        $state.go('dealDetail',{id:value.id,type:1});
     }
 
     $ionicModal.fromTemplateUrl('view/categoryModal.html', function($ionicModal) {
@@ -33,30 +63,63 @@ app.controller('todaysCtrl',['$scope','todaysDeal','userService','$state','$root
         $scope.modal.show();
     };
 
-    console.log(userService.getData('settingData').service);
-    $scope.cateList=userService.getData('settingData')['service'];
-    $scope.showList=function(itemId){
+
+    $scope.showList=function(itemId,flag,page_number){
         $ionicLoading.show();
         var postData={};
         if(userService.getData('loginData') && userService.getData('loginData')!=null){
             postData['user_no']=userService.getData('loginData').user_details.user_no;
-            postData['current_time']=$filter('date')(new Date(),'HH:mm:ss'),
-            postData['current_date']=$filter('date')(new Date(),'yyyy-MM-dd')
-            postData['category_id']=itemId;
         }
+
+        postData['current_time']=$filter('date')(new Date(),'HH:mm:ss');
+        postData['current_date']=$filter('date')(new Date(),'yyyy-MM-dd');
+        if(page_number){
+            postData['page_number']=page_number;
+        }else{
+            postData['page_number']=0;
+        }
+
+        if(itemId && itemId!="nochange"){
+            postData['category_id']=itemId;
+        }else{
+            postData['category_id']="";
+        }
+
+        if($stateParams.id){
+            postData['saloon_id']=$stateParams.id;
+        }
+
         var settingData = localFactory.post('todays_deal', postData);
         settingData.success(function (data) {
+            $scope.loading=false;
             $ionicLoading.hide();
-            $scope.todaysDeals=data.deal_data;
+            if(flag){
+                $scope.todaysDeals=[];
+                $scope.modal.hide();
+            }
+            var previousArray=$scope.todaysDeals;
+            var updated=previousArray.concat(data.deal_data);
+            $scope.page_number=data.page_number;
+            if(!data.page_number){
+                $scope.page_number="";
+            }
+            $scope.todaysDeals=updated;
+            $rootScope.userAppointment=data.upcoming_appointment;
+            if(itemId){
+                $scope.category_id=itemId;
+            }
+
         });
 
         settingData.error(function (data, status, headers, config) {
             $ionicLoading.hide();
         });
-        $scope.modal.hide();
-    }
 
-    $rootScope.userAppointment=todaysDeal.upcoming_appointment;
+
+
+    }
+/*
+    $rootScope.userAppointment=todaysDeal.upcoming_appointment;*/
     $scope.$on('$ionicView.loaded', function (viewInfo, state) {
         $ionicLoading.hide();
     });
@@ -95,5 +158,34 @@ app.controller('todaysCtrl',['$scope','todaysDeal','userService','$state','$root
             $state.go('login');
         }
 
+    }
+
+    $scope.loadMore = function(value) {
+        $scope.showList("nochange","",parseInt(value)+1);
+    };
+
+    $scope.showSaloons=function(){
+        var defaultValue={
+            latitude:"",
+            longitude:"",
+            category_id:"",
+            user_id:"",
+            sort_by:3,
+            filter_by_date:$filter('date')(new Date(), 'yyyy-MM-dd'),
+            start_time:{
+                label: "08:00 AM",
+                value: "08:00"
+            },
+            end_time:{
+                label: "10:00 PM",
+                value: "22:00"
+            },
+            start_price:{label:'Select',value:0},
+            end_price:{label:'Select',value:0},
+            city_id:0,
+            locality_id:0
+        }
+        listPostData.setData(defaultValue);
+        $state.go('sidelist.saloonList');
     }
 }])

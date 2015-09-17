@@ -51,6 +51,9 @@ body {
     color: #000;
 }
 
+.width25{
+    width: 25px;
+}
 .view-background{
     background: #ffffff;
 }
@@ -291,7 +294,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 }
 
 .login select{
-    width: 100%;
+    width: 255px;
     background: none;
     border: 0;
     height: 35px;
@@ -451,7 +454,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 }
 
 .todays-deal .item .mask{
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.6);
     position: absolute;
     left: 0;
     right: 0;
@@ -473,16 +476,15 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 }
 
 .todays-deal .item .mask .category .bookmark{
-    color: #5F8904;
-    font-size: 35px;
     position: absolute;
-    right: 20px;
-    top: -3px;
+    right: 8px;
+    top: 0;
     padding: 5px 6px 5px 20px;
+    width:40px;
 }
 
-.todays-deal .item .mask .category .unbookmark{
-    color: #FF253f;
+.todays-deal .item .mask .category .bookmark img{
+    width: 100%;
 }
 
 .todays-deal .item .mask .category span{
@@ -595,13 +597,13 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     right: 0;
     z-index: 2;
     bottom: -3px;
-    background: RGBA(0,0,0,0.8);
+    background: RGBA(0,0,0,0.4);
     color: #FFFFFF;
     padding: 8px 12px;
     line-height: 12px;
 }
 .saloon-list .item .distance{
-    color: #c1c1c2;
+    color: #ffffff;
 }
 .saloon-list .item .list-content i{
     margin-right: 5px;
@@ -624,7 +626,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 }
 
 .saloon-list .item .un-feb{
-    color: #797979;
+    color: #ffffff;
 }
 
 .saloon-list .item .offer{
@@ -632,7 +634,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     right: 58px;
     bottom: 12px;
     font-size: 25px;
-    color: #797979;
+    color: #ffffff;
     z-index: 5;
 }
 
@@ -681,7 +683,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     z-index: 9999;
     position: absolute;
     bottom: 20px;
-    left: 0px;
+    left: 0;
     background: #FF253F;
     color: #ffffff;
     border-top-right-radius: 30px ;
@@ -707,7 +709,14 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     zoom: 100%;
 }
 
+.filter-list-icon img{
+    width: 25px;
+}
 /*Saloon Details*/
+
+.buttom-15{
+    bottom: 15%;
+}
 .saloon-detail .saloon-info{
      position: relative;
  }
@@ -952,7 +961,9 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     background: #343434;
     color: #ffffff;
 }
-
+.saloon-detail .child-items .row div:nth-child(2){
+    white-space: normal;
+}
 .saloon-detail .child-items .facility{
     white-space: normal;
 }
@@ -1119,9 +1130,10 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 .appointment .selected-services .row + .row{
     margin: 0;
 }
-.appointment .row img{
+.appointment .row-colum img{
     width: 20px;
     margin-left: 3px;
+    vertical-align: middle;
 }
 
 .appointment .row .col-70{
@@ -1130,7 +1142,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
     bottom: 5px
 }
 
-.appointment .row .qty{
+.appointment .row-colum .qty{
     border: 1px solid #d7d7d7;
     border-radius: 5px;
     width: 30px;
@@ -1531,11 +1543,11 @@ form .card{
 .appointment-detail .row .col{
     font-size: 13px;
 }
-.appointment-detail .services .row .person{
+.appointment-detail .services .row-colum .person{
     font-style: italic;
     color: #a3a3a3;
 }
-.appointment-detail .services .row .person span{
+.appointment-detail .services .row-colum.person span{
     font-size: 10px;
 }
 .appointment-detail .list .item:nth-child(odd){
@@ -1599,21 +1611,68 @@ form .card{
     background: #f0dbdd;
 }
 
-.appointment-detail .price-table .row{
+.row-colum{
+    width: 100%;
+    border-bottom: 1px solid #f4e5e6;
+}
+.row-colum .colum{
+    display: inline-block;
+    padding: 4px;
+}
+
+.width-25{
+    width: 25%;
+}
+
+.width-72{
+    width: 72%;
+}
+
+.width-10{
+    width: 10%;
+}
+
+.width-20{
+     width: 20%;
+ }
+
+.width-18{
+    width: 18%;
+}
+
+.width-50{
+    width: 50%;
+}
+
+.width-54{
+    width: 54%;
+}
+
+.width-45{
+    width: 45%;
+}
+.width-30{
+    width: 30%;
+}
+
+.width-40{
+    width: 40%;
+}
+.appointment-detail .price-table .price-table{
    padding: 5px 9px;
    border-bottom: 1px solid #f4e5e6;
 }
-.appointment-detail .price-table .row div:first-child{
-   color: #5f5c5c;
 
+.appointment-detail .price-table .row-colum div:first-child{
+   color: #5f5c5c;
 }
 
-.appointment-detail .price-table .row div:last-child{
+.appointment-detail .price-table .row-colum div:last-child{
     color: #FF495f;
 }
-.appointment-detail .price-table .row.total{
+
+.appointment-detail .price-table .row-colum.total{
     background: #f4e5e6;
-    font-size: 16px;
     color: #000000;
 }
 
@@ -1628,13 +1687,11 @@ form .card{
     padding-bottom: 6px;
 }
 
-.appointment-detail  .row + .row{
-    margin: 0;
-}
 
-.appointment-detail .row-container .row  i{
+.appointment-detail .row-container .row-colum  i{
     color: #537703;
     font-size: 22px;
+    vertical-align: -4px;
 }
 
 .appointment-detail .confirmation{
@@ -1758,6 +1815,15 @@ form .card{
     color: #FF485B;
  }
 
+.category .category-all{
+    text-align: center;
+    border-radius: 50px;
+    background: #f4e5e6;
+    color: #923551;
+    padding: 5px;
+    width: 120px;
+    margin: auto;
+}
 
 .category .category-content{
      text-align: center;
@@ -1769,6 +1835,13 @@ form .card{
    margin: 20px 0;
    font-size: 14px;
    vertical-align: top;
+   min-height: 140px;
+   padding: 1px;
+}
+
+.category .category-content .category-item.selected{
+    border-radius: 5px;
+    border: 1px solid #c1c1c2;
 }
 
 .category .category-content .category-item img{
@@ -2007,8 +2080,37 @@ html, body, #map_canvas {
     left: 0;
 }
 
-
-
 .no-time-date{
     width: 225px;
 }
+
+/*change action sheet style as iphone*/
+.platform-android .action-sheet .action-sheet-title, .platform-android .action-sheet .button {
+    text-align: center;
+}
+
+.initial{
+   text-transform: capitalize;
+}
+
+.dark span{
+    padding: 10px;
+}
+.spinner{
+    display: block;
+    text-align: center;
+}
+
+.panding{
+    background: #f4bc25;
+    color: #000000;
+}
+
+.cancel-user{
+    background: #a5a5a6;
+}
+
+.update-popup .popup-body{
+    text-align: center;
+}
+

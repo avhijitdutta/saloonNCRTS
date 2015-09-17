@@ -11,7 +11,7 @@
                 <div class="list-content">
                     <h2>{{appointmentData.saloon.saloon_details.saloon_name}}</h2>
                     <p class="ellipsis">
-                        <i class="iocn ion-location"> </i>{{appointmentData.saloon.saloon_details.locality}},&nbsp;{{appointmentData.saloon.saloon_details.city_name}} <span class="distance">( 2000 Km )</span>
+                        <i class="iocn ion-location"> </i>{{appointmentData.saloon.saloon_details.locality}},&nbsp;{{appointmentData.saloon.saloon_details.city_name}}
                     </p>
                 </div>
             </div>
@@ -43,11 +43,11 @@
         <div class="selected-services">
             <h4>Selected Services</h4>
             <div class="row-container">
-                <div class="row" ng-repeat="row in appointmentData.services">
-                    <div class="col-10 align-left"><img src="images/tick.png"></div>
-                    <div class="col-50">{{row.facility_name}}</div>
-                    <div class="col-20"><input ng-model="row.no_of_person" class="qty" value='1' type="tel"/></div>
-                    <div class="col-20"><span class="price"><span class="rupyaINR">Rs</span>{{row.no_of_person*row.price | noFractionCurrency:""}}</span></div>
+                <div class="row-colum" ng-repeat="row in appointmentData.services">
+                    <div class="colum width-10 align-left"><img src="images/tick.png"></div>
+                    <div class="colum width-45">{{row.facility_name}}</div>
+                    <div class="colum width-18"><input ng-change="isValid(row)" ng-model="row.no_of_person" class="qty" value='1' type="tel"/></div>
+                    <div class="colum width-18"><span class="price"><span class="rupyaINR">Rs</span>{{row.no_of_person*row.price | noFractionCurrency:""}}</span></div>
                 </div>
             </div>
             <div class="sub-total">

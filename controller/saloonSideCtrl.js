@@ -5,7 +5,6 @@ app.controller('saloonSideCtrl',['$scope','$ionicSideMenuDelegate','$rootScope',
             $rootScope.logout();
         }
     };
-
     $scope.userDetail=userService.getData('loginData')['user_details'];
     console.log($scope.userDetail);
 }])

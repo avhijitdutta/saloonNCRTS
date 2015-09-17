@@ -22,7 +22,7 @@ app.service('listPostData', function(localFactory,$q,userService,$ionicLoading,$
         longitude:"",
         category_id:"",
         user_id:"",
-        sort_by:1,
+        sort_by:3,
         filter_by_date:$filter('date')(new Date(), 'yyyy-MM-dd'),
         start_time:{
             label: "08:00 AM",

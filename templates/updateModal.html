@@ -1,0 +1,39 @@
+<ion-view view-title="Date Picker">
+    <div class="bar bar-header beauty-header has-header">
+        <div class="title"> Update Offer</div>
+        <div class="button button-clear" ng-click="modal.hide()"><span class="ion-ios-close-outline"></span></div>
+    </div>
+    <ion-content class="padding">
+
+        <h3 class="text-center">Date Picker Examples</h3>
+
+        <h4>Start Date</h4>
+        <ionic-datepicker input-obj="datepickerObjectModal">
+            <button class="button button-block promo-button active-button"> {{datepickerObjectModal.inputDate | date:'dd - MMMM - yyyy'}}</button>
+        </ionic-datepicker>
+
+        <h4>End Date</h4>
+        <ionic-datepicker input-obj="datepickerFromModal">
+            <button class="button button-block promo-button active-button"> {{datepickerFromModal.inputDate | date:'dd - MMMM - yyyy'}}</button>
+        </ionic-datepicker>
+
+        <h4>Price</h4>
+        <label class="item item-input">
+            <input type="text" placeholder="Price" ng-model="datepickerObject.price">
+        </label>
+
+        <h4>Discount</h4>
+        <label class="item item-input">
+            <input type="text" placeholder="Percent Discount" ng-model="datepickerObject.percent_discount">
+        </label>
+
+        <h4>Deal Price</h4>
+        <label class="item item-input">
+            <input type="text" placeholder="Deal Price" ng-value="datepickerObject.deal_price()">
+        </label>
+
+        <button class="button button-block promo-button active-button" ng-click="updateCall()">
+            Update
+        </button>
+    </ion-content>
+</ion-view>

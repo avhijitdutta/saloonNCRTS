@@ -36,14 +36,14 @@ app.controller('loginCtrl',['$scope','localFactory','$state','userService','$ion
     };
 
     $scope.submitForm = function(userForm) {
-
-        if($scope.user.email == '' && $scope.user.password == ''){
-            localFactory.alert("Please enter email ID.");
+        console.log(userForm.email);
+        if(!$scope.user.email){
+            localFactory.alert("Please enter email id or phone no.");
             return false;
         }
 
-        if($scope.user.email == null || $scope.user.password == null){
-            localFactory.alert("Please enter password.");
+        if(!$scope.user.password){
+            localFactory.alert("please enter password.");
             return false;
         }
 
@@ -119,6 +119,8 @@ app.controller('loginCtrl',['$scope','localFactory','$state','userService','$ion
         requestLogin.success(function (data) {
             if(data.result)
             {
+                $rootScope.userProfilePic=data.user_details.img_url;
+                data['social_login']=0;
                 userService.setData(data,'loginData');
                 if(data.user_details.user_type==2){
                     $rootScope.loginType=1;
@@ -126,7 +128,7 @@ app.controller('loginCtrl',['$scope','localFactory','$state','userService','$ion
                 }else if(data.user_details.user_type==4){
                     $rootScope.showFilter=true;
                     $rootScope.loginType=0;
-                    if($rootScope.previousState=='promotion' || $rootScope.previousState=='signup')
+                    if($rootScope.previousState=='promotion' || $rootScope.previousState=='registration')
                     {
                         $state.go('tab.todaysdeals');
 
@@ -140,7 +142,6 @@ app.controller('loginCtrl',['$scope','localFactory','$state','userService','$ion
                 {
 
                 },"Alert","OK");
-                //localFactory.unload();
             }
             $ionicLoading.hide();
         });

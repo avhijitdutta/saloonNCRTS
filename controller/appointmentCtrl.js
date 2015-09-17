@@ -1,58 +1,36 @@
 app.controller('appointmentCtrl',['$scope','userService','appointment','$filter','$state','localFactory',function($scope,userService,appointment,$filter,$state,localFactory){
     $scope.headerName="Book Service Appointment";
     $scope.appointmentData=userService.getData('currentSeleted');
+    console.log( $scope.appointmentData);
     $scope.appointmentData['saloon']={saloon_details:appointment['sallon_details']};
     $scope.appointment=appointment['slot'];
     $scope.netAmount=0.00;
     $scope.taxPercentage=appointment['sallon_details']['service_tax'];
-    console.log($scope.appointment[$filter('date')(new Date(), 'yyyy-MM-dd')]);
-    $scope.facility_ids=[];
 
-    for(var i=0; i<$scope.appointmentData.services.length;i++){
+    console.log($scope.appointmentData.services);
 
-        $scope.appointmentData.services[i]['no_of_person']=1;
-        if($scope.appointmentData.services[i]['is_deal']==1)
-        {
-            if($filter('date')(new Date(), 'yyyy-MM-dd') >=$scope.appointmentData.services[i]['deal_start_time'] && $filter('date')(new Date(), 'yyyy-MM-dd') <=$scope.appointmentData.services[i]['deal_end_time'])
-            {
-                $scope.appointmentData.services[i]['is_deal']=1;
-            }else{
-                $scope.appointmentData.services[i]['is_deal']=0;
-            }
-        }
-        $scope.facility_ids.push($scope.appointmentData.services[i]);
-
-    }
-
-    $scope.subTotal = function(){
-        var total = 0;
-        angular.forEach($scope.appointmentData.services, function(item) {
-            total += item.no_of_person * item.price;
-        })
-        return total;
-    }
-
-    $scope.discountAmount = function(){
-        var total = 0;
-        angular.forEach($scope.appointmentData.services, function(item) {
-            if(item['is_deal']==1)
-            {
-                if($filter('date')(new Date(), 'yyyy-MM-dd') >=item['deal_start_time'] && $filter('date')(new Date(), 'yyyy-MM-dd') <=item['deal_end_time'])
-                {
-                    total +=item.no_of_person*parseFloat( item['price'] - item['deal_price']);
-                }
-            }
-        })
-        return total;
-    }
 
     $scope.days=[
-                    {name:$filter('date')(new Date(), 'dd'),date:$filter('date')(new Date(), 'yyyy-MM-dd'),id:1,hours:$scope.appointment[$filter('date')(new Date(), 'yyyy-MM-dd')],selected:true,day:$filter('date')(new Date(), 'EEE')},
-                    {name:$filter('date')(new Date(new Date().getDate()+1), 'dd'),date:$filter('date')(new Date().setDate(new Date().getDate()+1), 'yyyy-MM-dd'),id:2,hours:$scope.appointment[$filter('date')(new Date().setDate(new Date().getDate()+1), 'yyyy-MM-dd')],selected:false,day:$filter('date')(new Date().setDate(new Date().getDate()+1), 'EEE')},
-                    {name:$filter('date')(new Date().setDate(new Date().getDate()+2), 'dd'),date:$filter('date')(new Date().setDate(new Date().getDate()+2), 'yyyy-MM-dd'),id:3,hours:$scope.appointment[$filter('date')(new Date().setDate(new Date().getDate()+2), 'yyyy-MM-dd')],selected:false,day:$filter('date')(new Date().setDate(new Date().getDate()+2), 'EEE')},
-                    {name:$filter('date')(new Date().setDate(new Date().getDate()+3), 'dd'),date:$filter('date')(new Date().setDate(new Date().getDate()+3), 'dd MMM'),id:4,hours:$scope.appointment[$filter('date')(new Date().setDate(new Date().getDate()+3), 'yyyy-MM-dd')],selected:false,day:$filter('date')(new Date().setDate(new Date().getDate()+3), 'EEE')},
-                    {name:$filter('date')(new Date().setDate(new Date().getDate()+4), 'dd'),date:$filter('date')(new Date().setDate(new Date().getDate()+4), 'dd MMM'),id:5,hours:$scope.appointment[$filter('date')(new Date().setDate(new Date().getDate()+4), 'yyyy-MM-dd')],selected:false,day:$filter('date')(new Date().setDate(new Date().getDate()+4), 'EEE')}
-                ];
+        {name:$filter('date')(new Date(), 'dd'),date:$filter('date')(new Date(), 'yyyy-MM-dd'),id:1,hours:$scope.appointment[$filter('date')(new Date(), 'yyyy-MM-dd')],selected:true,day:$filter('date')(new Date(), 'EEE')},
+        {name:$filter('date')(new Date().setDate(new Date().getDate()+1), 'dd'),date:$filter('date')(new Date().setDate(new Date().getDate()+1), 'yyyy-MM-dd'),id:2,hours:$scope.appointment[$filter('date')(new Date().setDate(new Date().getDate()+1), 'yyyy-MM-dd')],selected:false,day:$filter('date')(new Date().setDate(new Date().getDate()+1), 'EEE')},
+        {name:$filter('date')(new Date().setDate(new Date().getDate()+2), 'dd'),date:$filter('date')(new Date().setDate(new Date().getDate()+2), 'yyyy-MM-dd'),id:3,hours:$scope.appointment[$filter('date')(new Date().setDate(new Date().getDate()+2), 'yyyy-MM-dd')],selected:false,day:$filter('date')(new Date().setDate(new Date().getDate()+2), 'EEE')},
+        {name:$filter('date')(new Date().setDate(new Date().getDate()+3), 'dd'),date:$filter('date')(new Date().setDate(new Date().getDate()+3), 'yyyy-MM-dd'),id:4,hours:$scope.appointment[$filter('date')(new Date().setDate(new Date().getDate()+3), 'yyyy-MM-dd')],selected:false,day:$filter('date')(new Date().setDate(new Date().getDate()+3), 'EEE')},
+        {name:$filter('date')(new Date().setDate(new Date().getDate()+4), 'dd'),date:$filter('date')(new Date().setDate(new Date().getDate()+4), 'yyyy-MM-dd'),id:5,hours:$scope.appointment[$filter('date')(new Date().setDate(new Date().getDate()+4), 'yyyy-MM-dd')],selected:false,day:$filter('date')(new Date().setDate(new Date().getDate()+4), 'EEE')}
+
+    ];
+
+    /*$scope.dayIndex=1;
+     angular.forEach($scope.appointment, function(item,key) {
+     console.log(obj)
+     var obj={id:key,name:$filter('date')(new Date(key), 'dd'),date:$filter('date')(new Date(key), 'yyyy-MM-dd'),id:1,hours:item,day:$filter('date')(new Date(key), 'EEE')};
+     if($scope.dayIndex==1){
+     obj['selected']=true;
+     }else{
+     obj['selected']=false;
+     }
+     $scope.days.push(obj);
+     $scope.dayIndex++
+     });*/
 
     console.log($scope.days);
     $scope.currentSelected=$scope.days[0];
@@ -111,6 +89,48 @@ app.controller('appointmentCtrl',['$scope','userService','appointment','$filter'
         console.log( $scope.currentHours);
     }
 
+
+    $scope.facility_ids=[];
+
+    for(var i=0; i<$scope.appointmentData.services.length;i++){
+
+        $scope.appointmentData.services[i]['no_of_person']=1;
+        if($scope.appointmentData.services[i]['is_deal']==1)
+        {
+            if($scope.currentSelected.date >=$scope.appointmentData.services[i]['deal_start_time'] && $scope.currentSelected.date <=$scope.appointmentData.services[i]['deal_end_time'])
+            {
+                $scope.appointmentData.services[i]['is_deal']=1;
+            }else{
+                $scope.appointmentData.services[i]['is_deal']=0;
+            }
+        }
+        $scope.facility_ids.push($scope.appointmentData.services[i]);
+
+    }
+
+    $scope.subTotal = function(){
+        var total = 0;
+        angular.forEach($scope.appointmentData.services, function(item) {
+            total += item.no_of_person * item.price;
+        })
+        return total;
+    }
+
+    $scope.discountAmount = function(){
+        var total = 0;
+        angular.forEach($scope.appointmentData.services, function(item) {
+            if(item['is_deal']==1)
+            {
+                if($scope.currentSelected.date >=item['deal_start_time'] && $scope.currentSelected.date <=item['deal_end_time'])
+                {
+                    total +=item.no_of_person*parseFloat( item['price'] - item['deal_price']);
+                }
+            }
+        })
+        return total;
+    }
+
+
     $scope.subNetAmount=function()
     {
         return parseFloat($scope.subTotal())-parseFloat($scope.discountAmount());
@@ -136,19 +156,55 @@ app.controller('appointmentCtrl',['$scope','userService','appointment','$filter'
     }
 
 
+   $scope.isValid=function(item){
+       if(parseInt(item.no_of_person)===0)
+       {
+           localFactory.toast("No of person can't be empty",'','top');
+            item.no_of_person=1;
+       }
+   }
+
     $scope.confirm=function(){
         if(userService.getData('loginData') && userService.getData('loginData').user_details.user_no)
         {
-            if($scope.currentHours && $scope.currentHours['row_num'])
+            if($scope.appointmentData.is_deal)
             {
-                $scope.appointmentData['confirm']={saloon_id:$scope.appointmentData['saloon']['saloon_details']['saloon_id'],user_id:userService.getData('loginData').user_details.user_no,row_num:$scope.currentHours['row_num'],date:$scope.currentSelected.date,amount:$scope.netAmount(),service_tax:$scope.taxAmount(),facility_id:JSON.stringify($scope.facility_ids),start_time:$scope.currentHours['start_time'],end_time:$scope.currentHours['end_time'],total_discount:$scope.discountAmount(),no_of_person:$scope.no_of_person()};
-                //console.log($scope.appointmentData['confirm']);
-                userService.setData($scope.appointmentData,'currentSeleted');
-                $state.go("confirm",{ id: $scope.appointmentData['saloon']['saloon_details']['saloon_id']});
+                if($scope.currentSelected.date >=$scope.appointmentData['services'][0]['deal_start_time'] && $scope.currentSelected.date <=$scope.appointmentData['services'][0]['deal_end_time'])
+                {
 
-            }else
-            {
-                localFactory.toast('you have not select any slot for appointment.');
+                }else{
+                    localFactory.toast('Deal not available in this date.')
+                    return;
+                }
+
+            }
+            var valid=true;
+            angular.forEach($scope.appointmentData.services, function(item) {
+               if(item.no_of_person=="")
+               {
+                   valid=false
+               }
+            });
+
+            if(valid){
+                if($scope.currentHours && $scope.currentHours['row_num'])
+                {
+                    $scope.appointmentData['confirm']={saloon_id:$scope.appointmentData['saloon']['saloon_details']['saloon_id'],user_id:userService.getData('loginData').user_details.user_no,row_num:$scope.currentHours['row_num'],date:$scope.currentSelected.date,amount:$scope.netAmount(),service_tax:$scope.taxAmount(),facility_id:JSON.stringify($scope.facility_ids),start_time:$scope.currentHours['start_time'],end_time:$scope.currentHours['end_time'],total_discount:$scope.discountAmount(),no_of_person:$scope.no_of_person()};
+                    if($scope.appointmentData.appointment_id)
+                    {
+                        $scope.appointmentData['confirm']['appointment_id']=$scope.appointmentData.appointment_id;
+                    }
+
+                    //console.log($scope.appointmentData['confirm']);
+                    userService.setData($scope.appointmentData,'currentSeleted');
+                    $state.go("confirm",{ id: $scope.appointmentData['saloon']['saloon_details']['saloon_id']});
+
+                }else
+                {
+                    localFactory.toast('you have not select any slot for appointment.');
+                }
+            }else{
+                localFactory.toast("No of person can't be empty",'','top');
             }
 
         }else{

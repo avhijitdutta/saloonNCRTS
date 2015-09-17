@@ -6,9 +6,12 @@
     </div>
 
     <ion-content class="has-header padding category">
+        <div class="category-all" ng-click="showList('',true)">
+            All Category
+        </div>
 
         <div class="category-content">
-            <div class="category-item" ng-repeat="item in cateList" ng-click="showList(item.id)">
+            <div class="category-item" ng-class="{'selected':category_id==item.id}" ng-repeat="item in cateList" ng-click="showList(item.id,true)">
                 <img src="{{item.category_image_url}}">
                 <div>{{item.category_name}}</div>
             </div>

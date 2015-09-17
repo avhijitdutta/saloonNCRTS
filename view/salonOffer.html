@@ -1,0 +1,29 @@
+<ng-include src="'templates/header.html'"></ng-include>
+<ion-view>
+    <ion-content class="todays-deal view-background has-header">
+        <ion-spinner icon="android" ng-show="loading"></ion-spinner>
+        <ion-item ng-click="dealDetail(deal)" ng-repeat="deal in todaysDeals">
+            <img ng-src="{{deal.deal_image}}">
+            <!--<img src="images/img-deal-detail.png">-->
+            <div class="mask">
+                <!-- <h2>{{deal.saloon_name}}</h2>-->
+                <span class="cat-icon">
+                    <img src="{{deal.category_image_url}}">
+                </span>
+
+                <div class="category">
+                    <h2> {{deal.about_deal}}</h2>
+                    <span>{{deal.saloon_name}}</span>
+                </div>
+            </div>
+        </ion-item>
+        <div class="no-data" ng-if="todaysDeals.length<1">
+            <i class="iocn ion-social-instagram"></i>
+            <h4>It is lonely here</h4>
+            <p>
+                No deal found .
+            </p>
+        </div>
+    </ion-content>
+
+</ion-view>

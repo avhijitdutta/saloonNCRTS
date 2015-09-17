@@ -1,5 +1,5 @@
 app.controller('submitSpaCtrl',['$scope','userService','localFactory','$cordovaFileTransfer','webservice','$cordovaCamera','$ionicActionSheet','$timeout','$ionicLoading',function($scope,userService,localFactory,$cordovaFileTransfer,webservice,$cordovaCamera,$ionicActionSheet,$timeout,$ionicLoading){
-    $scope.headerName="Submit a Saloon or Spa";
+    $scope.headerName="Submit a Salon or Spa";
 
     $scope.imageURI="";
 
@@ -48,15 +48,17 @@ app.controller('submitSpaCtrl',['$scope','userService','localFactory','$cordovaF
                 destinationType: Camera.DestinationType.FILE_URI,
                 allowEdit: true,
                 encodingType: Camera.EncodingType.JPEG,
-                targetWidth: 500,
-                targetHeight: 500,
+                targetWidth: 800,
+                targetHeight: 800,
                 quality: 99
             };
+
             if(index==0){
                 options['sourceType']=Camera.PictureSourceType.CAMERA;
             }else{
                 options['sourceType']=Camera.PictureSourceType.PHOTOLIBRARY;
             }
+
             $cordovaCamera.getPicture(options).then(function (imageURI) {
                 console.log(imageURI);
                 $scope.imageURI = imageURI;

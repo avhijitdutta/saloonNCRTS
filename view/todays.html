@@ -3,13 +3,14 @@
         <i class="ion-social-buffer"> </i>
     </div>
 
-    <a class="filter-list-icon" ui-sref="sidelist.saloonList">
+    <a class="filter-list-icon" ng-click="showSaloons()">
         <i class="ion-grid"> </i>
     </a>
 
     <ion-content class="todays-deal view-background has-header">
+        <ion-spinner icon="android" ng-show="loading"></ion-spinner>
         <ion-item ng-click="dealDetail(deal)" ng-repeat="deal in todaysDeals">
-            <img ng-src="{{deal.deal_image}}">
+            <img image-source="{{deal.deal_image}}" image-placeholder="images/placeholder-03.png" alt="" imageonload>
             <!--<img src="images/img-deal-detail.png">-->
             <div class="mask">
                <!-- <h2>{{deal.saloon_name}}</h2>-->
@@ -20,13 +21,18 @@
                 <div class="category">
                     <h2> {{deal.about_deal}}</h2>
                     <span>{{deal.saloon_name}}</span>
-                    <i class="icon ion-bookmark bookmark" ng-if="deal.is_fev==1" ng-click="$event.stopPropagation();toggleFev(deal.is_fev,deal.id)"> </i>
+                    <div class="bookmark " ng-if="deal.is_fev==1" ng-click="$event.stopPropagation();toggleFev(deal.is_fev,deal.id)">
+                        <img src="images/icon-bookmark.png">
+                    </div>
 
-                    <i class="icon ion-bookmark bookmark unbookmark" ng-if="deal.is_fev==0" ng-click="$event.stopPropagation();toggleFev(deal.is_fev,deal.id)"> </i>
+                    <div class="bookmark" ng-if="deal.is_fev==0" ng-click="$event.stopPropagation();toggleFev(deal.is_fev,deal.id)">
+                        <img src="images/icon-bookmark-blank.png">
+                    </div>
                 </div>
             </div>
         </ion-item>
-        <div class="no-data" ng-if="todaysDeals.length<1">
+
+        <div class="no-data" ng-if="todaysDeals.length<1 && !loading">
             <i class="iocn ion-social-instagram"></i>
             <h4>It is lonely here</h4>
             <p>
@@ -34,5 +40,11 @@
             </p>
         </div>
 
+        <ion-infinite-scroll
+                on-infinite="loadMore(page_number)"
+                distance="1%"
+                ng-if="page_number!=''"
+                >
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

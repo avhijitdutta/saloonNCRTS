@@ -1,4 +1,4 @@
-app.controller('myaccountCtrl',['$scope','userService','localFactory','$cordovaFileTransfer','webservice','$cordovaCamera','$ionicActionSheet','$timeout','myAccount','$ionicLoading',function($scope,userService,localFactory,$cordovaFileTransfer,webservice,$cordovaCamera,$ionicActionSheet,$timeout,myAccount,$ionicLoading){
+app.controller('myaccountCtrl',['$scope','userService','localFactory','$cordovaFileTransfer','webservice','$cordovaCamera','$ionicActionSheet','$timeout','myAccount','$ionicLoading','$rootScope',function($scope,userService,localFactory,$cordovaFileTransfer,webservice,$cordovaCamera,$ionicActionSheet,$timeout,myAccount,$ionicLoading,$rootScope){
     $scope.headerName="My Account";
     $scope.userAccount=myAccount;
     $scope.is_server=false;
@@ -91,7 +91,7 @@ app.controller('myaccountCtrl',['$scope','userService','localFactory','$cordovaF
         var errorMsg="";
         if(accountForm.user_name.$invalid)
         {
-            errorMsg+="User name is required";
+            errorMsg+="Full name is required";
         }
 
         if(accountForm.email.$invalid)
@@ -168,7 +168,15 @@ app.controller('myaccountCtrl',['$scope','userService','localFactory','$cordovaF
                 .then(function (result) {
                     $ionicLoading.hide();
                     console.log(result);
-                    localFactory.toast('Account update successfully');
+                    var data = JSON.parse(result.response);
+                    console.log(data.user_data.img_url);
+                    var tempLogin=userService.getData('loginData');
+                    console.log(tempLogin);
+                    tempLogin['user_details']['img_url']=data.user_data.img_url;
+                    userService.setData(tempLogin,'loginData');
+                    console.log(userService.getData('loginData'));
+                    $rootScope.userProfilePic=data.user_data.img_url;
+                    localFactory.toast(data.msg);
                 }, function (err) {
                     $ionicLoading.hide();
                     console.log("error");
